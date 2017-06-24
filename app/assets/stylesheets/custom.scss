@@ -1,0 +1,45 @@
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+/* Universals */
+
+body {
+	background-color: #35414A;
+}
+
+/* Splash Page */
+
+.splash {
+	background-color: #5EB0ED;
+	img {
+		display: block;
+    	margin: auto;
+    	width: 500px;
+	}
+}
+
+.panel {
+	color: #F4F6F8;
+	width: 90%;
+	margin: 0 auto;
+	margin-top: 40px;
+
+	.panel-body {
+		background-color: #5AAFEE;
+		padding-top: 25px;
+		padding-bottom: 25px;
+		div p {
+			font-size: 30px;
+			font-weight: 300;
+			margin: 0;	
+			line-height: 30px;
+		}
+		div small {
+			font-weight: 300;
+			font-size: 11px;
+			color: #CEE7FA;
+			letter-spacing: 2px;
+		}
+	}
+
+}

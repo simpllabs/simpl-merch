@@ -1,0 +1,30 @@
+<% content_for :javascript do %>
+  <script type="text/javascript">
+    ShopifyApp.ready(function(){
+      ShopifyApp.Bar.initialize({
+        buttons: {
+          primary: {
+            label: "Help",
+            href: 'http://google.com',
+            target: 'new'
+          },
+          secondary: [
+            { label: "New Tee" },
+            { label: "Orders",
+              type: "dropdown",
+              links: [
+                       { label: "Orders" },
+                       { label: "Order Export" }
+                     ]
+            },
+            { label: "Account", 
+              href: "#" }
+          ],
+        },
+        title: "Dashboard",
+        icon: "<%= asset_path('favicon.ico') %>",
+
+      });
+    });
+  </script>
+<% end %>

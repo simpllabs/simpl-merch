@@ -9,6 +9,7 @@ gem 'shopify_app', :git => 'https://github.com/Shopify/shopify_app'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.1'
 # Use Puma as the app server
+gem 'bootstrap-sass', '3.3.7'
 gem 'puma', '~> 3.7'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
@@ -50,7 +51,7 @@ group :development do
 end
 
 group :production do
-  gem 'pg'
+  gem 'pg', '0.21.0'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

@@ -1,18 +1,33 @@
-<% content_for :javascript do %>
-  <script type="text/javascript">
-    ShopifyApp.ready(function(){
-      ShopifyApp.Bar.initialize({
-        title: "Home",
-        icon: "<%= asset_path('favicon.ico') %>"
-      });
-    });
-  </script>
-<% end %>
+<div class="container-fluid">
+  <div class="row splash">
+    <%= image_tag("splash-logo.jpg", alt: "Rocketees - Just $6, including shipping.") %>
+  </div>
+</div>
 
-<h2>Products</h2>
+<div class="container">
 
-<ul>
-  <% @products.each do |product| %>
-    <li><%= link_to product.title, "https://#{@shop_session.url}/admin/products/#{product.id}", target: "_top" %></li>
-  <% end %>
-</ul>
+  <div class="row">
+    <div class="panel panel-default dash-summary panel-primary">
+      <div class="panel-heading text-center"><strong>ORDER FULFILLMENT</strong></div>
+      <div class="panel-body">
+        <div class="col-xs-3 text-center"><small>PENDING</small><p>0</p></div>
+        <div class="col-xs-3 text-center"><small>IN-PRODUCTION</small><p>0</p></div>
+        <div class="col-xs-3 text-center"><small>SHIPPED</small><p>0</p></div>
+        <div class="col-xs-3 text-center"><small>CANCELLED</small><p>0</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+
+  </div>
+
+  <!--
+  <ul>
+    <% @products.each do |product| %>
+      <li><%= link_to product.title, "https://#{@shop_session.url}/admin/products/#{product.id}", target: "_top" %></li>
+    <% end %>
+  </ul>
+  -->
+</div>
+

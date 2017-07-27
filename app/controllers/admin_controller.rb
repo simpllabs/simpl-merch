@@ -1,0 +1,44 @@
+class AdminController < ApplicationController
+ 	layout "admin"
+
+  	def admin
+  		if params[:admin_pw] == "2145py7@NP$&YR@N$(&P!(GFGPNGP@N~PG&$GN&@"
+  			session[:logged_in] = true
+  			flash[:notice] = nil
+  		else
+  			flash[:notice] = "Incorrect key." if !session[:logged_in]
+			flash[:type] = "danger" if !session[:logged_in]
+  		end
+
+
+  	end
+
+  	def upload_tracking
+  		@incoming_file = params[:spreadsheet]
+		file_name = params[:spreadsheet].original_filename
+		FileUtils.mv @incoming_file.tempfile, "db/tracking/#{file_name}"
+
+		Delayed::Job.enqueue UploadTrackingNumbersJob.new("db/tracking/#{file_name}")
+
+		flash[:notice] = "Tracking numbers being uploaded in the background."
+		flash[:type] = "success"
+		redirect_to "/admin"
+  	end
+
+  	def add_inventory
+  		@incoming_file = params[:inventory]
+  		file_name = params[:inventory].original_filename
+		FileUtils.mv @incoming_file.tempfile, "db/inventory/#{file_name}"
+
+		Delayed::Job.enqueue AddInventoryJob.new("db/inventory/#{file_name}")
+
+		flash[:notice] = "Adding inventory: Refresh page in a few seconds."
+		flash[:type] = "success"
+		redirect_to "/admin"
+
+		#male_inventory = MaleInventory.all.first
+        #female_inventory = FemaleInventory.all.first
+		#arr_of_arrs = CSV.read("db/inventory/#{file_name}")
+		#redirect_to :controller => 'admin', :action => 'admin', :param1 => arr_of_arrs[1]
+  	end
+end

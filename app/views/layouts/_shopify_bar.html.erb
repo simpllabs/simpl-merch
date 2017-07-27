@@ -5,23 +5,28 @@
         buttons: {
           primary: {
             label: "Help",
-            href: 'http://google.com',
+            href: 'http://rocketees.com/help',
             target: 'new'
           },
           secondary: [
-            { label: "New Tee" },
-            { label: "Orders",
+            { label: "New Tee", 
+              type: "dropdown",
+                links: [
+                         { label: "Male", href: '/tees/new?gender=male' },
+                         { label: "Female", href: "/tees/new?gender=female" } 
+                       ]
+              },
+            { label: "Design Library", href: '/library'},
+            { label: "Account",
               type: "dropdown",
               links: [
-                       { label: "Orders" },
-                       { label: "Order Export" }
+                       { label: "Profile", href: "/account" },
+                       { label: "Orders", href: "/orders" } 
                      ]
             },
-            { label: "Account", 
-              href: "#" }
           ],
         },
-        title: "Dashboard",
+        title: "<%= yield(:title) %>",
         icon: "<%= asset_path('favicon.ico') %>",
 
       });

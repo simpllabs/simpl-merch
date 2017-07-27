@@ -1,0 +1,117 @@
+<% provide(:title, "Review and Publish Design") %>
+
+<div class="container container-review">
+	<div class="row">
+		<%= link_to new_tee_path, class: "btn btn-danger back-to-design-btn", method: :get do %>
+			<span class="glyphicon glyphicon-backward"></span> BACK TO DESIGN
+		<% end %>
+	</div>
+
+	<%= form_tag("publish", authenticity_token: true, id: "tee-form2") do %> 
+
+	<div class="row review">
+		<div class="col-sm-8">
+			<h2>Rocketees Modern T-Shirt - $6</h2>
+
+			<p>Adding <%= pluralize(session[:colors].length, 'color') %> in <%= pluralize(session[:sizes].length, 'size') %> (<%= pluralize(session[:sizes].length * session[:colors].length, 'variant') %> in total)</p>
+
+			<p class="next">Next set the product title, description, tags, and collection:</p>
+
+			<p>Product Title: </p>
+			<%= text_field_tag 'product_title', nil, placeholder: 'My Tee Title...', maxlength: 60 %>
+
+			<p>Product Description: </p>
+			<%= text_area_tag 'product_description', "5.3 oz. &#10;<br>100% Ring-spun Combed Cotton &#10;<br>Slim Fit".html_safe, rows: 6 %>
+
+			<p>Add To Collection: </p>
+			<!-- store them in an html stril in the controller -->
+			<%= select_tag 'add_to_collection', @collections.html_safe %>
+
+			<p>Add Product Tags: (optional) </p>
+			<%= text_field_tag 'product_tags', nil, placeholder: 'tag1, tag2...', maxlength: 50 %>
+
+			<p>Your Selling Price: </p>
+			<%= text_field_tag 'product_price', nil, as: :currency%>
+
+			<p><small>Note: If you change vendor from "rocketees" or edit any SKU value, the app will not work. </small></p>
+		</div>
+
+		<div class="col-sm-4">
+			<div class="review-front-mockup">
+
+				<%= image_tag(@mockup_image_f, class: 'mockup-base-img') %>
+				<% if session[:front_name].present? %>
+        <%= image_tag "tmp/#{session[:uuid]}_#{session[:front_name]}", id: "front-mockup-img", style: "width: #{@front_size_scaled[0]}px; top: #{@front_pos_scaled[0]}px; left: #{@front_pos_scaled[1]}px" %>
+        <% end %>
+			</div>
+			<div class="review-back-mockup">
+				<%= image_tag(@mockup_image_b, class: 'mockup-base-img') %>
+				<% if session[:back_name].present? %>
+        <%= image_tag "tmp/#{session[:uuid]}_#{session[:back_name]}", id: "back-mockup-img", style: "width: #{@back_size_scaled[0]}px; top: #{@back_pos_scaled[0]}px; left: #{@back_pos_scaled[1]}px" %>
+        <% end %>
+			</div>
+		</div>
+	</div>
+
+	<%= button_tag(type: "submit", class: "btn btn-danger new-tee-final-submit") do %>
+	    <span class="glyphicon glyphicon-upload"></span> PUBLISH TO YOUR STORE 
+	<% end %>
+	
+	<% end %> <!-- End Form -->
+  <% debug params %>
+
+</div>
+
+
+<div class="modal fade" id="title-empty-modal" role="dialog">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Rocketees</h4>
+        </div>
+        <div class="modal-body">
+         	<p>Product title cannot be empty.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="modal fade" id="price-empty-modal" role="dialog">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Rocketees</h4>
+        </div>
+        <div class="modal-body">
+         	<p>Price field cannot be empty. Input 0 if you want to run a free plus shipping campaign.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="publish-confirm-modal" role="dialog">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Rocketees</h4>
+        </div>
+        <div class="modal-body">
+         	
+        </div>
+        <div class="modal-footer">
+        	<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+         	<button type="button" class="btn btn-danger publish-confirm" data-dismiss="modal">Publish</button>
+          
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  shop_domain: MyString
+  fulfillment_status: MyString
+  sku: MyString
+  quantity: 1
+  price: 9.99
+  name: MyString
+  processed: false
+
+two:
+  shop_domain: MyString
+  fulfillment_status: MyString
+  sku: MyString
+  quantity: 1
+  price: 9.99
+  name: MyString
+  processed: false

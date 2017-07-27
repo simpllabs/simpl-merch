@@ -1,0 +1,353 @@
+<% provide(:title, "Your Account") %>
+
+<%= javascript_include_tag "https://js.stripe.com/v2/" %>
+
+<div class="container account">
+	<div class="row">
+		<% if @active %>
+			<div class="account-data">
+				<%= form_tag("account/delete_or_update", authenticity_token: true, id: "delete-form", data: { 'form-data' => (@s3_direct_post.fields), 'url' => @s3_direct_post.url, 'host' => URI.parse(@s3_direct_post.url).host }) do %>
+					<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+
+					<div class="alert alert-success alert-dismissable" style="text-align: center; display: <%= flash[:notice].present? ? 'block' : 'none' %>">
+						<a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+					  	<strong><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Success:</strong> <%= flash[:notice] %>
+					</div>
+
+					<h2>Your Rocketees Account</h2>
+					<p>Card On File: <%= @customer.sources.data[0].brand %></p>
+					<p>Number: XXXX-XXXX-XXXX-<%= @customer.sources.data[0].last4 %></p>
+					<%= button_tag(type: "submit", name: "remove_card_btn", class: "btn btn-danger remove-card", id: "remove_card_btn") do %>
+						Remove Card
+					<% end %>
+					<div class='billing-address border_bottom'>
+						<p>Billing Address</p>
+						<%= text_field_tag :billing_address, "#{@customer.sources.data[0].address_line1}", class: "address_update", maxlength: 50 %>
+						<p>Company Name</p>
+						<%= text_field_tag :company_name, "#{@customer.sources.data[0].name}", class: "address_update", maxlength: 50 %>
+						<p>City</p>
+						<%= text_field_tag :city, "#{@customer.sources.data[0].address_city}", class: "address_update", maxlength: 50 %>
+						<p>State/Province</p>
+						<%= text_field_tag :province, "#{@customer.sources.data[0].address_state}", class: "address_update", maxlength: 50 %>
+						<p>ZIP/Postal Code</p>
+						<%= text_field_tag :zip, "#{@customer.sources.data[0].address_zip}", class: "address_update", maxlength: 50 %>
+						<p>Country</p>
+						<%= text_field_tag :country, "#{@customer.sources.data[0].address_country}", class: "address_update ", maxlength: 50 %>
+					</div>
+					<br>
+					<p>Send You Email Receipts? <%= select_tag :send_receipts, options_for_select(['Yes','No'], @shop.send_receipts == "Yes" ? "Yes" : "No") %></p>
+					<br>
+					<p>Use China Post For International Orders? <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="bottom" title="If you choose yes, then international shipping costs will be $0, but orders could take a month to arrive depending on the country."></span> <%= select_tag :china_post, options_for_select(['Yes','No'], @shop.chose_china_post == "Yes" ? "Yes" : "No") %></p>
+					<br>
+					<p>Send Customer Custom Packing Slip? <%= select_tag :packing_slip, options_for_select(['Yes','No'], @shop.packing_slip.present? ? "#{@shop.packing_slip}" : "No") %></p>
+					<br>
+					<p style="text-align: center"><small>Use [customer_name] to use the customer's name in the message:</small></p>
+					<%= text_area_tag :packing_slip_message, @shop.packing_slip_message.present? ? @shop.packing_slip_message : "Hey [customer_name], &#10;&#10;Thank you for your order! &#10;Special coupon: EXAMPLECODE &#10;&#10;Cheers! &#10;&#10;- #{ShopifyAPI::Shop.current.name}".html_safe, rows: 8, maxlength: 600  %>
+
+					<div class="packing-slip-logo">
+						<p>Packing Slip Logo <span class="glyphicon glyphicon-exclamation-sign logo-error" aria-hidden="true" style="display:none; color: #D9534F;"></span><span class='logo-loader' style="display:none"></span><span class="glyphicon glyphicon-check logo-uploaded-icon" aria-hidden="true" style= "display: <%= @shop.packing_slip_logo.present? ? 'inline-block' : 'none' %>";></span> <span class="top-filename"></span></p>
+						<span class="existing-logo" style="display: <%= @shop.packing_slip_logo.present? ? 'inline-block' : 'none'%>"><p>Using: <%= @logo_filename %> </p><button class="btn btn-danger use-another-logo">Use Another Image</button></span>
+						<span class="new-logo" style="display: <%= @shop.packing_slip_logo.present? ? 'none' : 'inline-block'%>"><%= file_field_tag 'packing_slip_logo' %></span>
+
+						<p><small>Image Requirements: JPG with max size of 500x500px.</small></p>
+					</div>
+
+
+					<br><br>
+
+					<%= button_tag(type: "submit", name: "update_btn", class: "btn btn-danger", id: "update_btn") do %>
+						Save Info
+					<% end %>
+
+					<% debug @webhook %>
+				<% end %> <!-- END OF FORM -->
+			</div>
+			
+		<% else %>
+			<div class="alert alert-danger alert-dismissable" style="width: 90%; margin: 0 auto; margin-top: 20px; display: <%= flash[:notice].present? ? 'block' : 'none' %>">
+			  	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			  	<strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Card Error:</strong> <%= flash[:notice] %>
+			</div>
+			<h2>Create Your Rocketees Account</h2>
+
+			<%= form_tag("account", authenticity_token: true, id: "account-form") do %>
+				<p style="font-weight:300">You must have a credit card on file for Rocketees orders to get processed and shipped. If we are unable to charge a due amount to your card for any reason, orders will remain pending until the card is fixed. Cards that fail ZIP code or CVC verification are not accepted.</p><br>
+				<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+				<p>Card Number</p>
+				<%= text_field_tag :card_number, nil, "data-stripe" => "number", class: "card_fields", maxlength: 17 %>
+				<p>CVC</p>
+				<%= text_field_tag :card_cvv, nil, "data-stripe" => "cvv", class: "card_fields", maxlength: 4 %>
+				<%= image_tag "creditCardsShopifyVersion.png", width: "250" %>
+				<br><br>
+				<p>Expiration: 
+					Month <%= select_tag :card_exp_month, options_for_select(('01'..'12').to_a, "01"), "data-stripe" => "exp-month" %>
+					Year <%= select_tag :card_exp_year, options_for_select((Time.current.year..Time.current.year+20).to_a, Time.current.year), "data-stripe" => "exp-year" %>
+				</p>
+				<p class="separator">Your credit card will be securely saved and processed by STRIPE.</p>
+				<p style="margin-top:20px;">Billing Address</p>
+				<%= text_field_tag :billing_address, "#{ShopifyAPI::Shop.current.address1} #{ShopifyAPI::Shop.current.address2}", class: "address", maxlength: 50 %>
+				<p>Company Name</p>
+				<%= text_field_tag :company_name, "#{ShopifyAPI::Shop.current.name}", class: "address", maxlength: 50 %>
+				<p>City</p>
+				<%= text_field_tag :city, "#{ShopifyAPI::Shop.current.city}", class: "address", maxlength: 50 %>
+				<p>State/Province</p>
+				<%= text_field_tag :province, "#{ShopifyAPI::Shop.current.province}", class: "address", maxlength: 50 %>
+				<p>ZIP/Postal Code</p>
+				<%= text_field_tag :zip, "#{ShopifyAPI::Shop.current.zip}", class: "address", maxlength: 50 %>
+				<p>Country</p>
+				<%= text_field_tag :country, "#{ShopifyAPI::Shop.current.country_name}", class: "address", maxlength: 50 %>
+
+				<%= hidden_field_tag :card_token %>
+
+				<%= button_tag(type: "submit", class: "btn btn-primary new-account-submit") do %>
+				    CREATE ROCKETEES ACCOUNT
+				<% end %>
+			<% end %> <!-- END FORM -->
+		<% end %>
+		
+		
+	</div>
+</div>
+
+
+
+<div class="modal fade" id="card-empty-modal" role="dialog">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Rocketees</h4>
+        </div>
+        <div class="modal-body">
+         	
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+ <div class="modal fade" id="delete-card-modal" role="dialog">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Rocketees</h4>
+        </div>
+        <div class="modal-body">
+         	
+        </div>
+        <div class="modal-footer">
+        	<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+         	<button type="button" class="btn btn-danger remove-card-confirm" data-dismiss="modal">Remove Card</button>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="logo-upload-modal" role="dialog">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Rocketees</h4>
+        </div>
+        <div class="modal-body">
+         	
+        </div>
+        <div class="modal-footer">
+        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script type="text/javascript">
+
+	$(function(){
+		/************************/
+		/* Prepare Stripe Hooks */
+		/************************/
+		Stripe.setPublishableKey(<%= "\'#{ENV['STRIPE_PUBLISHABLE_KEY']}\'".html_safe %>);
+
+		$('.new-account-submit').click(function() {
+		console.log("ENTERING ACCOUNT FORM SUBMIT");
+
+		if ($.trim($("input#zip").val()) == '') {
+		  $('#card-empty-modal .modal-body').empty().prepend("ZIP code required.");
+		  $('#card-empty-modal').modal('show');
+		  return false;
+		}
+
+		// Handle form submission
+		Stripe.card.createToken({
+		  number: $('#card_number').val(),
+		  exp_month: $('#card_exp_month').val(),
+		  exp_year: $('#card_exp_year').val(),
+		  cvc: $('#card_cvv').val(),
+		  name: $('#company_name').val(),
+		  address_line1: $('#billing_address').val(),
+		  address_city: $('#city').val(),
+		  address_state: $('#province').val(),
+		  address_zip: $('#zip').val(),
+		  address_country: $('#country').val()
+		}, stripeTokenHandler);
+
+		return false;
+
+		});
+
+		function stripeTokenHandler(status, response){
+		if (response.error) {
+		  // Inform the user if there was an error
+		  $('#account-form').find('.submit').prop('disabled', false);
+		  $('#card-empty-modal .modal-body').empty().prepend(response.error.message);
+		  $('#card-empty-modal').modal('show');
+		} else {
+		  console.log("SUCCESS. response.id: " + response.id);
+		  // Set a hidden field to be this token
+		  $('#card_token').val(response.id);
+		  // Disable card fields so they are not posted
+		  $('#card_number').prop('disabled', true);
+		  $('#card_exp_month').prop('disabled', true);
+		  $('#card_exp_year').prop('disabled', true);
+		  $('#card_cvv').prop('disabled', true);
+
+
+		  $('#account-form').submit();
+		}
+		}
+
+		$('.remove-card').click(function() {
+		$('#delete-card-modal .modal-body').empty().prepend("Are you sure you want to remove your card? If you do, you will have to add a new one to continue using Rocketees. That means current pending orders won't be processed and shipped until a credit card is back on file.");
+		$('#delete-card-modal').modal('show');
+		return false;
+		});
+
+
+		$('.remove-card-confirm').click(function() {
+		$('#delete-card-modal').modal('hide');
+		$('#delete-form').submit();
+		});
+
+		/*******************************************/
+		/* Account Logo Image Upload Handling
+		/* Using blueimp's jQuery File Upload plugin
+		/*******************************************/
+
+		var logoInput = $("#packing_slip_logo");
+		form = $('#delete-form');
+		var submitButton1 = $("#remove_card_btn");
+		var submitButton2 = $("#update_btn");
+
+
+
+		logoInput.fileupload({
+		add: function(e, data) {
+		  //console.log("filename: " + data.files[0]['name']);
+		  var uploadErrors = [];
+		  var acceptFileTypes = /^image\/(jpg|jpeg)$/i;
+		  if(data.files[0]['type'].length && !acceptFileTypes.test(data.files[0]['type'])) {
+		    uploadErrors.push('File type must be JPG.');
+		  }
+		  var regex = /^(?=[\S])[^\\ \/ : * ? " < > | ]+$/;
+		  if(!regex.test(data.files[0]['name'])){
+		    uploadErrors.push("File name invalid, it cannot contain spaces or the following characters: \\ / : * ? \" < > | ");
+		  }
+
+		  if(uploadErrors.length > 0) {
+		    $('#logo-upload-modal .modal-body').empty().prepend(uploadErrors.join("<br>"));
+		    $('#logo-upload-modal').modal('show');
+		    $("#packing_slip_logo").val('');
+		  }
+
+		  var _URL = window.URL || window.webkitURL;
+		  var file = data.files[0];
+		  var img = new Image();
+		  img.onload = function () {
+		    
+		    if (this.width > 500 || this.height > 500){
+		      uploadErrors.push('Logo cannot be larger than 500x500.');
+		    }
+
+		    if(uploadErrors.length > 0) {
+
+		        $('#logo-upload-modal .modal-body').empty().prepend(uploadErrors.join("<br>"));
+		        $('#logo-upload-modal').modal('show');
+		        $("#packing_slip_logo").val('');
+		    } else {
+		        
+
+		        
+		        data.submit();
+		    }
+		  };
+		  //this will cause img.onload to trigger
+		  img.src = _URL.createObjectURL(file);
+
+		  
+		},
+		fileInput:       logoInput,
+		url:             form.data('url'),
+		type:            'POST',
+		autoUpload:       true,
+		formData:         form.data('form-data'),
+		paramName:        'file', // S3 does not like nested name fields i.e. name="user[avatar_url]"
+		dataType:         'XML',  // S3 returns XML if success_action_status is set to 201
+		replaceFileInput: false,
+		start: function (e) {
+		  submitButton1.prop('disabled', true);
+		  submitButton2.prop('disabled', true);
+		  logoInput.prop('disabled', true);
+		  $('.logo-loader').show();
+		  $('.logo-error').hide();
+		  $('.logo-uploaded-icon').hide();
+		  $('.top-filename').hide();
+		},
+		done: function(e, data) {
+		  submitButton1.prop('disabled', false);
+		  submitButton2.prop('disabled', false);
+		  logoInput.prop('disabled', false);
+		  $('.logo-uploaded-icon').show();
+		  $('.logo-loader').hide();
+		  $('.logo-error').hide();
+
+		  // extract key and generate URL from response
+		  var key   = $(data.jqXHR.responseXML).find("Key").text();
+		  var url   = 'https://' + form.data('host') + '/' + key;
+
+		  console.log("key:" + key);
+		  console.log("url:" + url);
+
+		  // create hidden field
+		  var input = $("<input />", { type:'hidden', name: logoInput.attr('name'), value: url })
+		  form.append(input);
+		},
+		fail: function(e, data) {
+		  submitButton1.prop('disabled', false);
+		  submitButton2.prop('disabled', false);
+		  logoInput.prop('disabled', false);
+		  $('.logo-loader').hide();
+		  $('.logo-error').show();
+		  
+		  var file = data.files[0];
+
+		  // must upload an image modal error
+		  $('#logo-upload-modal .modal-body').empty().prepend("<p> Server Error: " + file.error + ". Please contact us directly.</p>");
+		  $('#logo-upload-modal').modal('show');
+		}
+		});
+
+		/* If they decide to use another logo */
+		$('.use-another-logo').click(function(){
+		$('.existing-logo').hide();
+		$('.new-logo').show();
+		$('.logo-uploaded-icon').hide();
+
+		return false;
+		});
+	});
+</script>

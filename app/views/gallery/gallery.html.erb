@@ -1,0 +1,97 @@
+<% provide(:title, "Design Library") %>
+
+<div class="container-fluid splash-container">
+  <div class="row gallery-splash">
+    <%= image_tag("design-library-splash.jpg", alt: "Rocketees - Design Library") %>
+  </div>
+</div>
+
+<div class="container gallery">
+	<p class="border-bottom"> Select A Niche:  <%= select_tag :gallery_niche_selector, options_for_select(@niches, "Music") %> </p>
+	
+	<div class="row gallery-images">
+		<% @images.each do |img| %>
+		<%= img.html_safe %>
+		<% end %>
+	</div>
+	
+	<% debug @images %>
+
+	<div class="modal fade" id="pick-gender-modal" role="dialog">
+	<div class="modal-dialog modal-md">
+	  <div class="modal-content">
+	    <div class="modal-header">
+	      <button type="button" class="close" data-dismiss="modal">&times;</button>
+	      <h4 class="modal-title">Rocketees</h4>
+	    </div>
+	    <div class="modal-body">
+	     	
+	    </div>
+	    <div class="modal-footer">
+	    	<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	     	<button type="button" class="btn btn-danger pick-male" data-dismiss="modal">Male</button>
+	      	<button type="button" class="btn btn-danger pick-female" data-dismiss="modal">Female</button>
+	    </div>
+	  </div>
+	</div>
+	</div>
+
+	<script type="text/javascript">
+		/********************/
+		/* Gallery Image JS */
+		/********************/
+
+		$(function(){
+
+			$('.img-wrapper').mouseenter(function(){
+				$(this).siblings('.hover-text').show();
+			});
+
+			$('.img-wrapper').mouseleave(function(){
+				$(this).siblings('.hover-text').hide();
+			});
+
+			$('.music').show();
+
+			$("#gallery_niche_selector").on('click', function () {
+		        previous = this.value.toLowerCase();
+		    }).change(function() {
+		        // Do something with the previous value after the change
+		        previous_niche = '.'+previous;
+		        console.log("previous_niche: " + previous_niche);
+		        $(previous_niche).hide();
+		        new_niche = '.'+this.value.toLowerCase();
+		        console.log("new_niche: " + new_niche);
+		        $(new_niche).show();
+		    });
+
+		    img_src = ""
+
+		    $('.pick-male').click(function() {
+				$('#pick-gender-modal').modal('hide');
+
+		    	window.location = '/tees/new?img_src=' + img_src.substr(0, img_src.indexOf('thumbnail')).concat("light.png").split('/').slice(3).join('/') + '&gender=male';
+			    
+			});
+
+			$('.pick-female').click(function() {
+				$('#pick-gender-modal').modal('hide');
+
+		    	window.location = '/tees/new?img_src=' + img_src.substr(0, img_src.indexOf('thumbnail')).concat("light.png").split('/').slice(3).join('/') + '&gender=female';
+
+			});
+
+		    // If design clicked, send URL in params and load image in tees/new
+		    $('.img-div').click(function(){
+		    	$('#pick-gender-modal .modal-body').empty().prepend("<p>Which gender would like to publish this design to?</p>");
+      			$('#pick-gender-modal').modal('show');
+
+      			img_src = $(this).find('img').attr("src");
+		    });
+
+		});
+
+	</script>
+</div>
+
+

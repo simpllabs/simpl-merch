@@ -1,0 +1,65 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  black_s: 1
+  black_m: 1
+  black_l: 1
+  black_xl: 1
+  black_2xl: 1
+  black_3xl: 1
+  white_s: 1
+  white_m: 1
+  white_l: 1
+  white_xl: 1
+  white_2xl: 1
+  white_3xl: 1
+  navy_s: 1
+  navy_m: 1
+  navy_l: 1
+  navy_xl: 1
+  navy_2xl: 1
+  navy_3xl: 1
+  green_s: 1
+  green_m: 1
+  green_l: 1
+  green_xl: 1
+  green_2xl: 1
+  green_3xl: 1
+  red_s: 1
+  red_m: 1
+  red_l: 1
+  red_xl: 1
+  red_2xl: 1
+  red_3xl: 1
+
+two:
+  black_s: 1
+  black_m: 1
+  black_l: 1
+  black_xl: 1
+  black_2xl: 1
+  black_3xl: 1
+  white_s: 1
+  white_m: 1
+  white_l: 1
+  white_xl: 1
+  white_2xl: 1
+  white_3xl: 1
+  navy_s: 1
+  navy_m: 1
+  navy_l: 1
+  navy_xl: 1
+  navy_2xl: 1
+  navy_3xl: 1
+  green_s: 1
+  green_m: 1
+  green_l: 1
+  green_xl: 1
+  green_2xl: 1
+  green_3xl: 1
+  red_s: 1
+  red_m: 1
+  red_l: 1
+  red_xl: 1
+  red_2xl: 1
+  red_3xl: 1

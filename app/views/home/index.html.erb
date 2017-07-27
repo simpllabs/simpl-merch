@@ -1,33 +1,47 @@
-<div class="container-fluid">
+<% provide(:title, "Dashboard") %>
+
+<div class="container-fluid splash-container">
   <div class="row splash">
-    <%= image_tag("splash-logo.jpg", alt: "Rocketees - Just $6, including shipping.") %>
+    <%= image_tag("splash-logo.jpg", alt: "Rocketees - Just $6, including shipping.", usemap: "#mapname") %>
+    <map name="mapname">
+      <area shape="rect" coords="0,130,250,200" href="tees/new">
+  </map>
   </div>
 </div>
 
-<div class="container">
+<div class="container splash-container">
 
   <div class="row">
     <div class="panel panel-default dash-summary panel-primary">
       <div class="panel-heading text-center"><strong>ORDER FULFILLMENT</strong></div>
       <div class="panel-body">
-        <div class="col-xs-3 text-center"><small>PENDING</small><p>0</p></div>
-        <div class="col-xs-3 text-center"><small>IN-PRODUCTION</small><p>0</p></div>
-        <div class="col-xs-3 text-center"><small>SHIPPED</small><p>0</p></div>
-        <div class="col-xs-3 text-center"><small>CANCELLED</small><p>0</p></div>
+        <div class="col-xs-3 text-center"><small>PENDING</small><p><%= @pending %></p></div>
+        <div class="col-xs-3 text-center"><small>IN-PRODUCTION</small><p><%= @in_production %></p></div>
+        <div class="col-xs-3 text-center"><small>SHIPPED</small><p><%= @shipped %></p></div>
+        <div class="col-xs-3 text-center"><small>CANCELLED</small><p><%= @cancelled %></p></div>
       </div>
     </div>
   </div>
 
   <div class="row">
-
+    <div class="bottom-dash">
+      <div class="col-xs-6 just-padding-right">
+        <a href="/library" class="btn btn-primary" style="width:100%">Access The FREE Design Library</a>
+        <a href="https://rocketees.com/faq" target="_blank" class="btn btn-primary" style="width:100%">Frequently Asked Questions</a>
+        <a href="https://www.facebook.com/groups/1931332703805828/" target="_blank" class="btn btn-primary" style="width:100%">Join The Rocketees Facebook Group</a>
+      </div>
+      <div class="col-xs-6 weekly-tee">
+        <div class="panel panel-default weekly-tee-panel">
+          <div class="panel-heading text-center"><strong>THIS WEEK'S NEW FREE DESIGN - <%= Date.today.beginning_of_week(:sunday) %></strong></div>
+          <div class="panel-body">
+            <img src="https://s3.us-east-2.amazonaws.com/rocketees-dev/weekly/weekly_tee.png", alt: "Rocketees - This Week's New Design" style="width:100%;">
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!--
-  <ul>
-    <% @products.each do |product| %>
-      <li><%= link_to product.title, "https://#{@shop_session.url}/admin/products/#{product.id}", target: "_top" %></li>
-    <% end %>
-  </ul>
-  -->
+  <% debug @design_library %>
+
 </div>
 

@@ -1,0 +1,612 @@
+$(function(){
+
+	var is_front = true;
+	var current_color = "black";
+
+  // TOOLTIPS
+  $(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip(); 
+  });
+
+  /*********************/
+  /* Flip Button Logic */
+  /*********************/
+
+	$("#flip-btn").click(function(){
+    console.log("clicked flip");
+    is_front = !is_front;
+    var x = '', front_pos = '', back_pos = '', front_size = '', back_size = '';
+
+      if (is_front) {
+        x = $(".draggable-back").position();
+        back_pos = [x.top, x.left];
+        $("#back_pos").val(back_pos);
+
+        back_size = [$(".draggable-back").width(), $(".draggable-back").height()];
+        $("#back_size").val(back_size);
+        
+        $("#front-design-input-box").show();
+        $("#back-design-input-box").hide();
+        $(".draggable-front").show();
+        $(".draggable-back").hide();
+      } else {
+        
+        x = $(".draggable-front").position();
+        front_pos = [x.top, x.left];
+        $("#front_pos").val(front_pos);
+
+        front_size = [$(".draggable-front").width(), $(".draggable-front").height()];
+        $("#front_size").val(front_size);
+        
+        $("#front-design-input-box").hide();
+        $("#back-design-input-box").show();
+        $(".draggable-front").hide();
+        $(".draggable-back").show();
+      }
+
+    console.log("back_pos: " + $("#back_pos").val());
+    console.log("front_pos: " + $("#front_pos").val());
+
+		  switch(current_color) {
+		    case "black":
+		        $(".black").click();
+		        break;
+		    case "white":
+		        $(".white").click();
+		        break;
+		    case "navy":
+		        $(".navy").click();
+		        break;
+		    case "red":
+		        $(".red").click();
+		        break;
+		    case "green":
+		        $(".green").click();
+		        break;
+		    default:
+		     	$(".black").click();
+		  }
+
+      return false;
+	});
+
+  $(".black").click(function(){
+   	current_color = "black";
+    if (is_front) {
+      $("#mockup-img").attr('src','<%= asset_url("black-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    } else {
+      $("#mockup-img").attr('src','<%= asset_url("black-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    }
+
+    if (is_front) {
+      $("#mockup-img-f").attr('src','<%= asset_url("f-black-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    } else {
+      $("#mockup-img-f").attr('src','<%= asset_url("f-black-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    }
+  });
+
+  $(".white").click(function(){
+    current_color = "white";
+    if (is_front) {
+      $("#mockup-img").attr('src','<%= asset_url("white-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    } else {
+      $("#mockup-img").attr('src','<%= asset_url("white-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    }
+
+    if (is_front) {
+      $("#mockup-img-f").attr('src','<%= asset_url("f-white-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    } else {
+      $("#mockup-img-f").attr('src','<%= asset_url("f-white-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    }
+  });
+
+
+  $(".navy").click(function(){
+    current_color = "navy";
+    if (is_front) {
+      $("#mockup-img").attr('src','<%= asset_url("navy-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    } else {
+      $("#mockup-img").attr('src','<%= asset_url("navy-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    }
+
+    if (is_front) {
+      $("#mockup-img-f").attr('src','<%= asset_url("f-navy-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    } else {
+      $("#mockup-img-f").attr('src','<%= asset_url("f-navy-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    }
+  });
+
+  $(".green").click(function(){
+    current_color = "green";
+    if (is_front) {
+      $("#mockup-img").attr('src','<%= asset_url("green-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    } else {
+      $("#mockup-img").attr('src','<%= asset_url("green-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    }
+
+    if (is_front) {
+      $("#mockup-img-f").attr('src','<%= asset_url("f-green-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    } else {
+      $("#mockup-img-f").attr('src','<%= asset_url("f-green-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    }
+  });
+
+  $(".red").click(function(){
+    current_color = "red";
+    if (is_front) {
+      $("#mockup-img").attr('src','<%= asset_url("red-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    } else {
+      $("#mockup-img").attr('src','<%= asset_url("red-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    }
+
+    if (is_front) {
+      $("#mockup-img-f").attr('src','<%= asset_url("f-red-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    } else {
+      $("#mockup-img-f").attr('src','<%= asset_url("f-red-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    }
+  });
+
+  /*******************************************/
+  /* Image Upload Handling
+  /* Using blueimp's jQuery File Upload plugin
+  /*******************************************/
+
+  var frontDesignInput = $("#front_design");
+  var backDesignInput = $("#back_design");
+  var form = $(frontDesignInput.parents('form:first'));
+  var submitButton = form.find('input[type="submit"]');
+  var frontProgressBar  = $("<div class='f-bar progress-bar progress-bar-striped active'></div>");
+  var backProgressBar  = $("<div class='b-bar progress-bar progress-bar-striped active'></div>");
+  var frontBarContainer = $("<div class='progress'></div>").append(frontProgressBar);
+  var backBarContainer = $("<div class='progress'></div>").append(backProgressBar);
+  frontDesignInput.after(frontBarContainer);
+  backDesignInput.after(backBarContainer);
+
+  frontDesignInput.fileupload({
+    add: function(e, data) {
+      //console.log("filename: " + data.files[0]['name']);
+      frontProgressBar.addClass("progress-bar-success").removeClass("progress-bar-danger");
+      var uploadErrors = [];
+      var acceptFileTypes = /^image\/(png)$/i;
+      if(data.files[0]['type'].length && !acceptFileTypes.test(data.files[0]['type'])) {
+        uploadErrors.push('File type must be PNG.');
+      }
+      if(data.files[0]['type'].length && data.files[0]['size'] > 15000000) {
+        uploadErrors.push('File size must be below 15 mb.');
+      }
+      var regex = /^(?=[\S])[^\\ \/ : * ? " < > | ]+$/;
+      if(!regex.test(data.files[0]['name'])){
+        uploadErrors.push("File name invalid, it cannot contain spaces or the following characters: \\ / : * ? \" < > | ");
+      }
+
+      if(uploadErrors.length > 0) {
+        $('#file-error-modal .modal-body').empty().prepend(uploadErrors.join("<br>"));
+        $('#file-error-modal').modal('show');
+        $("#front_design").val('');
+      }
+
+      var _URL = window.URL || window.webkitURL;
+      var file = data.files[0];
+      var img = new Image();
+      img.onload = function () {
+        
+        if (this.width < 2400){
+          uploadErrors.push('Image must be at least 2400px wide.');
+        }
+
+        if(uploadErrors.length > 0) {
+
+            $('#file-error-modal .modal-body').empty().prepend(uploadErrors.join("<br>"));
+            $('#file-error-modal').modal('show');
+            $("#front_design").val('');
+        } else {
+            $(".resizeable-front").resizable({
+              containment: "#background",
+              aspectRatio: true
+            });
+
+            $(".draggable-front").draggable({
+              cursor: "crosshair",
+              containment: "#background",
+            });
+
+            img.className += " front-design-img";
+            $("#front-img-wrapper").prepend(img);
+            var left_pos = $(".draggable-front").parent().width()/2 - $(".draggable-front").width()/2;
+            $(".draggable-front").css({top: '150px', left: left_pos});
+
+            data.submit();
+        }
+      };
+      //this will cause img.onload to trigger
+      img.src = _URL.createObjectURL(file);
+
+      
+    },
+    fileInput:       frontDesignInput,
+    url:             "upload_designs",
+    type:            'POST',
+    autoUpload:       true,
+    formData:         form.data('form-data'),
+    paramName:        'file', // S3 does not like nested name fields i.e. name="user[avatar_url]"
+    dataType:         'XML',  // S3 returns XML if success_action_status is set to 201
+    replaceFileInput: false,
+    progressall: function (e, data) {
+      var progress = parseInt(data.loaded / data.total * 100, 10);
+      frontProgressBar.css('width', progress + '%');
+    },
+    start: function (e) {
+      submitButton.prop('disabled', true);
+      $("#front_design").prop('disabled', true);
+      $('#clear-btn').prop('disabled', true);
+      frontProgressBar.css('display', 'block').css('width', '0%').text("Loading...");
+    },
+    done: function(e, data) {
+      submitButton.prop('disabled', false);
+      $('#clear-btn').prop('disabled', false);
+      frontProgressBar.text("Uploading done");
+
+      // extract key and generate URL from response
+      //var key   = $(data.jqXHR.responseXML).find("Key").text();
+      //var url   = 'https://' + form.data('host') + '/' + key;
+
+      // create hidden field
+      var input = $("<input />", { type:'hidden', name: frontDesignInput.attr('name'), value: data.files[0].name });
+      form.append(input);
+
+      //preload([url]);
+
+      /*var img_overlay = $("<img />", { class: 'front-design-img', src: url });
+      $("#front-img-wrapper").prepend(img_overlay);
+      var left_pos = $(".draggable-front").parent().width()/2 - $(".draggable-front").width()/2;
+      $(".draggable-front").css({top: '150px', left: left_pos});*/
+
+      //upload mockup files to tmp folder in s3
+      //$.ajax({url: "new/upload_tmp_mockups", type: "GET"});
+
+      
+
+    },
+    fail: function(e, data) {
+      submitButton.prop('disabled', false);
+      $('#clear-btn').prop('disabled', false);
+      $("#front_design").prop('disabled', false);
+
+      frontProgressBar.
+      removeClass("progress-bar-success").
+      addClass("progress-bar-danger").
+      text("Failed");
+      
+      // must upload an image modal error
+      $('#file-error-modal .modal-body').empty().prepend("<p> Server Error. Please contact us directly.</p>");
+      $('#file-error-modal').modal('show');
+    }
+  });
+
+  backDesignInput.fileupload({
+    add: function(e, data) {
+      backProgressBar.addClass("progress-bar-success").removeClass("progress-bar-danger");
+
+      var uploadErrors = [];
+      var acceptFileTypes = /^image\/(png)$/i;
+      if(data.files[0]['type'].length && !acceptFileTypes.test(data.files[0]['type'])) {
+        uploadErrors.push('File type must be PNG.');
+      }
+      if(data.files[0]['type'].length && data.files[0]['size'] > 15000000) {
+        uploadErrors.push('File size must be below 15 mb.');
+      }
+
+      var regex = /^(?=[\S])[^\\ \/ : * ? " < > | ]+$/;
+      if(!regex.test(data.files[0]['name'])){
+        uploadErrors.push("File name invalid, it cannot contain spaces or the following characters: \\ / : * ? \" < > | ");
+      }
+
+      if(uploadErrors.length > 0) {
+        $('#file-error-modal .modal-body').empty().prepend(uploadErrors.join("<br>"));
+        $('#file-error-modal').modal('show');
+        $("#front_design").val('');
+      }
+
+      var _URL = window.URL || window.webkitURL;
+      var file = data.files[0];
+      var img = new Image();
+      img.onload = function () {
+        console.log("this.width: " + this.width);
+        if (this.width < 2400){
+          uploadErrors.push('Image must be at least 2400px wide.');
+        }
+
+        if(uploadErrors.length > 0) {
+            $('#file-error-modal .modal-body').empty().prepend(uploadErrors.join("<br>"));
+            $('#file-error-modal').modal('show');
+            $("#front_design").val('');
+        } else {
+            $(".resizeable-back").resizable({
+              containment: "#background",
+              aspectRatio: true
+            });
+
+            $(".draggable-back").draggable({
+              cursor: "crosshair",
+              containment: "#background",
+            });
+
+            console.log("back img: " + img);
+            img.className += " back-design-img";
+            $("#back-img-wrapper").prepend(img);
+            var left_pos = $(".draggable-back").parent().width()/2 - $(".draggable-back").width()/2;
+            var top_pos = $(".draggable-back").parent().height()/2 - $(".draggable-back").height()/2;
+            $(".draggable-back").css({top: '150px', left: left_pos});
+
+            //lastly, rename filename so never the same as front design filename
+            data.files[0].name = "back-"+data.files[0].name;
+
+            data.submit();
+        }
+      };
+      //this will cause img.onload to trigger
+      img.src = _URL.createObjectURL(file);
+
+    },
+    fileInput:       backDesignInput,
+    url:             "upload_designs",
+    type:            'POST',
+    autoUpload:       true,
+    formData:         form.data('form-data'),
+    paramName:        'file', // S3 does not like nested name fields i.e. name="user[avatar_url]"
+    dataType:         'XML',  // S3 returns XML if success_action_status is set to 201
+    replaceFileInput: false,
+    acceptFileTypes: /(\.|\/)(png)$/i,
+    maxFileSize: 10000000,
+    progressall: function (e, data) {
+      var progress = parseInt(data.loaded / data.total * 100, 10);
+      backProgressBar.css('width', progress + '%')
+    },
+    start: function (e) {
+      submitButton.prop('disabled', true);
+      $('#clear-btn').prop('disabled', true);
+      $("#back_design").prop('disabled', true);
+      backProgressBar.css('display', 'block').css('width', '0%').text("Loading...");
+    },
+    done: function(e, data) {
+      submitButton.prop('disabled', false);
+      $('#clear-btn').prop('disabled', false);
+      backProgressBar.text("Uploading done");
+
+      // extract key and generate URL from response
+      //var key   = $(data.jqXHR.responseXML).find("Key").text();
+      //var url   = 'https://' + form.data('host') + '/' + key;
+
+      // create hidden field
+      var input = $("<input />", { type:'hidden', name: backDesignInput.attr('name'), value: data.files[0].name });
+      form.append(input);
+
+      $('#file-error-modal .modal-body').empty().prepend("<p>NOTE: Adding a back design increases the T-shirt cost by $1, from $6 to $7. </p>");
+      $('#file-error-modal').modal('show');
+
+      //preload([url]);
+
+      
+    },
+    fail: function(e, data) {
+      submitButton.prop('disabled', false);
+      $('#clear-btn').prop('disabled', false);
+      $("#back_design").prop('disabled', false);
+      
+      backProgressBar.
+      removeClass("progress-bar-success").
+      addClass("progress-bar-danger").
+      text("Failed");
+
+      $('#file-error-modal .modal-body').empty().prepend("<p> Server Error. Please contact us directly.</p>");
+      $('#file-error-modal').modal('show');
+    }
+  });
+
+  /**********************/
+  /* Clear Button Logic */
+  /**********************/
+
+  $("#clear-btn").click(function(){
+    if (is_front) {
+       $(".front-design-img").remove();
+       $("#front_design").val('');
+       $('.f-bar').attr('style', "width: 0%").empty();
+       $("#front_design").prop('disabled', false);
+    } else {
+       $(".back-design-img").remove();
+       $("#back_design").val('');
+       $('.b-bar').attr('style', "width: 0%").empty();
+       $("#back_design").prop('disabled', false);
+    }
+    return false;
+   });
+
+  /*******************/
+  /* Form Validation */
+  /*******************/
+  $('#tee-form').submit(function() {
+    //submit right away if other submit button is used
+    if ($('#no_account').val()) {
+      return true;
+    }
+    
+    // must choose at least one color
+    if ($("input[class='color-checkbox']:checked").length == 0) {
+      $('#missing-color-modal').modal('show');
+      return false;
+    } 
+
+    // must choose at least one size
+    if ($("input[class='size-checkbox']:checked").length == 0) {
+      $('#missing-size-modal').modal('show');
+      return false;
+    } 
+
+    // must uploade an image
+    if ($(".front-design-img").length == 0 && $(".back-design-img").length == 0) {
+      $('#missing-image-modal').modal('show');
+       return false;
+    }
+
+    if (is_front) {
+      x = $(".draggable-front").position();
+      front_pos = [x.top, x.left];
+      $("#front_pos").val(front_pos); 
+
+      var front_size = [$(".draggable-front").width(), $(".draggable-front").height()];
+      $("#front_size").val(front_size);
+    } else {
+      x = $(".draggable-back").position();
+      back_pos = [x.top, x.left];
+      $("#back_pos").val(back_pos);
+
+      var back_size = [$(".draggable-back").width(), $(".draggable-back").height()];
+      $("#back_size").val(back_size);
+    }
+
+  });
+
+  $('.new-tee-final-submit').click(function() {
+    if ($.trim($("input#product_title").val()) == '') {
+      $('#title-empty-modal').modal('show');
+      return false;
+    } 
+
+    if ($.trim($("input#product_price").val()) == '') {
+      $('#price-empty-modal').modal('show');
+      $('#price-empty-modal .modal-body').empty().prepend("Price field cannot be empty. Input 0 if you want to run a free plus shipping campaign.");
+      return false;
+    } 
+
+    var acceptPriceValues = /^\d*[.]?\d+$/;
+    var match = acceptPriceValues.test($.trim($("input#product_price").val()));
+    var amount = parseFloat($.trim($("input#product_price").val()));
+    //console.log("matched? " + match);
+    //console.log("amount: " + amount);
+
+    
+    if (!match || amount >= 10000) {
+      $('#price-empty-modal').modal('show');
+      $('#price-empty-modal .modal-body').empty().prepend("Invalid price value: <br>- Allowed symbols: numbers and 1 decimal point <br>- If you use a decimal point, it must be followed by at least one digit <br>- Values above $9999.99 not allowed");
+      return false;
+    }
+
+    if ($.trim($("input#product_price").val()) == '') {
+      $('#price-empty-modal').modal('show');
+      return false;
+    } 
+
+    $('#publish-confirm-modal .modal-body').empty().prepend("Are you sure you want to publish this design? ");
+    $('#publish-confirm-modal').modal('show');
+
+    return false;
+    
+  });
+
+  $('.publish-confirm').click(function() {
+    $('#publish-confirm-modal').modal('hide');
+    $('.new-tee-final-submit').prop('disabled', true);
+    $('#tee-form2').submit();
+  });
+
+  preload([
+    "<%= asset_path('black-back-web.jpg') %>",
+    "<%= asset_path('black-front-web.jpg') %>",
+    "<%= asset_path('white-back-web.jpg') %>",
+    "<%= asset_path('white-front-web.jpg') %>",
+    "<%= asset_path('navy-back-web.jpg') %>",
+    "<%= asset_path('navy-front-web.jpg') %>",
+    "<%= asset_path('red-back-web.jpg') %>",
+    "<%= asset_path('red-front-web.jpg') %>",
+    "<%= asset_path('green-back-web.jpg') %>",
+    "<%= asset_path('green-front-web.jpg') %>",
+
+    "<%= asset_path('black_mockup_f.png') %>",
+    "<%= asset_path('black_mockup_b.png') %>",
+    "<%= asset_path('white_mockup_f.png') %>",
+    "<%= asset_path('white_mockup_b.png') %>",
+    "<%= asset_path('navy_mockup_f.png') %>",
+    "<%= asset_path('navy_mockup_b.png') %>",
+    "<%= asset_path('red_mockup_f.png') %>",
+    "<%= asset_path('red_mockup_b.png') %>",
+    "<%= asset_path('green_mockup_f.png') %>",
+    "<%= asset_path('green_mockup_b.png') %>",
+
+    "<%= asset_path('f-black-back-web.jpg') %>",
+    "<%= asset_path('f-black-front-web.jpg') %>",
+    "<%= asset_path('f-white-back-web.jpg') %>",
+    "<%= asset_path('f-white-front-web.jpg') %>",
+    "<%= asset_path('f-navy-back-web.jpg') %>",
+    "<%= asset_path('f-navy-front-web.jpg') %>",
+    "<%= asset_path('f-red-back-web.jpg') %>",
+    "<%= asset_path('f-red-front-web.jpg') %>",
+    "<%= asset_path('f-green-back-web.jpg') %>",
+    "<%= asset_path('f-green-front-web.jpg') %>",
+
+    "<%= asset_path('f_black_mockup_f.png') %>",
+    "<%= asset_path('f_black_mockup_b.png') %>",
+    "<%= asset_path('f_white_mockup_f.png') %>",
+    "<%= asset_path('f_white_mockup_b.png') %>",
+    "<%= asset_path('f_navy_mockup_f.png') %>",
+    "<%= asset_path('f_navy_mockup_b.png') %>",
+    "<%= asset_path('f_red_mockup_f.png') %>",
+    "<%= asset_path('f_red_mockup_b.png') %>",
+    "<%= asset_path('f_green_mockup_f.png') %>",
+    "<%= asset_path('f_green_mockup_b.png') %>",
+
+    "<%= asset_path('design-library-splash.jpg') %>"
+  ]);
+
+  preload(<%= @design_library %>);
+
+  
+  
+
+});
+  
+/********************************************/
+/* If Image Stored In Session, Set Position */
+/********************************************/
+
+function alignFrontSessionImage(){
+
+  $(".resizeable-front").resizable({
+    containment: "#background",
+    aspectRatio: true
+  });
+
+  $(".draggable-front").draggable({
+    cursor: "crosshair",
+    containment: "#background",
+  });
+
+}
+
+
+function alignBackSessionImage(){
+  
+  $(".draggable-back").draggable({
+    cursor: "crosshair",
+    containment: "#background",
+  });
+
+  $(".resizeable-back").resizable({
+    containment: "#background",
+    aspectRatio: true
+  });
+
+}
+
+/******************************/
+/* Preload Images To Kill Lag */
+/* Called ad end of .ready() 
+/******************************/
+
+function preload(arrayOfImages) {
+    $(arrayOfImages).each(function(){
+        $('<img/>')[0].src = this;
+        // Alternatively you could use:
+        // (new Image()).src = this;
+    });
+}

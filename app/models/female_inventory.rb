@@ -1,0 +1,2 @@
+class FemaleInventory < ApplicationRecord
+end

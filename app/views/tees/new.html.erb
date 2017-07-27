@@ -1,0 +1,307 @@
+<% provide(:title, "Customize Design") %>
+
+
+
+<div class="container new-tee">
+	<div class="row">
+	<%= form_tag("new/review", authenticity_token: true, id: "tee-form") do %> 
+	<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+	<!-- begin form -->
+
+		<div class="col-xs-6">
+			<% if session[:gender] == "male" %>
+				<h2>Rocketees Men's T-Shirt - $6</h2>
+			<% else %>
+				<h2>Rocketees Women's T-Shirt - $6</h2>
+			<% end %>
+			
+			<div class='specs'>
+				<h5>SPECIFICATIONS</h5>
+				<ul>
+					<li>5.3 ounces, semi-fitted, comparable to the <%= session[:gender] == "male" ? "Gildan 2000" : "Gildan 2000L" %></li>
+					<li>100% ring-spun combed cotton</li>
+					<li>Shipping Cost: US $0, INTL $4 or $0
+						<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="bottom" title="To the US we ship with e-packet, and it usually takes 7-10 day for orders to arrive. If you select China Post for international orders under your account settings, international shipping costs will also be $0. If you don't select it, we will ship with e-packet to the 33 available countries that use it. Otherwise we will ship with the best courier available for $4."></span>
+					</li>
+					<li>One-time new design fee: $3
+						<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="bottom" title="This fee is NOT charged if you use one of our free designs in the Design Library. If you upload your own design, this fee is charged only ONCE with your first sale of the design. This fee goes toward producing the printing pattern for our DTG machine."></span>
+					</li>
+					<li>Stripe fee: 2.9% + 30¢ of daily total
+				        <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="bottom" title="For example, if you were to get 10 sales one day, at the end of the day you would be charged $60 plus $2.04. Since we don't profit off the $6 per T-shirt, we need to charge these Stripe transaction fees."></span>
+					</li>	
+				</ul>
+				<table class="table table-condensed table-bordered">
+				    <tbody>
+				    	<tr>
+				        <td>SIZE</td>
+				        <td>WIDTH</td>
+				        <td>LENGTH</td>
+				      	</tr>
+				      	<% if session[:gender] == "female" %>
+							<tr>
+						        <td>XS</td>
+						        <td>32"</td>
+						        <td>23"</td>
+						    </tr>
+						<% end %>
+						<tr>
+							<td>S</td>
+							<td>36"</td>
+							<td><%= session[:gender] == "female" ? "25\"" : "28\""%></td>
+						</tr>
+						<tr>
+							<td>M</td>
+							<td>40"</td>
+							<td><%= session[:gender] == "female" ? "26\"" : "30\""%></td>
+						</tr>
+						<tr>
+							<td>L</td>
+							<td>44"</td>
+							<td><%= session[:gender] == "female" ? "27\"" : "31\""%></td>
+						</tr>
+						<tr>
+							<td>XL</td>
+							<td>48"</td>
+							<td><%= session[:gender] == "female" ? "28\"" : "32\""%></td>
+						</tr>
+						<% if session[:gender] == "male" %>
+							<tr>
+								<td>2XL</td>
+								<td>52"</td>
+								<td>32"</td>
+							</tr>
+							<tr>
+								<td>3XL</td>
+								<td>56"</td>
+								<td>33"</td>
+							</tr>
+						<% end %>
+					</tbody>
+				</table>
+			</div>
+
+			<br>
+			<p>Choose your colors:</p>
+			<div class="color-palettes">
+				<div>
+					<!-- session[:colors][:checkbox_black].present? -->
+					<div class="black palette" ng-click="getBlackTee()"></div>
+					<%= check_box_tag 'checkbox_black', 'Black', session[:colors].include?("Black"), class: 'color-checkbox' %>
+				</div>
+				<div>
+					<div class="white palette" ng-click="getWhiteTee()"></div>
+					<%= check_box_tag 'checkbox_white', 'White', session[:colors].include?("White"), class: 'color-checkbox' %>
+				</div>
+				<div>
+					<div class="navy palette" value=""></div>
+					<%= check_box_tag 'checkbox_navy', 'Navy', session[:colors].include?("Navy"), class: 'color-checkbox' %>
+				</div>
+				<div>
+					<div class="green palette"></div>
+					<%= check_box_tag 'checkbox_green', 'Green', session[:colors].include?("Green"), class: 'color-checkbox' %>
+				</div>
+				<div>
+					<div class="red palette"></div>
+					<%= check_box_tag 'checkbox_red', 'Red', session[:colors].include?("Red"), class: 'color-checkbox' %>
+				</div>
+			</div>
+
+			<p>Choose your sizes:</p>
+
+			<div class="size-palettes">
+				<% if session[:gender] == "female" %>
+					<div class='size-box'>
+						<div class="palette">XS</div>
+						<%= check_box_tag 'checkbox_xs', 'XS', session[:sizes].include?("XS"), class: 'size-checkbox' %>
+					</div>
+				<% end %>
+				<div class='size-box'>
+					<div class="palette">S</div>
+					<%= check_box_tag 'checkbox_s', 'S', session[:sizes].include?("S"), class: 'size-checkbox' %>
+				</div>
+				<div class='size-box'>
+					<div class="palette">M</div>
+					<%= check_box_tag 'checkbox_m', 'M', session[:sizes].include?("M"), class: 'size-checkbox' %>
+				</div>
+				<div class='size-box'>
+					<div class="palette">L</div>
+					<%= check_box_tag 'checkbox_l', 'L', session[:sizes].include?("L"), class: 'size-checkbox' %>
+				</div>
+				<div class='size-box'>
+					<div class="palette">XL</div>
+					<%= check_box_tag 'checkbox_xl', 'XL', session[:sizes].include?("XL"), class: 'size-checkbox', disabled: session[:gender] == "male" ? false : true %>
+				</div>
+				<% if session[:gender] == "male" %>
+					<div class='size-box'>
+						<div class="palette">2XL</div>
+						<%= check_box_tag 'checkbox_2xl', '2XL', session[:sizes].include?("2XL"), class: 'size-checkbox' %>
+					</div>
+					<div class='size-box'>
+						<div class="palette">3XL</div>
+						<%= check_box_tag 'checkbox_3xl', '3XL', session[:sizes].include?("3XL"), class: 'size-checkbox', disabled: true %>
+					</div>
+				<% end %>
+			</div>
+
+			<% if @stripe_customer_id.present? %>
+				<%= submit_tag "REVIEW AND PUBLISH DESIGN", class: 'btn btn-danger new-tee-submit' %>
+			<% else %>
+				<button type="submit" formaction="../account" class="btn btn-danger create-account-submit">CREATE ROCKETEES ACCOUNT</button>
+				<p style="text-align: center; margin-bottom: 100px;">In order to publish designs and start <br> using the app, you need to create an account.</p>
+				<%= hidden_field_tag(:no_account, value: true) %>
+			<% end %>
+			
+			<% debug params %>
+		</div>
+
+		<div class="col-xs-6 tee-mockup">
+	      	<div class="mockup-img-wrapper" style="position: relative;">
+	      		<div id="background">
+		          	<div class="resizeable-front draggable-front" style="display:inline-block; top: <%= session[:front_pos][0] %>px; left: <%= session[:front_pos][1] %>px; width: <%= session[:front_size][0] != 0 ? "#{session[:front_size][0]}px" : '30%' %>; height: <%= session[:front_size][1] != 0 ? "#{session[:front_size][1]}px" : 'auto' %>;">
+		                  <div contenteditable="true" id="front-img-wrapper">
+		                  	<% if session[:front_name].present? %>
+		                  		<%= image_tag "tmp/#{session[:uuid]}_#{session[:front_name]}", class: "front-design-img" %>
+			                  	<%= javascript_tag "alignFrontSessionImage()" %>
+		                  	<% end %>
+		                  </div>
+		          	</div>
+
+		          	<div class="resizeable-back draggable-back" style="display:none; top: <%= session[:back_pos][0] %>px; left: <%= session[:back_pos][1] %>px; width: <%= session[:back_size][0] != 0 ? "#{session[:back_size][0]}px" : '30%' %>; height: <%= session[:back_size][1] != 0 ? "#{session[:back_size][1]}px" : 'auto' %>;">
+		                  <div contenteditable="true" id="back-img-wrapper">
+
+		                  	<% if session[:back_name].present? %>
+		                  		<%= image_tag "tmp/#{session[:uuid]}_#{session[:back_name]}", class: "back-design-img" %>
+		      					<%= javascript_tag "alignBackSessionImage()" %>
+		                  	<% end %>
+
+		                  </div>
+		          	</div>
+		      	</div>
+		      	<% if session[:gender] == "male" %>
+					<%= image_tag("black-front-web.jpg", alt: "T-shirt Mockup", id: 'mockup-img') %>
+				<% else %>
+					<%= image_tag("f-black-front-web.jpg", alt: "T-shirt Mockup", id: 'mockup-img-f') %>
+				<% end %>
+			</div>
+			
+			<div class="flip-clear-box">
+				<div class="row">
+					<div class="col-sm-6">
+						<button id="flip-btn" class="btn btn-primary"><span class="glyphicon glyphicon-eye-open"></span> FLIP FRONT/BACK</p>
+					</div>
+					<div class="col-sm-6">
+						<button id="clear-btn" class="btn btn-danger"><span class="glyphicon glyphicon-remove-circle"></span> CLEAR IMAGE</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="image-upload-box">
+					<div id="front-design-input-box" class="front-design-input file-input">
+						<p>Images must be PNGs, at least 2400 pixels wide, and less than 15 mb.</p>
+						<%= file_field_tag 'front_design', disabled: session[:front_name].present? %>
+					</div>
+					<div id="back-design-input-box" class="back-design-input file-input" style="display: none;">
+						<p>Images must be PNGs, at least 2400 pixels wide, and less than 15 mb.</p>
+						<%= file_field_tag 'back_design', disabled: session[:back_name].present? %>
+					</div>
+			</div>
+		</div>
+
+	<%= hidden_field_tag :front_pos %>
+	<%= hidden_field_tag :back_pos %>
+	<%= hidden_field_tag :front_size %>
+	<%= hidden_field_tag :back_size %>
+
+	<% end %> <!-- end form -->
+	</div>
+	
+</div>
+
+<!-- Modals Are Below -->
+
+<div class="modal fade" id="missing-image-modal" role="dialog">
+<div class="modal-dialog modal-md">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+      <h4 class="modal-title">Rocketees</h4>
+    </div>
+    <div class="modal-body">
+      <p>Select an image file from your computer.</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="modal fade" id="missing-color-modal" role="dialog">
+<div class="modal-dialog modal-md">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+      <h4 class="modal-title">Rocketees</h4>
+    </div>
+    <div class="modal-body">
+      <p>Select at least one color option.</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="modal fade" id="missing-size-modal" role="dialog">
+<div class="modal-dialog modal-md">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+      <h4 class="modal-title">Rocketees</h4>
+    </div>
+    <div class="modal-body">
+      <p>Select at least one size.</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="modal fade" id="file-error-modal" role="dialog">
+<div class="modal-dialog modal-md">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+      <h4 class="modal-title">Rocketees</h4>
+    </div>
+    <div class="modal-body">
+     
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<script type="text/javascript">
+	/********************/
+	/* Gallery Image JS */
+	/********************/
+
+	$(function(){
+
+	    // If design coming from library, center it
+	    if (<%= @free_design %>) {
+	    	var left_pos = $(".draggable-front").parent().width()/2 - $(".draggable-front").width()/2;
+            $(".draggable-front").css({top: '150px', left: left_pos});
+	    }
+
+	});
+
+</script>
+
+  

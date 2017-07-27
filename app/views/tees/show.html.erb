@@ -1,0 +1,21 @@
+<% provide(:title, "Customize Design") %>
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Tee front url:</strong>
+  <%= @tee.tee_front_url %>
+</p>
+
+<p>
+  <strong>Tee back url:</strong>
+  <%= @tee.tee_back_url %>
+</p>
+
+<p>
+  <strong>Shop:</strong>
+  <%= @tee.shop_id %>
+</p>
+
+<%= link_to 'Edit', edit_tee_path(@tee) %> |
+<%= link_to 'Back', tees_path %>

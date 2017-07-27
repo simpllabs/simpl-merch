@@ -1,0 +1,33 @@
+<% provide(:title, "Customize Design") %>
+
+<p id="notice"><%= notice %></p>
+
+<h1>Tees</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Tee front url</th>
+      <th>Tee back url</th>
+      <th>Shop</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @tees.each do |tee| %>
+      <tr>
+        <td><%= tee.tee_front_url %></td>
+        <td><%= tee.tee_back_url %></td>
+        <td><%= tee.shop_id %></td>
+        <td><%= link_to 'Show', tee %></td>
+        <td><%= link_to 'Edit', edit_tee_path(tee) %></td>
+        <td><%= link_to 'Destroy', tee, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Tee', new_tee_path %>

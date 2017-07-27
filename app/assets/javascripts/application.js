@@ -12,4 +12,13 @@
 //
 //= require rails-ujs
 //= require turbolinks
+//= require jquery3
+//= require jquery_ujs
+//= require jquery-ui
+//= require z.jquery.fileupload
+//= require jquery.flip.min.js
+//= require canvas-to-blob.min.js
+//= require bootstrap-sprockets
+//= require bootstrap.min.js
+//= require bootstrap-datepicker
 //= require_tree .

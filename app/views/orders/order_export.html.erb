@@ -1,0 +1,88 @@
+<% provide(:title, "Export Orders") %>
+
+<div class="container orders_container"> 
+	<div class="row order_export">
+		<div class="alert alert-success alert-dismissable" style="width: 100%; margin: 0 auto; margin-top: 20px; display: <%= flash[:notice].present? ? 'block' : 'none' %>">
+		  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		  <strong><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Success:</strong> <%= flash[:notice] %>
+		</div>
+
+		<h2>Export Orders By Date</h2>
+
+		<%= form_tag("orders", authenticity_token: true, id: "tee-form2") do %> 
+
+			<div class="from-date input-group date">
+				<%= text_field_tag  :from_date, nil, placeholder: "Start Date", class: "form-control" %><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+			</div>
+			<div class="to-date input-group date">
+				<%= text_field_tag  :to_date, nil, placeholder: "End Date", class: "form-control" %><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+			</div>
+
+			<%= button_tag(type: "submit", class: "btn btn-danger orders_export_submit") do %>
+			    <span class="glyphicon glyphicon-upload"></span> Export Orders 
+			<% end %>
+		<% end %>
+
+		<% debug params %>
+	</div>
+
+</div>
+
+<div class="modal fade" id="invalid-dates-modal" role="dialog">
+	<div class="modal-dialog modal-md">
+	  <div class="modal-content">
+	    <div class="modal-header">
+	      <button type="button" class="close" data-dismiss="modal">&times;</button>
+	      <h4 class="modal-title">Rocketees</h4>
+	    </div>
+	    <div class="modal-body">
+	     
+	    </div>
+	    <div class="modal-footer">
+	      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+	    </div>
+	  </div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('.from-date').datepicker({
+		    startDate: "<%=@days_open%>d",
+		    endDate: "+1d"
+		});
+		$('.to-date').datepicker({
+			startDate: "<%=@days_open%>d",
+		    endDate: "+1d"
+		});
+
+		uploadErrors = [];
+
+	    $('.orders_export_submit').click(function(){
+	    	uploadErrors = [];
+
+	    	if ($('.to-date input').val() < $('.from-date input').val()) {
+				uploadErrors.push("Start date can't be greater than end date.");
+			}
+
+			if ($.trim($('.to-date input').val()) == '') {
+				uploadErrors.push("End date can't be empty.");
+			}
+
+			if ($.trim($('.from-date input').val()) == '') {
+				uploadErrors.push("Start date can't be empty.");
+			}
+
+	    	if(uploadErrors.length > 0) {
+		       	$('#invalid-dates-modal .modal-body').empty().prepend(uploadErrors.join("<br>"));
+		       	$('#invalid-dates-modal').modal('show');
+		       	return false;
+		    } else {
+		    	return true;
+		    }
+	    });
+	});
+
+
+
+</script>

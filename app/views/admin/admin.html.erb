@@ -1,0 +1,100 @@
+<div class="container admin">
+	
+	<div class="row">
+		<% if session[:logged_in] %>
+			<div class="alert alert-<%= flash[:type] %> alert-dismissable" style="margin-top: 20px; text-align: center; display: <%= flash[:notice].present? ? 'block' : 'none' %>">
+				<a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+			  	<%= flash[:notice] %>
+			</div>
+			<h2>Rocketees Admin</h2>
+				<%= form_tag("admin/tracking", authenticity_token: true, id: "admin-login", multipart: true, action: :upload) do %> 
+					<p>Upload Tracking Numbers CSV File: <%= file_field_tag "spreadsheet" %></p>
+					<%= submit_tag "Submit Tracking Numbers", class: "btn btn-danger tracking-submit" %>
+				<% end %>
+				<br>
+				<hr class="separator">
+
+				<table class="table table-bordered admin-table">
+				    <thead>
+				      <tr>
+				        <th>MALE</th>
+				        <th>Black</th>
+				        <th>White</th>
+				        <th>Navy</th>
+				        <th>Green</th>
+				        <th>Red</th>
+				      </tr>
+				    </thead>
+				    <tbody>
+				      <tr><td>S</td> 	<td><%=MaleInventory.all.first.black_s %></td> <td><%=MaleInventory.all.first.white_s %></td>
+				          <td><%=MaleInventory.all.first.navy_s %></td> 	<td><%=MaleInventory.all.first.green_s %></td> <td><%=MaleInventory.all.first.red_s %></td></tr>
+				      <tr><td>M</td> 	<td><%=MaleInventory.all.first.black_m %></td><td><%=MaleInventory.all.first.white_m %></td>
+				          <td><%=MaleInventory.all.first.navy_m %></td>		<td><%=MaleInventory.all.first.green_m %></td><td><%=MaleInventory.all.first.red_m %></td></tr>
+				      <tr><td>L</td>	<td><%=MaleInventory.all.first.black_l %></td><td><%=MaleInventory.all.first.white_l %></td>
+				          <td><%=MaleInventory.all.first.navy_l %></td>		<td><%=MaleInventory.all.first.green_l %></td><td><%=MaleInventory.all.first.red_l %></td></tr>
+				      <tr><td>XL</td>	<td><%=MaleInventory.all.first.black_xl %></td><td><%=MaleInventory.all.first.white_xl %></td>
+				          <td><%=MaleInventory.all.first.navy_xl %></td>		<td><%=MaleInventory.all.first.green_xl %></td><td><%=MaleInventory.all.first.red_xl %></td></tr>
+				      <tr><td>2XL</td>	<td><%=MaleInventory.all.first.black_2xl %></td><td><%=MaleInventory.all.first.white_2xl %></td>
+				          <td><%=MaleInventory.all.first.navy_2xl %></td>		<td><%=MaleInventory.all.first.green_2xl %></td><td><%=MaleInventory.all.first.red_2xl %></td></tr>
+				      <tr><td>3XL</td>	<td><%=MaleInventory.all.first.black_3xl %></td><td><%=MaleInventory.all.first.white_3xl %></td>
+				          <td><%=MaleInventory.all.first.navy_3xl %></td>		<td><%=MaleInventory.all.first.green_3xl %></td><td><%=MaleInventory.all.first.red_3xl %></td></tr>
+				    </tbody>
+				</table>
+
+				<table class="table table-bordered admin-table">
+				    <thead>
+				      <tr>
+				        <th>FEMALE</th>
+				        <th>Black</th>
+				        <th>White</th>
+				        <th>Navy</th>
+				        <th>Green</th>
+				        <th>Red</th>
+				      </tr>
+				    </thead>
+				    <tbody>
+				      <tr><td>XL</td> 	<td><%=FemaleInventory.all.first.black_xs %></td> <td><%=FemaleInventory.all.first.white_xs %></td>
+				          <td><%=FemaleInventory.all.first.navy_xs %></td> 	<td><%=FemaleInventory.all.first.green_xs %></td> <td><%=FemaleInventory.all.first.red_xs %></td></tr>
+				      <tr><td>S</td> 	<td><%=FemaleInventory.all.first.black_s %></td><td><%=FemaleInventory.all.first.white_s %></td>
+				          <td><%=FemaleInventory.all.first.navy_s %></td>		<td><%=FemaleInventory.all.first.green_s %></td><td><%=FemaleInventory.all.first.red_s %></td></tr>
+				      <tr><td>M</td>	<td><%=FemaleInventory.all.first.black_m %></td><td><%=FemaleInventory.all.first.white_m %></td>
+				          <td><%=FemaleInventory.all.first.navy_m %></td>		<td><%=FemaleInventory.all.first.green_m %></td><td><%=FemaleInventory.all.first.red_m %></td></tr>
+				      <tr><td>L</td>	<td><%=FemaleInventory.all.first.black_l %></td><td><%=FemaleInventory.all.first.white_l %></td>
+				          <td><%=FemaleInventory.all.first.navy_l %></td>		<td><%=FemaleInventory.all.first.green_l %></td><td><%=FemaleInventory.all.first.red_l %></td></tr>
+				      <tr><td>XL</td>	<td><%=FemaleInventory.all.first.black_xl %></td><td><%=FemaleInventory.all.first.white_xl %></td>
+				          <td><%=FemaleInventory.all.first.navy_xl %></td>		<td><%=FemaleInventory.all.first.green_xl %></td><td><%=FemaleInventory.all.first.red_xl %></td></tr>
+				      <tr><td>2XL</td>	<td><%=FemaleInventory.all.first.black_2xl %></td><td><%=FemaleInventory.all.first.white_2xl %></td>
+				          <td><%=FemaleInventory.all.first.navy_2xl %></td>		<td><%=FemaleInventory.all.first.green_2xl %></td><td><%=FemaleInventory.all.first.red_2xl %></td></tr>
+				    </tbody>
+				</table>
+
+				<%= form_tag("admin/add_inventory", authenticity_token: true, id: "add_inventory", multipart: true, action: :upload) do %> 
+					<p>Add Inventory With Template CSV File: <%= file_field_tag "inventory" %></p>
+					<%= submit_tag "Add Inventory", class: "btn btn-danger inventory-submit" %>
+				<% end %>
+
+				<% debug params %>
+		<% else %>
+			<%= form_tag("admin", authenticity_token: true, id: "admin-login") do %> 
+				<h2>Rocketees Admin</h2> 
+				<p>Admin Access Key</p>
+				<%= password_field_tag 'admin_pw' %>
+				<%= submit_tag "Access Admin Area", class: "btn btn-danger admin-submit" %>
+			<% end %>
+			
+		<% end %>
+		<br><br>
+		
+	</div>
+</div>
+
+<script type="text/javascript">
+	$(function(){
+		$('.admin-table td').each(function(index) {
+			//console.log("val: " + $(this).text());
+			if (parseInt($(this).text()) <= 10 && $.isNumeric($(this).text())) {
+				$(this).css("background-color", "#D9534F");
+			}
+		});
+	});
+</script>

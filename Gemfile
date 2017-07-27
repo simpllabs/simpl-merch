@@ -6,11 +6,20 @@ git_source(:github) do |repo_name|
 end
 
 gem 'shopify_app', :git => 'https://github.com/Shopify/shopify_app'
+gem 'clockwork', require: false
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.1'
-# Use Puma as the app server
 gem 'bootstrap-sass', '3.3.7'
+# Use Puma as the app server
 gem 'puma', '~> 3.7'
+gem 'aws-sdk', '~> 2.3'
+gem 'jquery-rails'
+gem 'jquery-ui-rails'
+gem "mini_magick"
+gem 'delayed_job_active_record'
+gem 'progress_job'
+gem 'stripe'
+gem 'bootstrap-datepicker-rails'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -46,8 +55,8 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
-  # Use sqlite3 as the database for Active Record
-  gem 'sqlite3'
+
+  gem 'pg', '0.21.0'
 end
 
 group :production do

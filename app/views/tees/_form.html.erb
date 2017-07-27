@@ -1,0 +1,32 @@
+<%= form_with(model: tee, local: true) do |form| %>
+  <% if tee.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(tee.errors.count, "error") %> prohibited this tee from being saved:</h2>
+
+      <ul>
+      <% tee.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :tee_front_url %>
+    <%= form.text_area :tee_front_url, id: :tee_tee_front_url %>
+  </div>
+
+  <div class="field">
+    <%= form.label :tee_back_url %>
+    <%= form.text_area :tee_back_url, id: :tee_tee_back_url %>
+  </div>
+
+  <div class="field">
+    <%= form.label :shop_id %>
+    <%= form.number_field :shop_id, id: :tee_shop_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

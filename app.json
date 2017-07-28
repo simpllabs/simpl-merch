@@ -1,0 +1,13 @@
+{
+  "name": "app",
+  "description": "Rocketees on Dokku!",
+  "keywords": [
+    "dokku",
+    "rails"
+  ],
+  "scripts": {
+    "dokku": {
+      "postdeploy": "bundle exec rails db:migrate"
+    }
+  }
+}

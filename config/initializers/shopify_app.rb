@@ -6,9 +6,9 @@ ShopifyApp.configure do |config|
   config.embedded_app = true
 
   config.webhooks = [
-    {topic: 'orders/create', address: 'https://653cf117.ngrok.io/custom_webhooks/orders_create'},
-    {topic: 'orders/cancelled', address: 'https://653cf117.ngrok.io/custom_webhooks/orders_cancel'},
-	  {topic: 'app/uninstalled', address: 'https://653cf117.ngrok.io/custom_webhooks/app_uninstalled'}
+    {topic: 'orders/create', address: "#{ENV['APP_URL']}/custom_webhooks/orders_create"},
+    {topic: 'orders/cancelled', address: "#{ENV['APP_URL']}/custom_webhooks/orders_cancel"},
+	  {topic: 'app/uninstalled', address: "#{ENV['APP_URL']}/custom_webhooks/app_uninstalled"}
   ]
   
 end

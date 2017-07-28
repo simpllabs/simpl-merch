@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get '/check.txt', to: proc {[200, {}, ['it_works']]}
+
   post 'tees/upload_designs', to: 'tees#design_upload_callback'
 
   get 'admin', to: 'admin#admin'

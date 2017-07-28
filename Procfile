@@ -1,3 +1,3 @@
 web: bundle exec puma -C config/puma.rb
-worker: rake jobs:work
+worker: bundle exec rails jobs:work
 clock: bundle exec clockwork config/clock.rb

@@ -10,7 +10,6 @@ class AdminController < ApplicationController
 			flash[:type] = "danger" if !session[:logged_in]
   		end
 
-
   	end
 
   	def upload_tracking

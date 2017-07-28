@@ -105,10 +105,10 @@ class TeesController < ShopifyApp::AuthenticatedController
 
       #copy file into tmp with uuid appended to name
       tmp_uuid = SecureRandom.uuid
-      FileUtils.mkdir("app/assets/images/tmp/#{tmp_uuid}/")
-      FileUtils.cp("app/assets/images/free-designs/#{session[:img_src]}", "app/assets/images/tmp/#{tmp_uuid}/")
-      File.rename("app/assets/images/tmp/#{tmp_uuid}/#{File.basename(session[:img_src])}", "app/assets/images/tmp/#{session[:uuid]}_#{File.basename(session[:img_src])}")
-      FileUtils.rmdir("app/assets/images/tmp/#{tmp_uuid}/")
+      FileUtils.mkdir("#{ENV[STORAGE_PATH]}/#{tmp_uuid}/")
+      FileUtils.cp("app/assets/images/free-designs/#{session[:img_src]}", "#{ENV[STORAGE_PATH]}/#{tmp_uuid}/")
+      File.rename("#{ENV[STORAGE_PATH]}/#{tmp_uuid}/#{File.basename(session[:img_src])}", "#{ENV[STORAGE_PATH]}/#{session[:uuid]}_#{File.basename(session[:img_src])}")
+      FileUtils.rmdir("#{ENV[STORAGE_PATH]}/#{tmp_uuid}/")
 
       session[:front_name] = File.basename(session[:img_src])
     end
@@ -178,10 +178,10 @@ class TeesController < ShopifyApp::AuthenticatedController
     if params[:file].present?
       # Create a new Survey object based on the received parameters...
       tmp_uuid = SecureRandom.uuid
-      FileUtils.mkdir("app/assets/images/tmp/#{tmp_uuid}/")
-      FileUtils.cp(params[:file].tempfile.path, "app/assets/images/tmp/#{tmp_uuid}/")
-      File.rename("app/assets/images/tmp/#{tmp_uuid}/#{File.basename(params[:file].tempfile.path)}", "app/assets/images/tmp/#{session[:uuid]}_#{params[:file].original_filename}")
-      FileUtils.rmdir("app/assets/images/tmp/#{tmp_uuid}/")
+      FileUtils.mkdir("#{ENV[STORAGE_PATH]}/#{tmp_uuid}/")
+      FileUtils.cp(params[:file].tempfile.path, "#{ENV[STORAGE_PATH]}/#{tmp_uuid}/")
+      File.rename("#{ENV[STORAGE_PATH]}/#{tmp_uuid}/#{File.basename(params[:file].tempfile.path)}", "#{ENV[STORAGE_PATH]}/#{session[:uuid]}_#{params[:file].original_filename}")
+      FileUtils.rmdir("#{ENV[STORAGE_PATH]}/#{tmp_uuid}/")
 
       #design_uploader = DesignsUploader.new
       #design_uploader.filename("sss#{session[:uuid]}")

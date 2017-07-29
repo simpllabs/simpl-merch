@@ -192,8 +192,14 @@ class TeesController < ShopifyApp::AuthenticatedController
     else
       head :internal_server_error
     end
-
     
   end
+
+  def return_stored_image
+    File.open("#{ENV[STORAGE_URL]}/#{params[:image]}", 'rb') do |f|
+      send_data f.read, :type => "image/png", :disposition => "inline"
+    end
+  end
+
 
 end

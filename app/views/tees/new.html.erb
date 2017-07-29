@@ -160,7 +160,7 @@
 		          	<div class="resizeable-front draggable-front" style="display:inline-block; top: <%= session[:front_pos][0] %>px; left: <%= session[:front_pos][1] %>px; width: <%= session[:front_size][0] != 0 ? "#{session[:front_size][0]}px" : '30%' %>; height: <%= session[:front_size][1] != 0 ? "#{session[:front_size][1]}px" : 'auto' %>;">
 		                  <div contenteditable="true" id="front-img-wrapper">
 		                  	<% if session[:front_name].present? %>
-		                  		<%= image_tag "#{'STORAGE_URL'}/#{session[:uuid]}_#{session[:front_name]}", class: "front-design-img" %>
+		                  		<%= image_tag "#{ENV['STORAGE_URL']}/#{session[:uuid]}_#{session[:front_name]}", class: "front-design-img" %>
 			                  	<%= javascript_tag "alignFrontSessionImage()" %>
 		                  	<% end %>
 		                  </div>
@@ -170,7 +170,7 @@
 		                  <div contenteditable="true" id="back-img-wrapper">
 
 		                  	<% if session[:back_name].present? %>
-		                  		<%= image_tag "#{'STORAGE_URL'}/#{session[:uuid]}_#{session[:back_name]}", class: "back-design-img" %>
+		                  		<%= image_tag "#{ENV['STORAGE_URL']}/#{session[:uuid]}_#{session[:back_name]}", class: "back-design-img" %>
 		      					<%= javascript_tag "alignBackSessionImage()" %>
 		                  	<% end %>
 

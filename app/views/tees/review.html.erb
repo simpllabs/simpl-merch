@@ -41,13 +41,13 @@
 
 				<%= image_tag(@mockup_image_f, class: 'mockup-base-img') %>
 				<% if session[:front_name].present? %>
-        <%= image_tag "tmp/#{session[:uuid]}_#{session[:front_name]}", id: "front-mockup-img", style: "width: #{@front_size_scaled[0]}px; top: #{@front_pos_scaled[0]}px; left: #{@front_pos_scaled[1]}px" %>
+        <%= image_tag "#{ENV['STORAGE_URL']}/#{session[:uuid]}_#{session[:front_name]}", id: "front-mockup-img", style: "width: #{@front_size_scaled[0]}px; top: #{@front_pos_scaled[0]}px; left: #{@front_pos_scaled[1]}px" %>
         <% end %>
 			</div>
 			<div class="review-back-mockup">
 				<%= image_tag(@mockup_image_b, class: 'mockup-base-img') %>
 				<% if session[:back_name].present? %>
-        <%= image_tag "tmp/#{session[:uuid]}_#{session[:back_name]}", id: "back-mockup-img", style: "width: #{@back_size_scaled[0]}px; top: #{@back_pos_scaled[0]}px; left: #{@back_pos_scaled[1]}px" %>
+        <%= image_tag "#{ENV['STORAGE_URL']}/#{session[:uuid]}_#{session[:back_name]}", id: "back-mockup-img", style: "width: #{@back_size_scaled[0]}px; top: #{@back_pos_scaled[0]}px; left: #{@back_pos_scaled[1]}px" %>
         <% end %>
 			</div>
 		</div>

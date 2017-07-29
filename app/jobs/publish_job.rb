@@ -56,12 +56,12 @@ class PublishJob < ProgressJob::Base
     back_w = (@data[:back_size][0].to_i*1.96).round
     back_h = (@data[:back_size][1].to_i*1.96).round
 
-    front_design = MiniMagick::Image.open("app/assets/images/tmp/#{@data[:uuid]}_#{File.basename(@data[:front_name])}")
+    front_design = MiniMagick::Image.open("#{ENV['STORAGE_URL']}/#{@data[:uuid]}_#{File.basename(@data[:front_name])}")
     front_design.resize("#{front_w}")
 
     back_design = nil
     if @data[:back_name].present?
-      back_design = MiniMagick::Image.open("app/assets/images/tmp/#{@data[:uuid]}_#{File.basename(@data[:back_name])}")
+      back_design = MiniMagick::Image.open("#{ENV['STORAGE_URL']}/#{@data[:uuid]}_#{File.basename(@data[:back_name])}")
       back_design.resize("#{back_w}") 
     end
 
@@ -93,24 +93,24 @@ class PublishJob < ProgressJob::Base
       mockup_b  = MiniMagick::Image.open("app/assets/images/#{pre_f}#{color.downcase}_mockup_b.png") if @data[:back_name].present?
 
       if result_f.blank? 
-        FileUtils.mkdir("app/assets/images/tmp/#{f_uuid}/")
-        FileUtils.cp('bin/tshirt', "app/assets/images/tmp/#{f_uuid}/")
-        FileUtils.cp('bin/tshirtwarp', "app/assets/images/tmp/#{f_uuid}/")
-        text = File.read("app/assets/images/tmp/#{f_uuid}/tshirtwarp")
+        FileUtils.mkdir("#{ENV['STORAGE_URL']}/#{f_uuid}/")
+        FileUtils.cp('bin/tshirt', "#{ENV['STORAGE_URL']}/#{f_uuid}/")
+        FileUtils.cp('bin/tshirtwarp', "#{ENV['STORAGE_URL']}/#{f_uuid}/")
+        text = File.read("#{ENV['STORAGE_URL']}/#{f_uuid}/tshirtwarp")
 
-        Dir.chdir("app/assets/images/tmp/#{f_uuid}/") do 
+        Dir.chdir("#{ENV['STORAGE_URL']}/#{f_uuid}/") do 
           result_f = `./tshirt -r #{front_w}x#{front_h}+#{front_y}+#{front_x} -s 0 -E #{front_design.path} #{mockup_f.path} ../#{f_uuid}_#{color.downcase}.png`
         end
         
         replace = text.force_encoding("ISO-8859-1").encode("utf-8", replace: nil).gsub(/-- REPLACE IN CODE WITH REGEX --/, result_f)
-        File.open("app/assets/images/tmp/#{f_uuid}/tshirtwarp", "w") {|file| file.puts replace}
+        File.open("#{ENV['STORAGE_URL']}/#{f_uuid}/tshirtwarp", "w") {|file| file.puts replace}
       else
-        Dir.chdir("app/assets/images/tmp/#{f_uuid}/") do 
+        Dir.chdir("#{ENV['STORAGE_URL']}/#{f_uuid}/") do 
           `./tshirtwarp ./lighting.png ./displace.png #{front_design.path} #{mockup_f.path} ../#{f_uuid}_#{color.downcase}.png`
         end
       end
 
-      mockup_f_done = MiniMagick::Image.new("app/assets/images/tmp/#{f_uuid}_#{color.downcase}.png")
+      mockup_f_done = MiniMagick::Image.new("#{ENV['STORAGE_URL']}/#{f_uuid}_#{color.downcase}.png")
 
       variants_all = ShopifyAPI::Variant.find(:all, params: {product_id: new_tee.id}) # This is an array of ShopifyAPI::Variant objects
       variants_one_color = []
@@ -126,24 +126,24 @@ class PublishJob < ProgressJob::Base
 
       if @data[:back_name].present?
         if result_b.blank? 
-          FileUtils.mkdir("app/assets/images/tmp/#{b_uuid}/")
-          FileUtils.cp('bin/tshirt', "app/assets/images/tmp/#{b_uuid}/")
-          FileUtils.cp('bin/tshirtwarp', "app/assets/images/tmp/#{b_uuid}/")
-          text = File.read("app/assets/images/tmp/#{b_uuid}/tshirtwarp")
+          FileUtils.mkdir("#{ENV['STORAGE_URL']}/#{b_uuid}/")
+          FileUtils.cp('bin/tshirt', "#{ENV['STORAGE_URL']}/#{b_uuid}/")
+          FileUtils.cp('bin/tshirtwarp', "#{ENV['STORAGE_URL']}/#{b_uuid}/")
+          text = File.read("#{ENV['STORAGE_URL']}/#{b_uuid}/tshirtwarp")
 
-          Dir.chdir("app/assets/images/tmp/#{b_uuid}/") do 
+          Dir.chdir("#{ENV['STORAGE_URL']}/#{b_uuid}/") do 
             result_b = `./tshirt -r #{back_w}x#{back_h}+#{back_y}+#{back_x} -s 0 -E #{back_design.path} #{mockup_b.path} ../B#{b_uuid}_#{color.downcase}.png`
           end
 
           replace = text.force_encoding("ISO-8859-1").encode("utf-8", replace: nil).gsub(/-- REPLACE IN CODE WITH REGEX --/, result_b)
-          File.open("app/assets/images/tmp/#{b_uuid}/tshirtwarp", "w") {|file| file.puts replace}
+          File.open("#{ENV['STORAGE_URL']}/#{b_uuid}/tshirtwarp", "w") {|file| file.puts replace}
         else
-          Dir.chdir("app/assets/images/tmp/#{b_uuid}/") do 
+          Dir.chdir("#{ENV['STORAGE_URL']}/#{b_uuid}/") do 
             `./tshirtwarp ./lighting.png ./displace.png #{back_design.path} #{mockup_b.path} ../B#{b_uuid}_#{color.downcase}.png`
           end
         end
 
-        mockup_b_done = MiniMagick::Image.new("app/assets/images/tmp/B#{b_uuid}_#{color.downcase}.png")
+        mockup_b_done = MiniMagick::Image.new("#{ENV['STORAGE_URL']}/B#{b_uuid}_#{color.downcase}.png")
         new_tee_img_b = ShopifyAPI::Image.new(:product_id => new_tee.id)
         new_tee_img_b.attach_image(mockup_b_done.to_blob)
         new_tee_img_b.save
@@ -166,22 +166,22 @@ class PublishJob < ProgressJob::Base
 
     #6. Save designs to S3, and delete local ones
     obj = S3_BUCKET.put_object(key: "designs/#{@data[:uuid]}_#{@data[:front_name]}", acl: "public-read-write")
-    obj.upload_file("app/assets/images/tmp/#{@data[:uuid]}_#{@data[:front_name]}")
-    FileUtils.rm_rf("app/assets/images/tmp/#{f_uuid}/")
+    obj.upload_file("#{ENV['STORAGE_URL']}/#{@data[:uuid]}_#{@data[:front_name]}")
+    FileUtils.rm_rf("#{ENV['STORAGE_URL']}/#{f_uuid}/")
     
     if @data[:back_name].present?
       obj = S3_BUCKET.put_object(key: "designs/B#{@data[:uuid]}_#{@data[:back_name]}", acl: "public-read-write")
-      obj.upload_file("app/assets/images/tmp/#{@data[:uuid]}_#{@data[:back_name]}")
-      FileUtils.rm_rf("app/assets/images/tmp/#{b_uuid}/")
-      FileUtils.rm("app/assets/images/tmp/#{@data[:uuid]}_#{@data[:back_name]}") if @data[:back_name] != @data[:front_name]
+      obj.upload_file("#{ENV['STORAGE_URL']}/#{@data[:uuid]}_#{@data[:back_name]}")
+      FileUtils.rm_rf("#{ENV['STORAGE_URL']}/#{b_uuid}/")
+      FileUtils.rm("#{ENV['STORAGE_URL']}/#{@data[:uuid]}_#{@data[:back_name]}") if @data[:back_name] != @data[:front_name]
     end
 
     # Delete here in case b is also using this one
-    FileUtils.rm("app/assets/images/tmp/#{@data[:uuid]}_#{@data[:front_name]}")
+    FileUtils.rm("#{ENV['STORAGE_URL']}/#{@data[:uuid]}_#{@data[:front_name]}")
 
     @data[:colors].each do |color|
-      FileUtils.rm("app/assets/images/tmp/#{f_uuid}_#{color.downcase}.png")
-      FileUtils.rm("app/assets/images/tmp/B#{b_uuid}_#{color.downcase}.png") if @data[:back_name].present?
+      FileUtils.rm("#{ENV['STORAGE_URL']}/#{f_uuid}_#{color.downcase}.png")
+      FileUtils.rm("#{ENV['STORAGE_URL']}/B#{b_uuid}_#{color.downcase}.png") if @data[:back_name].present?
     end
 
     

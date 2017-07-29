@@ -7,7 +7,7 @@ class CleanTmpJob < ProgressJob::Base
 
   def perform
     #clean all files that weren't created within the last 5 hours in local /tmp
-    system("find app/assets/images/tmp/ -type f -name '*.png' -mmin +360 -delete")
+    system("find #{ENV['STORAGE_URL']} -type f -name '*.png' -mmin +360 -delete")
 
     #clean all files that weren't created within the last 5 hours in S3 /tmp
     #obj_keys = []

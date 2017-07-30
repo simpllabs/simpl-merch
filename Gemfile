@@ -22,6 +22,7 @@ gem 'delayed_job_active_record', '4.1.2'
 gem 'progress_job', '0.0.4'
 gem 'stripe', '3.0.1'
 gem 'bootstrap-datepicker-rails', '1.6.4.1'
+gem 'foreman', '0.84.0'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets

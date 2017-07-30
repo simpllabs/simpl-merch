@@ -4,10 +4,10 @@ class GalleryController < ShopifyApp::AuthenticatedController
   	@images = []
 
     Dir.foreach('app/assets/images/free-designs/') do |item|
-      @niches.push(item)
+      @niches.push(item) if !item.include?(".")
     end
 
-    @niches = @niches[3..-1]
+    #@niches = @niches[3..-1]
 
     @niches.each do |niche|
       Dir.chdir("app/assets/images/") do 

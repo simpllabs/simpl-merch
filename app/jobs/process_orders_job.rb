@@ -47,7 +47,7 @@ class ProcessOrdersJob < ProgressJob::Base
         end
 
         charge_amount = charge_amount + design_fee
-        charge_amount = charge_amount + (charge_amount * 0.029) + 0.3 #Stripe fees
+        charge_amount = charge_amount + (charge_amount * 0.03) + 0.3 #Stripe fees
         charge_amount = charge_amount * 100 #set total to cents
 
         status = "In-Production"

@@ -14,22 +14,22 @@ class AdminController < ApplicationController
 
   	def upload_tracking
   		@incoming_file = params[:spreadsheet]
-		file_name = params[:spreadsheet].original_filename
-		FileUtils.mv @incoming_file.tempfile, "db/tracking/#{file_name}"
+  		file_name = params[:spreadsheet].original_filename
+  		FileUtils.mv @incoming_file.tempfile, "#{ENV['STORAGE_URL']}/#{file_name}"
 
-		Delayed::Job.enqueue UploadTrackingNumbersJob.new("db/tracking/#{file_name}")
+  		Delayed::Job.enqueue UploadTrackingNumbersJob.new("#{ENV['STORAGE_URL']}/#{file_name}")
 
-		flash[:notice] = "Tracking numbers being uploaded in the background."
-		flash[:type] = "success"
-		redirect_to "/admin"
+  		flash[:notice] = "Tracking numbers being uploaded in the background."
+  		flash[:type] = "success"
+  		redirect_to "/admin"
   	end
 
   	def add_inventory
   		@incoming_file = params[:inventory]
   		file_name = params[:inventory].original_filename
-		FileUtils.mv @incoming_file.tempfile, "db/inventory/#{file_name}"
+		FileUtils.mv @incoming_file.tempfile, "#{ENV['STORAGE_URL']}/#{file_name}"
 
-		Delayed::Job.enqueue AddInventoryJob.new("db/inventory/#{file_name}")
+		Delayed::Job.enqueue AddInventoryJob.new("#{ENV['STORAGE_URL']}/#{file_name}")
 
 		flash[:notice] = "Adding inventory: Refresh page in a few seconds."
 		flash[:type] = "success"

@@ -26,15 +26,17 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
-  ActionMailer::Base.smtp_settings = {
-    :address        => 'smtp.gmail.com',
-    :domain         => 'mail.google.com',
-    :port           => 587,
-    :user_name      => 'amorimluc@gmail.com',
-    :password       => 'I will learn Mandarin.',
-    :authentication => :plain,
-    :enable_starttls_auto => true
-  }
+  config.action_mailer.delivery_method = :sendmail
+
+  #ActionMailer::Base.smtp_settings = {
+  #  :address        => 'smtp.gmail.com',
+  #  :domain         => 'mail.google.com',
+  #  :port           => 587,
+  #  :user_name      => 'amorimluc@gmail.com',
+  #  :password       => 'I will learn Mandarin.',
+  ##  :authentication => :plain,
+   # :enable_starttls_auto => true
+  #}
   config.action_mailer.perform_deliveries = true
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 

@@ -37,7 +37,8 @@ Rails.application.configure do
     :user_name      => 'amorimluc@gmail.com',
     :password       => 'I will learn Mandarin.',
     :authentication => :plain,
-    :enable_starttls_auto => true
+    :enable_starttls_auto => true,
+    :ssl => true
   }
   config.action_mailer.perform_deliveries = true
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }

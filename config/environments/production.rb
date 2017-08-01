@@ -32,7 +32,6 @@ Rails.application.configure do
 
   config.action_mailer.delivery_method = :sendmail
 
-
   #ActionMailer::Base.smtp_settings = {
   #  :address        => 'smtp.gmail.com',
   #  :domain         => 'mail.google.com',

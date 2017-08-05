@@ -28,7 +28,7 @@ class AccountController < ShopifyApp::AuthenticatedController
       end
     end
 
-    @stripe_customer_id = Shop.where(shopify_domain: ShopifyAPI::Shop.current.domain).first.stripe_customer_id
+    #@stripe_customer_id = @shop.stripe_customer_id
     #@active = @stripe_customer_id.present?
 
     #@customer = Stripe::Customer.retrieve(@stripe_customer_id) if @stripe_customer_id.present?

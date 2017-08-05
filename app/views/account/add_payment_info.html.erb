@@ -59,8 +59,6 @@
 						Save Info
 					<% end %>
 
-					<%= debug ShopifyAPI::Shop.current.domain %>
-					<%= debug @shop %>
 				<% end %> <!-- END OF FORM -->
 			</div>
 			
@@ -106,7 +104,8 @@
 			<% end %> <!-- END FORM -->
 		<% end %>
 		
-		
+		<%= debug ShopifyAPI::Shop.current.domain %>
+		<%= debug @shop %>
 	</div>
 </div>
 

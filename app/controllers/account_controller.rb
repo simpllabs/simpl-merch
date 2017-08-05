@@ -9,38 +9,7 @@ class AccountController < ShopifyApp::AuthenticatedController
 
     #@products= ShopifyAPI::Product.where(vendor: "rocketees").sort_by(&:created_at).reverse.first.handle
 
-    @shop = Shop.where(shopify_domain: ShopifyAPI::Shop.current.domain).first
-
-    if params[:card_token].present? 
-      begin 
-    		customer = Stripe::Customer.create(
-    		  description: "Stripe customer object for: #{ShopifyAPI::Shop.current.domain}",
-    		  source: params[:card_token],
-          metadata: {send_receipts: "No"}
-    		)
-    		
-        @shop.email = ShopifyAPI::Shop.current.email
-    		@shop.stripe_customer_id = customer.id
-    		@shop.save
-      rescue Stripe::CardError => e
-        flash[:notice] = " #{e.message}"
-        redirect_to '/account'
-      end
-    end
-
-    @stripe_customer_id = Shop.where(shopify_domain: ShopifyAPI::Shop.current.domain).first.stripe_customer_id
-    @active = @stripe_customer_id.present?
-
-    begin
-      @customer = Stripe::Customer.retrieve(@stripe_customer_id) if @stripe_customer_id.present?
-    rescue Stripe::CardError => e
-
-    end
     
-    
-
-    path = URI.parse(URI.encode(@shop.packing_slip_logo)).path if @shop.packing_slip_logo.present?
-    @logo_filename = File.basename(path) if @shop.packing_slip_logo.present?
 
   end
 

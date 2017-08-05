@@ -9,7 +9,7 @@ class AccountController < ShopifyApp::AuthenticatedController
 
     #@products= ShopifyAPI::Product.where(vendor: "rocketees").sort_by(&:created_at).reverse.first.handle
 
-    @shop = Shop.where(shopify_domain: ShopifyAPI::Shop.current.domain).first
+    @shop = Shop.where(shopify_domain: ShopifyAPI::Shop.current.myshopify_domain).first
 
     if params[:card_token].present? 
       begin 
@@ -28,13 +28,13 @@ class AccountController < ShopifyApp::AuthenticatedController
       end
     end
 
-    #@stripe_customer_id = @shop.stripe_customer_id
-    #@active = @stripe_customer_id.present?
+    @stripe_customer_id = @shop.stripe_customer_id
+    @active = @stripe_customer_id.present?
 
-    #@customer = Stripe::Customer.retrieve(@stripe_customer_id) if @stripe_customer_id.present?
+    @customer = Stripe::Customer.retrieve(@stripe_customer_id) if @stripe_customer_id.present?
 
-    #path = URI.parse(URI.encode(@shop.packing_slip_logo)).path if @shop.packing_slip_logo.present?
-    #@logo_filename = File.basename(path) if @shop.packing_slip_logo.present?
+    path = URI.parse(URI.encode(@shop.packing_slip_logo)).path if @shop.packing_slip_logo.present?
+    @logo_filename = File.basename(path) if @shop.packing_slip_logo.present?
 
   end
 

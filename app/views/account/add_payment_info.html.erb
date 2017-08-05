@@ -59,7 +59,8 @@
 						Save Info
 					<% end %>
 
-					<% debug @shop %>
+					<%= debug ShopifyAPI::Shop.current.domain %>
+					<%= debug @shop %>
 				<% end %> <!-- END OF FORM -->
 			</div>
 			

@@ -31,7 +31,13 @@ class AccountController < ShopifyApp::AuthenticatedController
     @stripe_customer_id = Shop.where(shopify_domain: ShopifyAPI::Shop.current.domain).first.stripe_customer_id
     @active = @stripe_customer_id.present?
 
-    @customer = Stripe::Customer.retrieve(@stripe_customer_id) if @stripe_customer_id.present?
+    begin
+      @customer = Stripe::Customer.retrieve(@stripe_customer_id) if @stripe_customer_id.present?
+    rescue Stripe::CardError => e
+
+    end
+    
+    
 
     path = URI.parse(URI.encode(@shop.packing_slip_logo)).path if @shop.packing_slip_logo.present?
     @logo_filename = File.basename(path) if @shop.packing_slip_logo.present?

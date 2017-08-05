@@ -41,7 +41,7 @@ Rails.application.configure do
     :password       => 'I will learn Mandarin.',
     :authentication => :plain,
     :enable_starttls_auto => true,
-    :ssl => true
+    :openssl_verify_mode  => 'none'
   }
   
   config.action_mailer.perform_deliveries = true

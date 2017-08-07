@@ -14,10 +14,10 @@ class HomeController < ShopifyApp::AuthenticatedController
         session[:uuid] = SecureRandom.uuid
         session[:free_design] = false
 
-        @pending = Order.where(shop_domain: ShopifyAPI::Shop.current.domain, fulfillment_status: "Pending").count
-        @in_production = Order.where(shop_domain: ShopifyAPI::Shop.current.domain, fulfillment_status: "In-Production").count
-        @shipped = Order.where(shop_domain: ShopifyAPI::Shop.current.domain, fulfillment_status: "Shipped").count
-        @cancelled = Order.where(shop_domain: ShopifyAPI::Shop.current.domain, fulfillment_status: "Cancelled").count
+        @pending = Order.where(shop_domain: ShopifyAPI::Shop.current.myshopify_domain, fulfillment_status: "Pending").count
+        @in_production = Order.where(shop_domain: ShopifyAPI::Shop.current.myshopify_domain, fulfillment_status: "In-Production").count
+        @shipped = Order.where(shop_domain: ShopifyAPI::Shop.current.myshopify_domain, fulfillment_status: "Shipped").count
+        @cancelled = Order.where(shop_domain: ShopifyAPI::Shop.current.myshopify_domain, fulfillment_status: "Cancelled").count
 
         create_recurring_application_charge
 
@@ -49,7 +49,7 @@ class HomeController < ShopifyApp::AuthenticatedController
             recurring_application_charge = ShopifyAPI::RecurringApplicationCharge.new(
                     name: "Rocketees",
                     price: 25,
-                    return_url: "https:\/\/#{ShopifyAPI::Shop.current.domain}\/admin\/apps\/#{ENV['SHOPIFY_CLIENT_API_KEY']}\/activatecharge",
+                    return_url: "https:\/\/#{ShopifyAPI::Shop.current.myshopify_domain}\/admin\/apps\/#{ENV['SHOPIFY_CLIENT_API_KEY']}\/activatecharge",
                     test: true,
                     trial_days: 3,
                     capped_amount: 25,
@@ -68,10 +68,10 @@ class HomeController < ShopifyApp::AuthenticatedController
         @recurring_application_charge = ShopifyAPI::RecurringApplicationCharge.find(params[:charge_id])
         if @recurring_application_charge.status == 'accepted'
             @recurring_application_charge.activate
-            fullpage_redirect_to "https:\/\/#{ShopifyAPI::Shop.current.domain}\/admin\/apps\/#{ENV['SHOPIFY_CLIENT_API_KEY']}"
+            fullpage_redirect_to "https:\/\/#{ShopifyAPI::Shop.current.myshopify_domain}\/admin\/apps\/#{ENV['SHOPIFY_CLIENT_API_KEY']}"
         else 
             #redirect_to the shop's admin
-            fullpage_redirect_to "https:\/\/#{ShopifyAPI::Shop.current.domain}\/admin\/apps"
+            fullpage_redirect_to "https:\/\/#{ShopifyAPI::Shop.current.myshopify_domain}\/admin\/apps"
         end
     end
 end

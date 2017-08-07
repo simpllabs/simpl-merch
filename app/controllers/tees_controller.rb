@@ -7,7 +7,7 @@ class TeesController < ShopifyApp::AuthenticatedController
     #if returning from publish page, redirect to new tee right away
     if params[:published]
       reset_tee_session
-      fullpage_redirect_to "https:\/\/#{ShopifyAPI::Shop.current.domain}\/admin\/apps\/#{ENV['SHOPIFY_CLIENT_API_KEY']}\/tees/new/?gender=male" 
+      fullpage_redirect_to "https:\/\/#{ShopifyAPI::Shop.current.myshopify_domain}\/admin\/apps\/#{ENV['SHOPIFY_CLIENT_API_KEY']}\/tees/new/?gender=male" 
     end
 
     #store params in session
@@ -94,7 +94,7 @@ class TeesController < ShopifyApp::AuthenticatedController
 
     if params[:gender].present? && session[:gender].present? && session[:gender] != params[:gender]
       reset_tee_session
-      #fullpage_redirect_to "https:\/\/#{ShopifyAPI::Shop.current.domain}\/admin\/apps\/#{ENV['SHOPIFY_CLIENT_API_KEY']}\/"
+      #fullpage_redirect_to "https:\/\/#{ShopifyAPI::Shop.current.myshopify_domain}\/admin\/apps\/#{ENV['SHOPIFY_CLIENT_API_KEY']}\/"
     end
 
     @free_design = false
@@ -122,12 +122,12 @@ class TeesController < ShopifyApp::AuthenticatedController
       session[:sizes][4] = ""
     end
 
-    @stripe_customer_id = Shop.where(shopify_domain: ShopifyAPI::Shop.current.domain).first.stripe_customer_id
+    @stripe_customer_id = Shop.where(shopify_domain: ShopifyAPI::Shop.current.myshopify_domain).first.stripe_customer_id
   end
 
   def view_tee
     product_id = ShopifyAPI::Product.where(vendor: "rocketees").sort_by(&:created_at).reverse.first.id
-    fullpage_redirect_to "https:\/\/#{ShopifyAPI::Shop.current.domain}\/admin\/products\/#{product_id}\/"
+    fullpage_redirect_to "https:\/\/#{ShopifyAPI::Shop.current.myshopify_domain}\/admin\/products\/#{product_id}\/"
   end
 
   def increment_publish
@@ -147,7 +147,7 @@ class TeesController < ShopifyApp::AuthenticatedController
     @tee.tee_back_url = "#{S3_BUCKET.url}/designs/B#{session[:uuid]}_#{session[:back_name]}" if session[:back_name].present?
     @tee.tee_front_ref = "#{S3_BUCKET.url}/designs/REF-#{ref_uuid}"
     @tee.tee_back_ref = "#{S3_BUCKET.url}/designs/REF-B-#{ref_uuid}" if session[:back_name].present?
-    @tee.shop_domain = ShopifyAPI::Shop.current.domain
+    @tee.shop_domain = ShopifyAPI::Shop.current.myshopify_domain
     @tee.gender = session[:gender]
     @tee.one_time_fee_charged = session[:free_design]
     @tee.back_one_time_fee_charged = session[:back_name].present? ? false : true
@@ -170,7 +170,7 @@ class TeesController < ShopifyApp::AuthenticatedController
     @data[:ref_uuid] = ref_uuid
 
     #enqueu the publishing of the tee 
-    @job = Delayed::Job.enqueue PublishJob.new(100, params, @data, ShopifyAPI::Shop.current.domain, Shop.where(shopify_domain: "#{ShopifyAPI::Shop.current.domain}").first.shopify_token, @tee) 
+    @job = Delayed::Job.enqueue PublishJob.new(100, params, @data, ShopifyAPI::Shop.current.myshopify_domain, Shop.where(shopify_domain: "#{ShopifyAPI::Shop.current.myshopify_domain}").first.shopify_token, @tee) 
     
   end
 

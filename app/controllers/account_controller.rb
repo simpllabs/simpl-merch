@@ -14,7 +14,7 @@ class AccountController < ShopifyApp::AuthenticatedController
     if params[:card_token].present? 
       begin 
   	  customer = Stripe::Customer.create(
-    		  description: "Stripe customer object for: #{ShopifyAPI::Shop.current.domain}",
+    		  description: "Stripe customer object for: #{ShopifyAPI::Shop.current.myshopify_domain}",
     		  source: params[:card_token],
           metadata: {send_receipts: "No"}
     		)
@@ -39,7 +39,7 @@ class AccountController < ShopifyApp::AuthenticatedController
   end
 
   def delete_or_update_customer
-    shop = Shop.where(shopify_domain: ShopifyAPI::Shop.current.domain).first
+    shop = Shop.where(shopify_domain: ShopifyAPI::Shop.current.myshopify_domain).first
     stripe_customer_id = shop.stripe_customer_id
 
     if params[:update_btn]

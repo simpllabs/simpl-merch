@@ -43,9 +43,9 @@ class TeesController < ShopifyApp::AuthenticatedController
     session[:back_size] = params[:back_size].split(',') if params[:back_size].present?
 
     #get collections for dropdown
-    collections = ShopifyAPI::CustomCollection.find(:all, params: { limit: 250 })
+    @custom_collections = ShopifyAPI::CustomCollection.find(:all, params: { limit: 250 })
     @collections = "<option>- None -</option>"
-    collections.each {|collection| @collections = @collections + "<option>#{collection.title}</option>"}
+    @custom_collections.each {|collection| @collections = @collections + "<option>#{collection.title}</option>"}
 
     pre_f = session[:gender] == "male" ? "" : "f_"
 

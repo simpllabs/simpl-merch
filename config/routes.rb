@@ -33,6 +33,7 @@ Rails.application.routes.draw do
 
   post 'custom_webhooks/orders_create', to: 'custom_webhooks#orders_create'
   post 'custom_webhooks/orders_cancel', to: 'custom_webhooks#orders_cancel'
+  post 'custom_webhooks/app_uninstalled', to: 'custom_webhooks#app_uninstalled'
   get 'activatecharge', to: 'home#activatecharge'
 
   root :to => 'home#index'

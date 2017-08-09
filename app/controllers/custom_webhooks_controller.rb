@@ -16,8 +16,4 @@ class CustomWebhooksController < ApplicationController
     head :ok
   end
 
-  def app_installed
-    Delayed::Job.enqueue AppInstalledJob.new(shop_domain, params)
-    head :ok
-  end
 end

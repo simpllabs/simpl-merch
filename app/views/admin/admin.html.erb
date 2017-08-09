@@ -92,9 +92,10 @@
 	$(function(){
 		$('.admin-table td').each(function(index) {
 			//console.log("val: " + $(this).text());
-			if (parseInt($(this).text()) <= 10 && $.isNumeric($(this).text())) {
-				$(this).css("background-color", "#D9534F");
+			if (parseInt($(this).text()) < 5 && parseInt($(this).text()) > 0 && $.isNumeric($(this).text())) {
+				$(this).css("background-color", "#e5c700");
 			}
+
 		});
 	});
 </script>

@@ -1,4 +1,4 @@
-class AppInstalledJob < ProgressJob::Base
+class AppInstalledJob < ApplicationJob
 
   def perform(shop_domain)
 

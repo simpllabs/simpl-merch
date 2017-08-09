@@ -46,6 +46,8 @@ class TeesController < ShopifyApp::AuthenticatedController
     @custom_collections = ShopifyAPI::CustomCollection.find(:all, params: { limit: 250 })
     @collections = "<option>- None -</option>"
     @custom_collections.each {|collection| @collections = @collections + "<option>#{collection.title}</option>"}
+    @custom_collections = ShopifyAPI::SmartCollection.find(:all, params: { limit: 250 })
+    @custom_collections.each {|collection| @collections = @collections + "<option>#{collection.title}</option>"}
 
     pre_f = session[:gender] == "male" ? "" : "f_"
 

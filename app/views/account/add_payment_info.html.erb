@@ -39,7 +39,7 @@
 					<br>
 					<p>Use China Post For International Orders? <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="bottom" title="If you choose yes, then international shipping costs will be $0, but orders could take a month to arrive depending on the country."></span> <%= select_tag :china_post, options_for_select(['Yes','No'], @shop.chose_china_post == "Yes" ? "Yes" : "No") %></p>
 					<br>
-					<p>Send Customer Custom Packing Slip? <%= select_tag :packing_slip, options_for_select(['Yes','No'], @shop.packing_slip.present? ? "#{@shop.packing_slip}" : "No") %></p>
+					<p>Send Customer Custom Packing Slip? (FREE) <%= select_tag :packing_slip, options_for_select(['Yes','No'], @shop.packing_slip.present? ? "#{@shop.packing_slip}" : "No") %></p>
 					<br>
 					<p style="text-align: center"><small>Use [customer_name] to use the customer's name in the message:</small></p>
 					<%= text_area_tag :packing_slip_message, @shop.packing_slip_message.present? ? @shop.packing_slip_message : "Hey [customer_name], &#10;&#10;Thank you for your order! &#10;Special coupon: EXAMPLECODE &#10;&#10;Cheers! &#10;&#10;- #{ShopifyAPI::Shop.current.name}".html_safe, rows: 8, maxlength: 600  %>

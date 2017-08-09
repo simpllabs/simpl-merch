@@ -1,10 +1,10 @@
 class InstalledAppJob < ActiveJob::Base
 
-  def perform
+  def perform(shop_domain)
 
 
 
   	#Send out welcome email
-    FirstInstallMailer.welcome_email.deliver_now
+    FirstInstallMailer.welcome_email(shop_domain).deliver_now
   end
 end

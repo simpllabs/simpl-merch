@@ -3,6 +3,6 @@ class FirstInstallMailer < ApplicationMailer
 	
 	def welcome_email(shop_domain)
 		@shop_domain = shop_domain
-		mail(to: 'amorimluc@gmail.com', subject: 'Rocketees Orders CSV File')
+		mail(to: 'amorimluc@gmail.com', subject: 'A Message From Lucas, Co-Founder of Rocketees')
 	end
 end

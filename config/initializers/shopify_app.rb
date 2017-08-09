@@ -10,5 +10,7 @@ ShopifyApp.configure do |config|
     {topic: 'orders/cancelled', address: "#{ENV['APP_URL']}/custom_webhooks/orders_cancel"},
 	  {topic: 'app/uninstalled', address: "#{ENV['APP_URL']}/custom_webhooks/app_uninstalled"}
   ]
+
+  config.add_after_authenticate_job = { job: AppInstalledJob }
   
 end

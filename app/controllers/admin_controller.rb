@@ -40,4 +40,8 @@ class AdminController < ApplicationController
 		#arr_of_arrs = CSV.read("db/inventory/#{file_name}")
 		#redirect_to :controller => 'admin', :action => 'admin', :param1 => arr_of_arrs[1]
   	end
+
+    def extend_trial_period 
+      Delayed::Job.enqueue ExtendTrialPeriod.new(params)
+    end
 end

@@ -301,9 +301,9 @@
 	    }
 
 	    if (<%= session[:gender].include?("female") %>) {
-	    	$('#checkbox_xl').attr("data-toggle", "tooltip").attr("data-placement", "bottom").attr("title", "Currently out of stock. Will re-stock soon.");
+	    	$('#checkbox_xl').attr("data-toggle", "tooltip").attr("data-placement", "bottom").attr("title", "Currently out of stock. Will re-stock soon.").attr("style", "pointer-events: all !important;");
 	    } else {
-	    	$('#checkbox_3xl').attr("data-toggle", "tooltip").attr("data-placement", "bottom").attr("title", "Currently out of stock. Will re-stock soon.");
+	    	$('#checkbox_3xl').attr("data-toggle", "tooltip").attr("data-placement", "bottom").attr("title", "Currently out of stock. Will re-stock soon.").attr("style", "pointer-events: all !important;");
 	    }	
 
 	});

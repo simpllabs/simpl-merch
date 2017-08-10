@@ -129,7 +129,7 @@
 				</div>
 				<div class='size-box'>
 					<div class="palette">XL</div>
-					<%= check_box_tag 'checkbox_xl', 'XL', session[:sizes].include?("XL"), class: 'size-checkbox', disabled: session[:gender] == "male" ? false : true %>
+					<%= check_box_tag 'checkbox_xl', 'XL', session[:sizes].include?("XL"), class: 'size-checkbox' %>
 				</div>
 				<% if session[:gender] == "male" %>
 					<div class='size-box'>
@@ -138,7 +138,7 @@
 					</div>
 					<div class='size-box'>
 						<div class="palette">3XL</div>
-						<%= check_box_tag 'checkbox_3xl', '3XL', session[:sizes].include?("3XL"), class: 'size-checkbox', disabled: true %>
+						<%= check_box_tag 'checkbox_3xl', '3XL', session[:sizes].include?("3XL"), class: 'size-checkbox' %>
 					</div>
 				<% end %>
 			</div>
@@ -301,9 +301,9 @@
 	    }
 
 	    if (<%= session[:gender].include?("female") %>) {
-	    	$('#checkbox_xl').attr("data-toggle", "tooltip").attr("data-placement", "bottom").attr("title", "Currently out of stock. Will re-stock soon.").attr("style", "pointer-events: all !important;");
+	    	$('#checkbox_xl').attr("data-toggle", "tooltip").attr("data-placement", "bottom").attr("title", "Currently out of stock. Will re-stock soon.").addClass("disabled");
 	    } else {
-	    	$('#checkbox_3xl').attr("data-toggle", "tooltip").attr("data-placement", "bottom").attr("title", "Currently out of stock. Will re-stock soon.").attr("style", "pointer-events: all !important;");
+	    	$('#checkbox_3xl').attr("data-toggle", "tooltip").attr("data-placement", "bottom").attr("title", "Currently out of stock. Will re-stock soon.").addClass("disabled");
 	    }	
 
 	});

@@ -78,9 +78,11 @@ class ProcessOrdersJob < ProgressJob::Base
             status = "#ValidationError: #{e.message}"
           end
 
+          intl_shipping = (shop.chose_china_post == "No" || shop.chose_china_post.blank?) ? "USPS" : "China Post"
+
           Order.where(fulfillment_status: "Pending").each do |order|
             if shop.shopify_domain == order.shop_domain
-              row = ["", "", order.id, order.shop_domain, order.gender, order.front_design, order.back_design, order.front_ref, order.back_ref, status, order.sku, order.quantity, order.name, order.address1, order.address2, order.company, order.city, order.zip, order.province, order.country]
+              row = ["", order.country == "United States" ? "USPS" : intl_shipping, order.id, order.shop_domain, order.gender, order.front_design, order.back_design, order.front_ref, order.back_ref, status, order.sku, order.quantity, order.name, order.address1, order.address2, order.company, order.city, order.zip, order.province, order.country]
               packing_slip = shop.packing_slip == "Yes" ? [shop.packing_slip_logo, shop.packing_slip_message.sub("[customer_name]", order.name)] : ["",""]
               csv << [*row, *packing_slip]
               order.processed = true

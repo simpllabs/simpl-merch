@@ -37,6 +37,7 @@ class NewOrderJob < ProgressJob::Base
         order.gender = tee.gender
         order.tee_id = tee.id
         order.product_name = line_item[:name]
+        order.price = line_item[:price].to_s
         order.save
       end
     end

@@ -300,7 +300,7 @@
             $(".draggable-front").css({top: '150px', left: left_pos});
 	    }
 
-	    if (<%= session[:gender] %> == "Female") {
+	    if (<%= session[:gender].include?("Female") %>) {
 	    	$('#checkbox_xl').attr("data-toggle", "tooltip").attr("data-placement", "bottom").attr("title", "Currently out of stock. Will re-stock soon.");
 	    } else {
 	    	$('#checkbox_3xl').attr("data-toggle", "tooltip").attr("data-placement", "bottom").attr("title", "Currently out of stock. Will re-stock soon.");

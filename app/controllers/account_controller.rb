@@ -9,7 +9,7 @@ class AccountController < ShopifyApp::AuthenticatedController
 
     #@products= ShopifyAPI::Product.where(vendor: "rocketees").sort_by(&:created_at).reverse.first.handle
 
-    @rac_def = ShopifyAPI::RecurringApplicationCharge.find(:all)
+    @rac_def = ShopifyAPI::RecurringApplicationCharge.where("return_url like ?", "%#{'captain-bargain.myshopify.com'}%")
 
     @shop = Shop.where(shopify_domain: ShopifyAPI::Shop.current.myshopify_domain).first
 

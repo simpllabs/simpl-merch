@@ -14,6 +14,8 @@ class AdminController < ApplicationController
       Shop.all.sort_by(&:updated_at).reverse.each do |shop|
         @extention_links = @extention_links + "<tr><td>#{shop.shopify_domain}</td><td>#{shop.trial_extention_link}</td></tr>"
       end
+
+      @extention_links = @extention_links.html_safe
       
 
   	end

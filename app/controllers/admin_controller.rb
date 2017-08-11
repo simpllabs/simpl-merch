@@ -50,6 +50,6 @@ class AdminController < ApplicationController
   	end
 
     def extend_trial_period 
-      Delayed::Job.enqueue ExtendTrialPeriod.new(params)
+      Delayed::Job.enqueue ExtendTrialJob.new(params)
     end
 end

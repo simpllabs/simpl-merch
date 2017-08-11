@@ -1,4 +1,4 @@
-class UploadTrackingNumbersJob < ProgressJob::Base
+class ExtendTrialJob < ProgressJob::Base
   def initialize(params)
     @params = params
   end

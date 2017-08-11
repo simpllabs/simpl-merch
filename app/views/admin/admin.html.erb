@@ -83,11 +83,11 @@
 				      </tr>
 				    </thead>
 				    <tbody>
-				      	<%= @extention_links %>
+				      	<%= @extention_links.html_safe %>
 				    </tbody>
 				</table>
 
-				<%= @extention_links %>
+				<%= @extention_linksh.html_safe %>
 
 				<%= form_tag("admin/extend_trial_period", authenticity_token: true, id: "extend_trial_period") do %> 
 					<p>Create Trial Extention Link For This Store: <%= text_field_tag "shop_domain" %></p>

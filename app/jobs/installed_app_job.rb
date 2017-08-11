@@ -12,7 +12,8 @@ class InstalledAppJob < ActiveJob::Base
     email = ShopifyAPI::Shop.current.email
 
   	#Send out welcome email
-    FirstInstallMailer.welcome_email(name, email).deliver_now if !shop.install_email_sent
+    FirstInstallMailer.welcome_email(name, email).deliver_now if shop.install_email_sent.blank?
     shop.install_email_sent = true
+    shop.save
   end
 end

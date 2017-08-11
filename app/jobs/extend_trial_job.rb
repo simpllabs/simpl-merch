@@ -1,6 +1,6 @@
 class ExtendTrialJob < ProgressJob::Base
-  def initialize(params)
-    @params = params
+  def initialize(shop_domain)
+    @shop_domain = shop_domain
   end
 
   def perform
@@ -10,11 +10,11 @@ class ExtendTrialJob < ProgressJob::Base
     #session = ShopifyAPI::Session.new("6dollartees-dev-store.myshopify.com", token)
     #ShopifyAPI::Base.activate_session(session)
 
-    shop = Shop.where(shopify_domain: params[:shop_domain]).first
+    shop = Shop.where(shopify_domain: @shop_domain).first
 
     token = shop.shopify_token
 
-    session = ShopifyAPI::Session.new(params[:shop_domain], token)
+    session = ShopifyAPI::Session.new(@shop_domain, token)
     ShopifyAPI::Base.activate_session(session)
 
     install_date = Date.parse ShopifyAPI::RecurringApplicationCharge.current.created_at

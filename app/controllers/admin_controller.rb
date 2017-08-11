@@ -51,5 +51,6 @@ class AdminController < ApplicationController
 
     def extend_trial_period 
       Delayed::Job.enqueue ExtendTrialJob.new(params)
+      head :ok
     end
 end

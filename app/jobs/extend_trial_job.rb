@@ -21,19 +21,21 @@ class ExtendTrialJob < ProgressJob::Base
 
     diff = 10 - (Date.today - install_date).to_i
 
-    recurring_application_charge = ShopifyAPI::RecurringApplicationCharge.new(
-      name: "Rocketees",
-      price: 25,
-      return_url: "https:\/\/#{ShopifyAPI::Shop.current.myshopify_domain}\/admin\/apps\/#{ENV['SHOPIFY_CLIENT_API_KEY']}\/activatecharge",
-      test: true,
-      trial_days: diff,
-      capped_amount: 25,
-      terms: "$25 charged monthly")
+    if diff > 0 
+      recurring_application_charge = ShopifyAPI::RecurringApplicationCharge.new(
+        name: "Rocketees",
+        price: 25,
+        return_url: "https:\/\/#{ShopifyAPI::Shop.current.myshopify_domain}\/admin\/apps\/#{ENV['SHOPIFY_CLIENT_API_KEY']}\/activatecharge",
+        test: true,
+        trial_days: diff,
+        capped_amount: 25,
+        terms: "$25 charged monthly")
 
-    recurring_application_charge.save
+      recurring_application_charge.save
+    end
 
     #send this link back to admin area
-    shop.trial_extention_link = recurring_application_charge.confirmation_url
+    shop.trial_extention_link = diff > 0 ? recurring_application_charge.confirmation_url : "Already got 10 day trial"
     shop.save
 
   end

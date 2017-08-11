@@ -51,6 +51,10 @@ class AdminController < ApplicationController
 
     def extend_trial_period 
       Delayed::Job.enqueue ExtendTrialJob.new(params[:shop_domain])
-      head :ok
+      
+      flash[:notice] = "Creating trial extention link."
+      flash[:type] = "success"
+      flash[:param] = params[:shop_domain]
+      redirect_to "/admin"
     end
 end

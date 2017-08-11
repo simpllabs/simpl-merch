@@ -88,7 +88,7 @@
 				</table>
 
 				<%= form_tag("admin/extend_trial_period", authenticity_token: true, id: "extend_trial_period") do %> 
-					<p>Create Trial Extention Link For This Store: <%= text_field_tag "shop_domain", nil, size: 200 %></p>
+					<p>Create Trial Extention Link For This Store: <%= text_field_tag "shop_domain", nil, size: 75 %></p>
 					<%= submit_tag "Create Link", class: "btn btn-danger create-extention" %>
 				<% end %>
 

@@ -92,7 +92,7 @@
 					<%= submit_tag "Create Link", class: "btn btn-danger create-extention" %>
 				<% end %>
 
-				<%= debug flash[:param] %>
+				<% debug flash[:param] %>
 		<% else %>
 			<%= form_tag("admin", authenticity_token: true, id: "admin-login") do %> 
 				<h2>Rocketees Admin</h2> 

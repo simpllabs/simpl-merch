@@ -54,7 +54,6 @@ class AdminController < ApplicationController
       
       flash[:notice] = "Creating trial extention link."
       flash[:type] = "success"
-      flash[:param] = params[:shop_domain]
       redirect_to "/admin"
     end
 end

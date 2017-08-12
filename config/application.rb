@@ -19,3 +19,5 @@ module Profitee
     # -- all .rb files in that directory are automatically loaded.
   end
 end
+
+Delayed::Worker.destroy_failed_jobs = false

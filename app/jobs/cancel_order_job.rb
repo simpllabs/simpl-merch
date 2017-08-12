@@ -10,7 +10,7 @@ class CancelOrderJob < ProgressJob::Base
 		if order.fulfillment_status == "Pending"
 			order.fulfillment_status = "Cancelled"
 			order.save
-		end
+		end 
     end
   end
 end

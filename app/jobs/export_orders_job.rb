@@ -15,7 +15,9 @@ class ExportOrdersJob < ProgressJob::Base
       to_date = Date.strptime(@params[:to_date], "%m/%d/%Y")
 
       Order.where(created_at: from_date..to_date).each do |order|
-        csv << [order.id, order.shop_domain, order.fulfillment_status, order.product_name, order.quantity, order.name, order.address1, order.address2, order.company, order.city, order.zip, order.province, order.country]
+        if order.shop_domain == @domain
+          csv << [order.id, order.shop_domain, order.fulfillment_status, order.product_name, order.quantity, order.name, order.address1, order.address2, order.company, order.city, order.zip, order.province, order.country]
+        end
       end
 
     end

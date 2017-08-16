@@ -106,6 +106,7 @@ class PublishJob < ProgressJob::Base
         File.open("#{ENV['STORAGE_URL']}/#{f_uuid}/tshirtwarp", "w") {|file| file.puts replace}
       else
         Dir.chdir("#{ENV['STORAGE_URL']}/#{f_uuid}/") do 
+          TestMailMailer.test_email("./tshirtwarp ./lighting.png ./displace.png #{front_design.path} #{mockup_f.path} ../#{f_uuid}_#{color.downcase}.png").deliver_now
           `./tshirtwarp ./lighting.png ./displace.png #{front_design.path} #{mockup_f.path} ../#{f_uuid}_#{color.downcase}.png`
         end
       end

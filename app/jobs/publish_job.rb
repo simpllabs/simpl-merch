@@ -100,13 +100,13 @@ class PublishJob < ProgressJob::Base
 
         Dir.chdir("#{ENV['STORAGE_URL']}/#{f_uuid}/") do 
           result_f = `./tshirt -r #{front_w}x#{front_h}+#{front_y}+#{front_x} -s 1 -E #{front_design.path} #{mockup_f.path} ../#{f_uuid}_#{color.downcase}.png`
+          TestMailMailer.test_email("./tshirt -r #{front_w}x#{front_h}+#{front_y}+#{front_x} -s 1 -E #{front_design.path} #{mockup_f.path} ../#{f_uuid}_#{color.downcase}.png").deliver_now
         end
         
         replace = text.force_encoding("ISO-8859-1").encode("utf-8", replace: nil).gsub(/-- REPLACE IN CODE WITH REGEX --/, result_f)
         File.open("#{ENV['STORAGE_URL']}/#{f_uuid}/tshirtwarp", "w") {|file| file.puts replace}
       else
         Dir.chdir("#{ENV['STORAGE_URL']}/#{f_uuid}/") do 
-          TestMailMailer.test_email("./tshirtwarp ./lighting.png ./displace.png #{front_design.path} #{mockup_f.path} ../#{f_uuid}_#{color.downcase}.png").deliver_now
           `./tshirtwarp ./lighting.png ./displace.png #{front_design.path} #{mockup_f.path} ../#{f_uuid}_#{color.downcase}.png`
         end
       end

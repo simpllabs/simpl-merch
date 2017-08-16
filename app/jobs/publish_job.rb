@@ -99,7 +99,7 @@ class PublishJob < ProgressJob::Base
         text = File.read("#{ENV['STORAGE_URL']}/#{f_uuid}/tshirtwarp")
 
         Dir.chdir("#{ENV['STORAGE_URL']}/#{f_uuid}/") do 
-          result_f = `./tshirt -r #{front_w}x#{front_h}+#{front_y}+#{front_x} -s 0 -E #{front_design.path} #{mockup_f.path} ../#{f_uuid}_#{color.downcase}.png`
+          result_f = `./tshirt -r #{front_w}x#{front_h}+#{front_y}+#{front_x} -s 1 -E #{front_design.path} #{mockup_f.path} ../#{f_uuid}_#{color.downcase}.png`
         end
         
         replace = text.force_encoding("ISO-8859-1").encode("utf-8", replace: nil).gsub(/-- REPLACE IN CODE WITH REGEX --/, result_f)

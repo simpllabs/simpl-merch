@@ -8,7 +8,7 @@ git_source(:github) do |repo_name|
 end
 
 
-gem 'shopify_app', :git => 'https://github.com/Shopify/shopify_app'
+gem 'shopify_app', '7.4.0'
 gem 'clockwork', '2.0.2'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.1'

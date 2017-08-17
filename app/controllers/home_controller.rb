@@ -50,7 +50,7 @@ class HomeController < ShopifyApp::AuthenticatedController
                     name: "Rocketees",
                     price: 25,
                     return_url: "https:\/\/#{ShopifyAPI::Shop.current.myshopify_domain}\/admin\/apps\/#{ENV['SHOPIFY_CLIENT_API_KEY']}\/activatecharge",
-                    test: true,
+                    test: false,
                     trial_days: 3,
                     capped_amount: 25,
                     terms: "$25 charged monthly")

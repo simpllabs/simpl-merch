@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <% application_name = ShopifyApp.configuration.application_name %>
     <title><%= application_name %></title>
+    <%= Gon::Base.render_data %>
     <%= stylesheet_link_tag 'application' %>
     <%= javascript_include_tag 'application', "data-turbolinks-track" => true %>
     <%= csrf_meta_tags %>

@@ -8,7 +8,7 @@ class ProcessOrdersJob < ProgressJob::Base
 
     csv_string = CSV.generate do |csv|
 
-      header = ["TRACKING NUMBER", "Shipping Method", "Order ID", "Shop Domain", "Gender", "Front Design URL", "Back Design URL", "Front Reference URL", "Back Reference URL","Status", "SKU", "Quantity", "Shipping Name", "Shipping Address1", "Shipping Address2", "Shipping Company", "Shipping City", "Shipping ZIP", "Shipping Province/State", "Shipping Country"]
+      header = ["TRACKING NUMBER", "Shipping Method", "Order ID", "Shop Domain", "Gender", "Front Design URL", "Back Design URL", "Front Reference URL", "Back Reference URL", "Status", "SKU", "Light/Dark", "Quantity", "Shipping Name", "Shipping Address1", "Shipping Address2", "Shipping Company", "Shipping City", "Shipping ZIP", "Shipping Province/State", "Shipping Country"]
       packing_slip = ["Packing Slip Logo URL", "Packing Slip Message"]
       csv << [*header, *packing_slip]
 
@@ -82,7 +82,7 @@ class ProcessOrdersJob < ProgressJob::Base
 
           Order.where(fulfillment_status: "Pending").each do |order|
             if shop.shopify_domain == order.shop_domain
-              row = ["", order.country == "United States" ? "USPS" : intl_shipping, order.id, order.shop_domain, order.gender, order.front_design, order.back_design, order.front_ref, order.back_ref, status, order.sku, order.quantity, order.name, order.address1, order.address2, order.company, order.city, order.zip, order.province, order.country]
+              row = ["", order.country == "United States" ? "USPS" : intl_shipping, order.id, order.shop_domain, order.gender, order.front_design, order.back_design, order.front_ref, order.back_ref, status, order.sku, order.light_or_dark, order.quantity, order.name, order.address1, order.address2, order.company, order.city, order.zip, order.province, order.country]
               packing_slip = shop.packing_slip == "Yes" ? [shop.packing_slip_logo, shop.packing_slip_message.sub("[customer_name]", order.name)] : ["",""]
               csv << [*row, *packing_slip]
               order.processed = true

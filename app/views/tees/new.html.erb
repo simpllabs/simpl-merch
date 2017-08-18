@@ -151,7 +151,7 @@
 				<%= hidden_field_tag(:no_account, value: true) %>
 			<% end %>
 			
-			<% debug params %>
+			<% debug @light_or_dark %>
 		</div>
 
 		<div class="col-xs-6 tee-mockup">
@@ -160,7 +160,7 @@
 		          	<div class="resizeable-front draggable-front" style="display:inline-block; top: <%= session[:front_pos][0] %>px; left: <%= session[:front_pos][1] %>px; width: <%= session[:front_size][0] != 0 ? "#{session[:front_size][0]}px" : '30%' %>; height: <%= session[:front_size][1] != 0 ? "#{session[:front_size][1]}px" : 'auto' %>;">
 		                  <div contenteditable="true" id="front-img-wrapper">
 		                  	<% if session[:front_name].present? %>
-		                  		<%= image_tag "#{ENV['STORAGE_URL']}/#{session[:uuid]}_#{session[:front_name]}", class: "front-design-img" %>
+		                  		<%= image_tag "#{ENV['ASSET_STORAGE_URL']}/#{session[:uuid]}_#{session[:front_name]}", class: "front-design-img" %>
 			                  	<%= javascript_tag "alignFrontSessionImage()" %>
 		                  	<% end %>
 		                  </div>
@@ -170,13 +170,18 @@
 		                  <div contenteditable="true" id="back-img-wrapper">
 
 		                  	<% if session[:back_name].present? %>
-		                  		<%= image_tag "#{ENV['STORAGE_URL']}/#{session[:uuid]}_#{session[:back_name]}", class: "back-design-img" %>
+		                  		<%= image_tag "#{ENV['ASSET_STORAGE_URL']}/#{session[:uuid]}_#{session[:back_name]}", class: "back-design-img" %>
 		      					<%= javascript_tag "alignBackSessionImage()" %>
 		                  	<% end %>
 
 		                  </div>
 		          	</div>
 		      	</div>
+
+		      	<% if session[:free_design] && session[:dark_exists] %>
+		      		<%= image_tag("design-color-flip.png", id: 'design-color-flip') %>
+		      	<% end %>
+
 		      	<% if session[:gender] == "male" %>
 					<%= image_tag("black-front-web.jpg", alt: "T-shirt Mockup", id: 'mockup-img') %>
 				<% else %>
@@ -206,6 +211,8 @@
 					</div>
 			</div>
 		</div>
+
+	<%= hidden_field_tag :light_or_dark %>
 
 	<%= hidden_field_tag :front_pos %>
 	<%= hidden_field_tag :back_pos %>

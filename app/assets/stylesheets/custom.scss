@@ -51,6 +51,7 @@ body { background-color: #35414A; color: #F4F6F8;}
 	.tee-mockup { width: 540px; position: relative; margin-top: 20px;}
 	.mockup-img-wrapper {background-color: #F4F6F8; border-radius: 3px;}
 	#mockup-img, #mockup-img-f { width: 510px; margin: 0; border-radius: 3px;}
+	#design-color-flip {position: absolute; width: 40px; top: 450px; left: 20px; cursor: pointer;}
 	.specs { background-color: #2D3840; padding: 10px 20px;}
 	li { color: #F4F6F8; font-size: 0.9em; line-height: 18px;}
 	table { color: #F4F6F8; font-size: 0.9em; }
@@ -123,6 +124,7 @@ body { background-color: #35414A; color: #F4F6F8;}
 	#add_to_collection {min-width: 35%; padding: 20px; color: #F4F6F8; background-color: #6D7A83; margin-bottom: 15px;}
 	#product_tags {width: 35%; padding: 5px 10px; color: #F4F6F8; background-color: #6D7A83; border: 1px solid #6D7A83; border-radius: 3px; margin-bottom: 15px; font-size: 1.1em;}
 	#product_price {width: 25%; padding:5px 10px; color: #F4F6F8; background-color: #6D7A83; border: 1px solid #6D7A83; border-radius: 3px; margin-bottom: 15px; font-size: 1.1em;}
+	
 
 	::-webkit-input-placeholder { /* WebKit, Blink, Edge */
 	    color:    #35414A;

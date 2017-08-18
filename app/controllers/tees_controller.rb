@@ -54,7 +54,6 @@ class TeesController < ShopifyApp::AuthenticatedController
     @mockup_image_f = pre_f + session[:colors].first.downcase + "_mockup_f.png"
     @mockup_image_b = pre_f + session[:colors].first.downcase + "_mockup_b.png"
 
-
     @front_pos_scaled = [0,0]
     @front_pos_scaled[0] = session[:front_pos][0].to_f * 0.627
     @front_pos_scaled[1] = session[:front_pos][1].to_f * 0.627
@@ -71,6 +70,12 @@ class TeesController < ShopifyApp::AuthenticatedController
     @back_size_scaled[0] = session[:back_size][0].to_f * 0.627 
     @back_size_scaled[1] = session[:back_size][1].to_f * 0.627
 
+    session[:light_or_dark] = params[:light_or_dark]
+    parsed_lod = JSON.parse(session[:light_or_dark]) if params[:light_or_dark].present?
+    @light_or_dark = parsed_lod[session[:colors].first.downcase]
+
+    flash[:reviewing] = true
+
   end
 
   def reset_tee_session 
@@ -86,6 +91,8 @@ class TeesController < ShopifyApp::AuthenticatedController
     session[:gender] = nil
     session[:uuid] = SecureRandom.uuid
     session[:free_design] = false
+    session[:light_or_dark] = nil
+    session[:dark_exists] = false
   end
 
   def new
@@ -94,7 +101,7 @@ class TeesController < ShopifyApp::AuthenticatedController
       reset_tee_session
     end
 
-    if params[:gender].present? && session[:gender].present? && session[:gender] != params[:gender]
+    unless flash[:reviewing]
       reset_tee_session
       #fullpage_redirect_to "https:\/\/#{ShopifyAPI::Shop.current.myshopify_domain}\/admin\/apps\/#{ENV['SHOPIFY_CLIENT_API_KEY']}\/"
     end
@@ -110,12 +117,20 @@ class TeesController < ShopifyApp::AuthenticatedController
       FileUtils.mkdir("#{ENV['STORAGE_URL']}/#{tmp_uuid}/")
       FileUtils.cp("app/assets/images/free-designs/#{session[:img_src]}", "#{ENV['STORAGE_URL']}/#{tmp_uuid}/")
       File.rename("#{ENV['STORAGE_URL']}/#{tmp_uuid}/#{File.basename(session[:img_src])}", "#{ENV['STORAGE_URL']}/#{session[:uuid]}_#{File.basename(session[:img_src])}")
+
+      if Pathname.new("app/assets/images/free-designs/#{session[:img_src].gsub('light', 'dark')}").exist?
+        FileUtils.cp("app/assets/images/free-designs/#{session[:img_src].gsub('light', 'dark')}", "#{ENV['STORAGE_URL']}/#{tmp_uuid}/") 
+        File.rename("#{ENV['STORAGE_URL']}/#{tmp_uuid}/#{File.basename(session[:img_src].gsub('light', 'dark'))}", "#{ENV['STORAGE_URL']}/#{session[:uuid]}_#{File.basename(session[:img_src].gsub('light', 'dark'))}")
+        session[:dark_exists] = true
+      end
+      
       FileUtils.rmdir("#{ENV['STORAGE_URL']}/#{tmp_uuid}/")
 
       session[:front_name] = File.basename(session[:img_src])
+
     end
      
-
+    gon.light_or_dark = session[:light_or_dark]
 
     session[:gender] = "male" if session[:gender].blank?
     session[:gender] = params[:gender] if params[:gender].present?
@@ -153,6 +168,7 @@ class TeesController < ShopifyApp::AuthenticatedController
     @tee.gender = session[:gender]
     @tee.one_time_fee_charged = session[:free_design]
     @tee.back_one_time_fee_charged = session[:back_name].present? ? false : true
+    @tee.light_or_dark = session[:light_or_dark]
     @tee.save
 
     #store session values
@@ -169,6 +185,7 @@ class TeesController < ShopifyApp::AuthenticatedController
     @data[:front_size] = session[:front_size]
     @data[:back_size] = session[:back_size]
     @data[:uuid] = session[:uuid]
+    @data[:light_or_dark] = session[:light_or_dark]
     @data[:ref_uuid] = ref_uuid
 
     #enqueu the publishing of the tee 

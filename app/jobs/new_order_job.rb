@@ -19,6 +19,11 @@ class NewOrderJob < ProgressJob::Base
         order.shopify_line_item_id = line_item[:id]
         order.fulfillment_status = "Pending"
         order.sku = line_item[:sku]
+
+        parsed_lod = JSON.parse(tee.light_or_dark)
+        color = line_item[:sku].split('-').last.downcase
+
+        order.light_or_dark = parsed_lod[color]
         order.quantity = line_item[:quantity]
         order.price = line_item[:price]
         order.name = @params[:shipping_address][:name]

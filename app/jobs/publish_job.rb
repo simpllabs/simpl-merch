@@ -56,8 +56,12 @@ class PublishJob < ProgressJob::Base
     back_w = (@data[:back_size][0].to_i*1.96).round
     back_h = (@data[:back_size][1].to_i*1.96).round
 
-    front_design = MiniMagick::Image.open("#{ENV['STORAGE_URL']}/#{@data[:uuid]}_#{File.basename(@data[:front_name])}")
-    front_design.resize("#{front_w}")
+
+    front_design_light = MiniMagick::Image.open("#{ENV['STORAGE_URL']}/#{@data[:uuid]}_#{File.basename(@data[:front_name])}")
+    front_design_light.resize("#{front_w}")
+
+    front_design_dark = MiniMagick::Image.open("#{ENV['STORAGE_URL']}/#{@data[:uuid]}_#{File.basename(@data[:front_name].gsub('light', 'dark'))}") if @data[:light_or_dark].include?("dark")
+    front_design_dark.resize("#{front_w}")
 
     back_design = nil
     if @data[:back_name].present?
@@ -87,7 +91,11 @@ class PublishJob < ProgressJob::Base
     f_uuid = SecureRandom.uuid
     b_uuid = SecureRandom.uuid
 
+    parsed_lod = JSON.parse(@data[:light_or_dark])
+
     @data[:colors].each do |color|
+
+      front_design = parsed_lod[color.downcase] == "light" ? front_design_light : front_design_dark
 
       mockup_f  = MiniMagick::Image.open("app/assets/images/#{pre_f}#{color.downcase}_mockup_f.png")
       mockup_b  = MiniMagick::Image.open("app/assets/images/#{pre_f}#{color.downcase}_mockup_b.png") if @data[:back_name].present?
@@ -99,7 +107,7 @@ class PublishJob < ProgressJob::Base
         text = File.read("#{ENV['STORAGE_URL']}/#{f_uuid}/tshirtwarp")
 
         Dir.chdir("#{ENV['STORAGE_URL']}/#{f_uuid}/") do 
-          result_f = `./tshirt -r #{front_w}x#{front_h}+#{front_y}+#{front_x} -s 1 -E #{front_design.path} #{mockup_f.path} ../#{f_uuid}_#{color.downcase}.png`
+          result_f = `./tshirt -r #{front_w}x#{front_h}+#{front_y}+#{front_x} -b 0.5 -l 25 -E #{front_design.path} #{mockup_f.path} ../#{f_uuid}_#{color.downcase}.png`
           #TestMailMailer.test_email("./tshirt -r #{front_w}x#{front_h}+#{front_y}+#{front_x} -s 1 -E #{front_design.path} #{mockup_f.path} ../#{f_uuid}_#{color.downcase}.png").deliver_now
         end
         

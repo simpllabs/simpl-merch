@@ -2,10 +2,36 @@ $(function(){
 
 	var is_front = true;
 	var current_color = "black";
+  var light_or_dark = {"black": "light", "white": "light", "navy": "light", "green": "light", "red": "light"};
+
+  if (gon.light_or_dark != null) {
+    light_or_dark = JSON.parse(gon.light_or_dark);
+    console.log("light_or_dark: ", light_or_dark);
+  }
 
   // TOOLTIPS
   $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip(); 
+  });
+
+  /* Light Or Dark Logic */
+  light_src = $(".front-design-img").attr('src');
+  if (light_src != null) {
+    dark_src = light_src.substring(1, light_src.indexOf('light')+5).replace("light", "dark").concat(".png");
+    light_src = light_src.substring(1, light_src.indexOf('light')+5).concat(".png");
+    preload(['<%= asset_url("' + dark_src + '") %>']);
+  }
+
+  $('#design-color-flip').click(function(){
+    if (light_or_dark[current_color] == "light") {
+      light_or_dark[current_color] = "dark"
+      $(".front-design-img").attr('src', '<%= asset_url("' + dark_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
+    } else {
+      light_or_dark[current_color] = "light"
+      $(".front-design-img").attr('src', '<%= asset_url("' + light_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
+    }
+
+    //console.log("light_or_dark: %o", light_or_dark)
   });
 
   /*********************/
@@ -16,6 +42,8 @@ $(function(){
     console.log("clicked flip");
     is_front = !is_front;
     var x = '', front_pos = '', back_pos = '', front_size = '', back_size = '';
+
+    $('#design-color-flip').toggle();
 
       if (is_front) {
         x = $(".draggable-back").position();
@@ -44,8 +72,8 @@ $(function(){
         $(".draggable-back").show();
       }
 
-    console.log("back_pos: " + $("#back_pos").val());
-    console.log("front_pos: " + $("#front_pos").val());
+    //console.log("back_pos: " + $("#back_pos").val());
+    //console.log("front_pos: " + $("#front_pos").val());
 
 		  switch(current_color) {
 		    case "black":
@@ -70,6 +98,8 @@ $(function(){
       return false;
 	});
 
+  
+
   $(".black").click(function(){
    	current_color = "black";
     if (is_front) {
@@ -82,6 +112,12 @@ $(function(){
       $("#mockup-img-f").attr('src','<%= asset_url("f-black-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
     } else {
       $("#mockup-img-f").attr('src','<%= asset_url("f-black-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    }
+
+    if (light_or_dark["black"] == "light") {
+      $(".front-design-img").attr('src', '<%= asset_url("' + light_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
+    } else {
+      $(".front-design-img").attr('src', '<%= asset_url("' + dark_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
     }
   });
 
@@ -97,6 +133,12 @@ $(function(){
       $("#mockup-img-f").attr('src','<%= asset_url("f-white-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
     } else {
       $("#mockup-img-f").attr('src','<%= asset_url("f-white-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    }
+
+    if (light_or_dark["white"] == "light") {
+      $(".front-design-img").attr('src', '<%= asset_url("' + light_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
+    } else {
+      $(".front-design-img").attr('src', '<%= asset_url("' + dark_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
     }
   });
 
@@ -114,6 +156,12 @@ $(function(){
     } else {
       $("#mockup-img-f").attr('src','<%= asset_url("f-navy-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
     }
+
+    if (light_or_dark["navy"] == "light") {
+      $(".front-design-img").attr('src', '<%= asset_url("' + light_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
+    } else {
+      $(".front-design-img").attr('src', '<%= asset_url("' + dark_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
+    }
   });
 
   $(".green").click(function(){
@@ -129,6 +177,12 @@ $(function(){
     } else {
       $("#mockup-img-f").attr('src','<%= asset_url("f-green-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
     }
+
+    if (light_or_dark["green"] == "light") {
+      $(".front-design-img").attr('src', '<%= asset_url("' + light_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
+    } else {
+      $(".front-design-img").attr('src', '<%= asset_url("' + dark_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
+    }
   });
 
   $(".red").click(function(){
@@ -143,6 +197,12 @@ $(function(){
       $("#mockup-img-f").attr('src','<%= asset_url("f-red-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
     } else {
       $("#mockup-img-f").attr('src','<%= asset_url("f-red-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    }
+
+    if (light_or_dark["red"] == "light") {
+      $(".front-design-img").attr('src', '<%= asset_url("' + light_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
+    } else {
+      $(".front-design-img").attr('src', '<%= asset_url("' + dark_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
     }
   });
 
@@ -464,6 +524,8 @@ $(function(){
       var back_size = [$(".draggable-back").width(), $(".draggable-back").height()];
       $("#back_size").val(back_size);
     }
+
+    $("#light_or_dark").val(JSON.stringify(light_or_dark)); 
 
   });
 

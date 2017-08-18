@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170811173324) do
+ActiveRecord::Schema.define(version: 20170818144818) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -151,6 +151,7 @@ ActiveRecord::Schema.define(version: 20170811173324) do
     t.string "shopify_line_item_id"
     t.string "gender"
     t.integer "tee_id"
+    t.string "light_or_dark"
     t.index ["shop_domain"], name: "index_orders_on_shop_domain"
   end
 
@@ -183,6 +184,7 @@ ActiveRecord::Schema.define(version: 20170811173324) do
     t.string "tee_back_ref"
     t.boolean "one_time_fee_charged"
     t.boolean "back_one_time_fee_charged"
+    t.string "light_or_dark"
   end
 
 end

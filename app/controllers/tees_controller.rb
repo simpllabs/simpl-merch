@@ -5,7 +5,7 @@ class TeesController < ShopifyApp::AuthenticatedController
   def review
 
     #if returning from publish page, redirect to new tee right away
-    if params[:published]
+    if params[:commit].blank?
       reset_tee_session
       fullpage_redirect_to "https:\/\/#{ShopifyAPI::Shop.current.myshopify_domain}\/admin\/apps\/#{ENV['SHOPIFY_CLIENT_API_KEY']}\/tees/new/?gender=male" 
     end
@@ -72,7 +72,7 @@ class TeesController < ShopifyApp::AuthenticatedController
 
     session[:light_or_dark] = params[:light_or_dark]
     parsed_lod = JSON.parse(session[:light_or_dark]) if params[:light_or_dark].present?
-    @light_or_dark = parsed_lod[session[:colors].first.downcase]
+    @light_or_dark = parsed_lod[session[:colors].first.downcase] if params[:light_or_dark].present?
 
     flash[:reviewing] = true
 

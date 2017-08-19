@@ -14,35 +14,51 @@ class ProcessOrdersJob < ProgressJob::Base
 
       Shop.where.not(stripe_customer_id: nil).each do |shop|
 
+        session = ShopifyAPI::Session.new(shop.shopify_domain, shop.shopify_token)
+        ShopifyAPI::Base.activate_session(session)
+
+        #start by checking if orders with pending payment status have been paid
+        Order.where(fulfillment_status: "Pending").each do |order|
+          if order.payment_status == "pending"
+            #Do a Shopify API call to check is still pending
+            payment_status = ShopifyAPI::Order.find(order.shopify_order_id).financial_status
+            order.payment_status = payment_status
+            order.save
+          end
+        end
+
+
         charge_amount = 0
         design_fee = 0
         Order.where(fulfillment_status: "Pending").each do |order|
-          #one time design fees?
-          tee = Tee.where(id: order.tee_id).first
-          if !tee.one_time_fee_charged
-            design_fee += 3 
-            tee.one_time_fee_charged = true
+          
+          # Don't process order if its payment status is pending
+          if order.payment_status != "pending"
+
+            tee = Tee.where(id: order.tee_id).first
+            if !tee.one_time_fee_charged
+              design_fee += 3 
+              tee.one_time_fee_charged = true
+            end
+            if !tee.back_one_time_fee_charged
+              design_fee += 3 
+              tee.back_one_time_fee_charged = true
+            end
+            tee.save
+
+            base_cost = order.back_design.present? ? 7 : 6
+
+            is_US = order.country.include?("United States")
+            chose_china_post = shop.chose_china_post == "Yes"
+
+            if !is_US && !chose_china_post
+              base_cost = base_cost + 4
+            end
+
+            if shop.shopify_domain == order.shop_domain
+              charge_amount = charge_amount + (order.quantity * base_cost)
+            end
           end
-          if !tee.back_one_time_fee_charged
-            design_fee += 3 
-            tee.back_one_time_fee_charged = true
-          end
-          tee.save
-
-          base_cost = order.back_design.present? ? 7 : 6
-
-          is_US = order.country.include?("United States")
-          chose_china_post = shop.chose_china_post == "Yes"
-
-          if !is_US && !chose_china_post
-            base_cost = base_cost + 4
-          end
-
-          if shop.shopify_domain == order.shop_domain
-            charge_amount = charge_amount + (order.quantity * base_cost)
-          end
-
-
 
         end
 
@@ -81,7 +97,7 @@ class ProcessOrdersJob < ProgressJob::Base
           intl_shipping = (shop.chose_china_post == "No" || shop.chose_china_post.blank?) ? "USPS" : "China Post"
 
           Order.where(fulfillment_status: "Pending").each do |order|
-            if shop.shopify_domain == order.shop_domain
+            if shop.shopify_domain == order.shop_domain && order.payment_status != "pending"
               row = ["", order.country == "United States" ? "USPS" : intl_shipping, order.id, order.shop_domain, order.gender, order.front_design, order.back_design, order.front_ref, order.back_ref, status, order.sku, order.light_or_dark, order.quantity, order.name, order.address1, order.address2, order.company, order.city, order.zip, order.province, order.country]
               packing_slip = shop.packing_slip == "Yes" ? [shop.packing_slip_logo, shop.packing_slip_message.sub("[customer_name]", order.name)] : ["",""]
               csv << [*row, *packing_slip]

@@ -17,6 +17,7 @@ class NewOrderJob < ProgressJob::Base
         order.shop_domain = @domain
         order.shopify_order_id = @params[:id]
         order.shopify_line_item_id = line_item[:id]
+        order.payment_status = @params[:financial_status]
         order.fulfillment_status = "Pending"
         order.sku = line_item[:sku]
 

@@ -9,7 +9,7 @@ handler do |job|
 end
 
 # Define the jobs
-every(5.minutes, 'test.job') { Delayed::Job.enqueue ProcessOrdersJob.new }
+#every(5.minutes, 'test.job') { Delayed::Job.enqueue ProcessOrdersJob.new }
 
 every(6.hours, 'clean_tmp.job') { Delayed::Job.enqueue CleanTmpJob.new }
 

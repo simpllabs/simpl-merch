@@ -61,7 +61,7 @@ class PublishJob < ProgressJob::Base
     front_design_light.resize("#{front_w}")
 
     front_design_dark = MiniMagick::Image.open("#{ENV['STORAGE_URL']}/#{@data[:uuid]}_#{File.basename(@data[:front_name].gsub('light', 'dark'))}") if @data[:light_or_dark].include?("dark")
-    front_design_dark.resize("#{front_w}")
+    front_design_dark.resize("#{front_w}") if @data[:light_or_dark].include?("dark")
 
     back_design = nil
     if @data[:back_name].present?

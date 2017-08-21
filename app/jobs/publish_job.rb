@@ -46,9 +46,8 @@ class PublishJob < ProgressJob::Base
     @tee.save # Store product id in Tee table row
 
     collection = ShopifyAPI::CustomCollection.find(:all, :params => { :title => @params[:add_to_collection] }).first if !@params[:add_to_collection].include?("- None -")
-    collection = ShopifyAPI::SmartCollection.find(:all, params: { :title => @params[:add_to_collection] }).first if !@params[:add_to_collection].include?("- None -") && collection.blank?
-    collection.add_product(new_tee) if !@params[:add_to_collection].include?("- None -")
-    collection.save if !@params[:add_to_collection].include?("- None -")
+    collection.add_product(new_tee) if !@params[:add_to_collection].include?("- None -") && collection.present?
+    collection.save if !@params[:add_to_collection].include?("- None -") && collection.present?
 
     # 3. Resize designs
     update_progress(step: 10)

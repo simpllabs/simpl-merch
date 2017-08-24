@@ -51,10 +51,10 @@ class PublishJob < ProgressJob::Base
 
     # 3. Resize designs
     update_progress(step: 10)
-    front_w = (@data[:front_size][0].to_i*1.96).round
-    front_h = (@data[:front_size][1].to_i*1.96).round
-    back_w = (@data[:back_size][0].to_i*1.96).round
-    back_h = (@data[:back_size][1].to_i*1.96).round
+    front_w = (@data[:front_size][0].to_i*2.94).round
+    front_h = (@data[:front_size][1].to_i*2.94).round
+    back_w = (@data[:back_size][0].to_i*2.94).round
+    back_h = (@data[:back_size][1].to_i*2.94).round
 
 
     front_design_light = MiniMagick::Image.open("#{ENV['STORAGE_URL']}/#{@data[:uuid]}_#{File.basename(@data[:front_name])}")
@@ -77,11 +77,11 @@ class PublishJob < ProgressJob::Base
     progress_count = (70/@data[:colors].count/2).round if @data[:back_name].present?
     pre_f = @data[:gender] == "male" ? "" : "f_"
 
-    front_x = (@data[:front_pos][0].to_i*1.96).round
-    front_y = (@data[:front_pos][1].to_i*1.96).round
+    front_x = (@data[:front_pos][0].to_i*2.94).round
+    front_y = (@data[:front_pos][1].to_i*2.94).round
 
-    back_x = (@data[:back_pos][0].to_i*1.96).round
-    back_y = (@data[:back_pos][1].to_i*1.96).round
+    back_x = (@data[:back_pos][0].to_i*2.94).round
+    back_y = (@data[:back_pos][1].to_i*2.94).round
 
     mockup_f_done = nil
     mockup_b_done = nil

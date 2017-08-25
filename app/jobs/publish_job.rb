@@ -107,7 +107,7 @@ class PublishJob < ProgressJob::Base
         text = File.read("#{ENV['STORAGE_URL']}/#{f_uuid}/tshirtwarp")
 
         Dir.chdir("#{ENV['STORAGE_URL']}/#{f_uuid}/") do 
-          result_f = `./tshirt -r #{front_w}x#{front_h}+#{front_y}+#{front_x} -b 0.1 -l 25 -E #{front_design.path} #{mockup_f.path} ../#{f_uuid}_#{color.downcase}.png`
+          result_f = `./tshirt -r #{front_w}x#{front_h}+#{front_y}+#{front_x} -b 0 -l 25 -E #{front_design.path} #{mockup_f.path} ../#{f_uuid}_#{color.downcase}.png`
           #TestMailMailer.test_email("./tshirt -r #{front_w}x#{front_h}+#{front_y}+#{front_x} -s 1 -E #{front_design.path} #{mockup_f.path} ../#{f_uuid}_#{color.downcase}.png").deliver_now
         end
         

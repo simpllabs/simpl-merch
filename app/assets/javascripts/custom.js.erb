@@ -114,7 +114,7 @@ $(function(){
       $("#mockup-img-f").attr('src','<%= asset_url("f-black-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
     }
 
-    if (light_or_dark["black"] == "light") {
+    if (light_or_dark["black"] == "light" && $('#design-color-flip').length != 0) {
       $(".front-design-img").attr('src', '<%= asset_url("' + light_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
     } else {
       $(".front-design-img").attr('src', '<%= asset_url("' + dark_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
@@ -135,7 +135,7 @@ $(function(){
       $("#mockup-img-f").attr('src','<%= asset_url("f-white-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
     }
 
-    if (light_or_dark["white"] == "light") {
+    if (light_or_dark["white"] == "light" && $('#design-color-flip').length != 0) {
       $(".front-design-img").attr('src', '<%= asset_url("' + light_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
     } else {
       $(".front-design-img").attr('src', '<%= asset_url("' + dark_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
@@ -157,7 +157,7 @@ $(function(){
       $("#mockup-img-f").attr('src','<%= asset_url("f-navy-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
     }
 
-    if (light_or_dark["navy"] == "light") {
+    if (light_or_dark["navy"] == "light" && $('#design-color-flip').length != 0) {
       $(".front-design-img").attr('src', '<%= asset_url("' + light_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
     } else {
       $(".front-design-img").attr('src', '<%= asset_url("' + dark_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
@@ -178,7 +178,7 @@ $(function(){
       $("#mockup-img-f").attr('src','<%= asset_url("f-green-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
     }
 
-    if (light_or_dark["green"] == "light") {
+    if (light_or_dark["green"] == "light" && $('#design-color-flip').length != 0) {
       $(".front-design-img").attr('src', '<%= asset_url("' + light_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
     } else {
       $(".front-design-img").attr('src', '<%= asset_url("' + dark_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
@@ -199,7 +199,7 @@ $(function(){
       $("#mockup-img-f").attr('src','<%= asset_url("f-red-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
     }
 
-    if (light_or_dark["red"] == "light") {
+    if (light_or_dark["red"] == "light" && $('#design-color-flip').length != 0) {
       $(".front-design-img").attr('src', '<%= asset_url("' + light_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
     } else {
       $(".front-design-img").attr('src', '<%= asset_url("' + dark_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });

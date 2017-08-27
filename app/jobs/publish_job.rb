@@ -57,15 +57,15 @@ class PublishJob < ProgressJob::Base
     back_h = (@data[:back_size][1].to_i*1.96).round
 
 
-    front_design_light = MiniMagick::Image.open("#{ENV['STORAGE_URL']}/#{@data[:uuid]}_#{File.basename(@data[:front_name])}")
+    front_design_light = MiniMagick::Image.new("#{ENV['STORAGE_URL']}/#{@data[:uuid]}_#{File.basename(@data[:front_name])}")
     front_design_light.resize("#{front_w}")
 
-    front_design_dark = MiniMagick::Image.open("#{ENV['STORAGE_URL']}/#{@data[:uuid]}_#{File.basename(@data[:front_name].gsub('light', 'dark'))}") if @data[:light_or_dark].include?("dark")
+    front_design_dark = MiniMagick::Image.new("#{ENV['STORAGE_URL']}/#{@data[:uuid]}_#{File.basename(@data[:front_name].gsub('light', 'dark'))}") if @data[:light_or_dark].include?("dark")
     front_design_dark.resize("#{front_w}") if @data[:light_or_dark].include?("dark")
 
     back_design = nil
     if @data[:back_name].present?
-      back_design = MiniMagick::Image.open("#{ENV['STORAGE_URL']}/#{@data[:uuid]}_#{File.basename(@data[:back_name])}")
+      back_design = MiniMagick::Image.new("#{ENV['STORAGE_URL']}/#{@data[:uuid]}_#{File.basename(@data[:back_name])}")
       back_design.resize("#{back_w}") 
     end
 

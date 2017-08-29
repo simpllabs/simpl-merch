@@ -7,10 +7,10 @@ class CancelOrderJob < ProgressJob::Base
   def perform
 
     Order.where(shopify_order_id: "#{@params[:id]}").each do |order|
-		if order.fulfillment_status == "Pending"
-			order.fulfillment_status = "Cancelled"
-			order.save
-		end 
+  		if order.fulfillment_status == "Pending"
+  			order.fulfillment_status = "Cancelled"
+  			order.save
+  		end 
     end
   end
 end

@@ -24,7 +24,7 @@ class NewOrderJob < ProgressJob::Base
         parsed_lod = JSON.parse(tee.light_or_dark) if tee.light_or_dark.present?
         color = line_item[:sku].split('-').last.downcase
 
-        order.light_or_dark = parsed_lod[color]
+        order.light_or_dark = parsed_lod[color] if tee.light_or_dark.present?
         order.quantity = line_item[:quantity]
         order.price = line_item[:price]
         order.name = @params[:shipping_address][:name]

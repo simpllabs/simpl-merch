@@ -97,8 +97,16 @@ class PublishJob < ProgressJob::Base
 
       front_design = parsed_lod[color.downcase] == "light" ? front_design_light : front_design_dark
 
-      mockup_f  = MiniMagick::Image.open("app/assets/images/#{pre_f}#{color.downcase}_mockup_f.png")
-      mockup_b  = MiniMagick::Image.open("app/assets/images/#{pre_f}#{color.downcase}_mockup_b.png") if @data[:back_name].present?
+      #add new stuff
+      FileUtils.cp("app/assets/images/#{pre_f}#{color.downcase}_mockup_f.png", "#{ENV['STORAGE_URL']}/#{f_uuid}_#{pre_f}#{color.downcase}_mockup_f.png")
+      FileUtils.cp("app/assets/images/#{pre_f}#{color.downcase}_mockup_b.png", "#{ENV['STORAGE_URL']}/#{b_uuid}_#{pre_f}#{color.downcase}_mockup_b.png") if @data[:back_name].present?
+      #end new stuff
+
+      mockup_f  = MiniMagick::Image.new("#{ENV['STORAGE_URL']}/#{f_uuid}_#{pre_f}#{color.downcase}_mockup_f.png")
+      mockup_b  = MiniMagick::Image.new("#{ENV['STORAGE_URL']}/#{b_uuid}_#{pre_f}#{color.downcase}_mockup_b.png") if @data[:back_name].present?
+
+      #mockup_f  = MiniMagick::Image.open("app/assets/images/#{pre_f}#{color.downcase}_mockup_f.png")
+      #mockup_b  = MiniMagick::Image.open("app/assets/images/#{pre_f}#{color.downcase}_mockup_b.png") if @data[:back_name].present?
 
       if result_f.blank? 
         FileUtils.mkdir("#{ENV['STORAGE_URL']}/#{f_uuid}/")
@@ -107,7 +115,8 @@ class PublishJob < ProgressJob::Base
         text = File.read("#{ENV['STORAGE_URL']}/#{f_uuid}/tshirtwarp")
 
         Dir.chdir("#{ENV['STORAGE_URL']}/#{f_uuid}/") do 
-          result_f = `./tshirt -r #{front_w}x#{front_h}+#{front_y}+#{front_x} -b 0 -l 25 -E ../#{File.basename(front_design.path)} #{mockup_f.path} ../#{f_uuid}_#{color.downcase}.png`
+          result_f = `./tshirt -r #{front_w}x#{front_h}+#{front_y}+#{front_x} -b 0 -l 25 -E ../#{File.basename(front_design.path)} ../#{File.basename(mockup_f.path)} ../#{f_uuid}_#{color.downcase}.png`
+          #result_f = `./tshirt -r #{front_w}x#{front_h}+#{front_y}+#{front_x} -b 0 -l 25 -E ../#{File.basename(front_design.path)} #{mockup_f.path} ../#{f_uuid}_#{color.downcase}.png`
           #TestMailMailer.test_email("./tshirt -r #{front_w}x#{front_h}+#{front_y}+#{front_x} -s 1 -E #{front_design.path} #{mockup_f.path} ../#{f_uuid}_#{color.downcase}.png").deliver_now
         end
         
@@ -115,7 +124,8 @@ class PublishJob < ProgressJob::Base
         File.open("#{ENV['STORAGE_URL']}/#{f_uuid}/tshirtwarp", "w") {|file| file.puts replace}
       else
         Dir.chdir("#{ENV['STORAGE_URL']}/#{f_uuid}/") do 
-          `./tshirtwarp ./lighting.png ./displace.png ../#{File.basename(front_design.path)} #{mockup_f.path} ../#{f_uuid}_#{color.downcase}.png`
+          `./tshirtwarp ./lighting.png ./displace.png ../#{File.basename(front_design.path)} ../#{File.basename(mockup_f.path)} ../#{f_uuid}_#{color.downcase}.png`
+          #`./tshirtwarp ./lighting.png ./displace.png ../#{File.basename(front_design.path)} #{mockup_f.path} ../#{f_uuid}_#{color.downcase}.png`
         end
       end
 
@@ -141,14 +151,16 @@ class PublishJob < ProgressJob::Base
           text = File.read("#{ENV['STORAGE_URL']}/#{b_uuid}/tshirtwarp")
 
           Dir.chdir("#{ENV['STORAGE_URL']}/#{b_uuid}/") do 
-            result_b = `./tshirt -r #{back_w}x#{back_h}+#{back_y}+#{back_x} -s 0 -b 0 -C over -E ../#{File.basename(back_design.path)} #{mockup_b.path} ../B#{b_uuid}_#{color.downcase}.png`
+            result_b = `./tshirt -r #{back_w}x#{back_h}+#{back_y}+#{back_x} -s 0 -b 0 -C over -E ../#{File.basename(back_design.path)} ../#{File.basename(mockup_b.path)} ../B#{b_uuid}_#{color.downcase}.png`
+            #result_b = `./tshirt -r #{back_w}x#{back_h}+#{back_y}+#{back_x} -s 0 -b 0 -C over -E ../#{File.basename(back_design.path)} #{mockup_b.path} ../B#{b_uuid}_#{color.downcase}.png`
           end
 
           replace = text.force_encoding("ISO-8859-1").encode("utf-8", replace: nil).gsub(/-- REPLACE IN CODE WITH REGEX --/, result_b)
           File.open("#{ENV['STORAGE_URL']}/#{b_uuid}/tshirtwarp", "w") {|file| file.puts replace}
         else
           Dir.chdir("#{ENV['STORAGE_URL']}/#{b_uuid}/") do 
-            `./tshirtwarp ./lighting.png ./displace.png ../#{File.basename(back_design.path)} #{mockup_b.path} ../B#{b_uuid}_#{color.downcase}.png`
+            `./tshirtwarp ./lighting.png ./displace.png ../#{File.basename(back_design.path)} ../#{File.basename(mockup_b.path)} ../B#{b_uuid}_#{color.downcase}.png`
+            #`./tshirtwarp ./lighting.png ./displace.png ../#{File.basename(back_design.path)} #{mockup_b.path} ../B#{b_uuid}_#{color.downcase}.png`
           end
         end
 
@@ -191,6 +203,8 @@ class PublishJob < ProgressJob::Base
     @data[:colors].each do |color|
       FileUtils.rm("#{ENV['STORAGE_URL']}/#{f_uuid}_#{color.downcase}.png")
       FileUtils.rm("#{ENV['STORAGE_URL']}/B#{b_uuid}_#{color.downcase}.png") if @data[:back_name].present?
+      FileUtils.rm("#{ENV['STORAGE_URL']}/#{f_uuid}_#{pre_f}#{color.downcase}_mockup_f.png")
+      FileUtils.rm("#{ENV['STORAGE_URL']}/#{b_uuid}_#{pre_f}#{color.downcase}_mockup_b.png") if @data[:back_name].present?
     end
 
     

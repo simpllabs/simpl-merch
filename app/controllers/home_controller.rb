@@ -53,7 +53,7 @@ class HomeController < ShopifyApp::AuthenticatedController
                     price: 25,
                     return_url: "https:\/\/#{ShopifyAPI::Shop.current.myshopify_domain}\/admin\/apps\/#{ENV['SHOPIFY_CLIENT_API_KEY']}\/activatecharge",
                     test: false,
-                    trial_days: 10,
+                    trial_days: 7,
                     capped_amount: 25,
                     terms: "$25 charged monthly")
 

@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  get 'img_size.js', 
-
   get '/storage/:image', to: 'tees#return_stored_image'
 
   get '/check.txt', to: proc {[200, {}, ['it_works']]}

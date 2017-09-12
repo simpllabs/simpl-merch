@@ -12,5 +12,8 @@ ShopifyApp.configure do |config|
   ]
 
   config.after_authenticate_job = { job: InstalledAppJob }
+  config.scripttags = [
+    {event: 'onload', src: "https://app.rocketees.com/assets/img_size.js"}
+  ]
   
 end

@@ -16,6 +16,5 @@ class InstalledAppJob < ActiveJob::Base
     shop.install_email_sent = true
     shop.save
 
-    ShopifyAPI::ScriptTag.create({:src => "https://app.rocketees.com/img_size.js", :event => 'onload'})
   end
 end

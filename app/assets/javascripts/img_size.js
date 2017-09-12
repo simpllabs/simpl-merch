@@ -15,11 +15,3 @@ $('img[src*="//cdn.shopify.com/s/files"]').filter('img[src*="products"]').each(f
 	//console.log("src: " + $(this).attr('src'));
 
 });
-
-//cases
-
-//a17bc0cbec49741933b6bfd54e4b593f_grande.png
-//a17bc0cbec49741933b6bfd54e4b593f.png
-
-//SG27_front_81aaf036-6609-4b8e-a0dc-6dfe15b1997f_large.png
-//SG27_front_81aaf036-6609-4b8e-a0dc-6dfe15b1997f.png

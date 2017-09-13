@@ -15,3 +15,5 @@ $('img[src*="//cdn.shopify.com/s/files"]').filter('img[src*="products"]').each(f
 	//console.log("src: " + $(this).attr('src'));
 
 });
+
+console.log("SCRIPTTAG ACTIVATED");

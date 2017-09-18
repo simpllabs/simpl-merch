@@ -2,7 +2,7 @@ $(function(){
 
 	var is_front = true;
 	var current_color = "black";
-  var light_or_dark = {"black": "light", "white": "light", "navy": "light", "green": "light", "red": "light"};
+  var light_or_dark = {"black": "light", "gray": "light", "white": "light", "navy": "light", "green": "light", "red": "light"};
 
   if (gon.light_or_dark != null) {
     light_or_dark = JSON.parse(gon.light_or_dark);
@@ -79,6 +79,9 @@ $(function(){
 		    case "black":
 		        $(".black").click();
 		        break;
+        case "gray":
+            $(".gray").click();
+            break;
 		    case "white":
 		        $(".white").click();
 		        break;
@@ -115,6 +118,27 @@ $(function(){
     }
 
     if (light_or_dark["black"] == "light" && $('#design-color-flip').length != 0) {
+      $(".front-design-img").attr('src', '<%= asset_url("' + light_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
+    } else {
+      $(".front-design-img").attr('src', '<%= asset_url("' + dark_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
+    }
+  });
+
+  $(".gray").click(function(){
+    current_color = "gray";
+    if (is_front) {
+      $("#mockup-img").attr('src','<%= asset_url("gray-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    } else {
+      $("#mockup-img").attr('src','<%= asset_url("gray-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    }
+
+    if (is_front) {
+      $("#mockup-img-f").attr('src','<%= asset_url("f-gray-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    } else {
+      $("#mockup-img-f").attr('src','<%= asset_url("f-gray-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    }
+
+    if (light_or_dark["gray"] == "light" && $('#design-color-flip').length != 0) {
       $(".front-design-img").attr('src', '<%= asset_url("' + light_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
     } else {
       $(".front-design-img").attr('src', '<%= asset_url("' + dark_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
@@ -575,6 +599,8 @@ $(function(){
   preload([
     "<%= asset_path('black-back-web.jpg') %>",
     "<%= asset_path('black-front-web.jpg') %>",
+    "<%= asset_path('gray-back-web.jpg') %>",
+    "<%= asset_path('gray-front-web.jpg') %>",
     "<%= asset_path('white-back-web.jpg') %>",
     "<%= asset_path('white-front-web.jpg') %>",
     "<%= asset_path('navy-back-web.jpg') %>",
@@ -586,6 +612,8 @@ $(function(){
 
     "<%= asset_path('black_mockup_f.png') %>",
     "<%= asset_path('black_mockup_b.png') %>",
+    "<%= asset_path('gray_mockup_f.png') %>",
+    "<%= asset_path('gray_mockup_b.png') %>",
     "<%= asset_path('white_mockup_f.png') %>",
     "<%= asset_path('white_mockup_b.png') %>",
     "<%= asset_path('navy_mockup_f.png') %>",

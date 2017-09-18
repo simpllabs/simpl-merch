@@ -88,6 +88,15 @@
 					<div class="black palette" ng-click="getBlackTee()"></div>
 					<%= check_box_tag 'checkbox_black', 'Black', session[:colors].include?("Black"), class: 'color-checkbox' %>
 				</div>
+
+				<% if session[:gender] == "male" %>
+				<div>
+					<!-- session[:colors][:checkbox_black].present? -->
+					<div class="gray palette"></div>
+					<%= check_box_tag 'checkbox_gray', 'Gray', session[:colors].include?("Gray"), class: 'color-checkbox' %>
+				</div>
+				<% end %>
+
 				<div>
 					<div class="white palette" ng-click="getWhiteTee()"></div>
 					<%= check_box_tag 'checkbox_white', 'White', session[:colors].include?("White"), class: 'color-checkbox' %>

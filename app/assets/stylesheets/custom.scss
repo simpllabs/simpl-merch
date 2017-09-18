@@ -62,6 +62,9 @@ body { background-color: #35414A; color: #F4F6F8;}
 		.black { background-color: #0c0c0c;
 			&:hover { border: 2px solid #0c0c0c; cursor: pointer; }
 		}
+		.gray { background-color: #474747;
+			&:hover { border: 2px solid #474747; cursor: pointer; }
+		}
 		.white { background-color: #fdfdfd;
 			&:hover { border: 2px solid #fdfdfd; cursor: pointer; }
 		}

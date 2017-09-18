@@ -14,6 +14,7 @@ class TeesController < ShopifyApp::AuthenticatedController
     if params[:commit].present?
 
       session[:colors] =  [params[:checkbox_black],
+                          params[:checkbox_gray],
                           params[:checkbox_white],
                           params[:checkbox_navy],
                           params[:checkbox_green],
@@ -79,7 +80,7 @@ class TeesController < ShopifyApp::AuthenticatedController
   end
 
   def reset_tee_session 
-    session[:colors] = ["Black", "White"]
+    session[:colors] = ["Black", "Gray", "White"]
     session[:sizes] = ["XS", "S", "M", "L", "XL", "2XL", ""]
     session[:front_name] = ""
     session[:back_name] = ""

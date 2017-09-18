@@ -16,6 +16,7 @@ $(function(){
 
   /* Light Or Dark Logic */
   light_src = $(".front-design-img").attr('src');
+  dark_src = null;
   if (light_src != null) {
     dark_src = light_src.substring(1, light_src.indexOf('light')+5).replace("light", "dark").concat(".png");
     light_src = light_src.substring(1, light_src.indexOf('light')+5).concat(".png");
@@ -43,7 +44,7 @@ $(function(){
     is_front = !is_front;
     var x = '', front_pos = '', back_pos = '', front_size = '', back_size = '';
 
-    $('#design-color-flip').toggle();
+    //$('#design-color-flip').toggle();
 
       if (is_front) {
         x = $(".draggable-back").position();

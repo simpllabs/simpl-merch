@@ -27,7 +27,6 @@ class ProcessOrdersJob < ProgressJob::Base
           end
         end
 
-
         charge_amount = 0
         design_fee = 0
         Order.where(fulfillment_status: "Pending").each do |order|
@@ -102,7 +101,7 @@ class ProcessOrdersJob < ProgressJob::Base
               packing_slip = shop.packing_slip == "Yes" ? [shop.packing_slip_logo, shop.packing_slip_message.sub("[customer_name]", order.name)] : ["",""]
               csv << [*row, *packing_slip]
               order.processed = true
-              order.fulfillment_status = status
+              order.fulfillment_status = status == "In-Production" ? status : "Pending"
               order.save
 
               updateInvetoryTables(order.gender, order.quantity, order.sku) if status == "In-Production"

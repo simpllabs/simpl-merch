@@ -107,6 +107,8 @@
 				      order.fulfillment_status = status == "In-Production" ? status : "Pending"
 				      order.save
 
+				      sleep(3)
+
 				      orders.push(order) if status == "In-Production"
 				    end
 				  end

@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   post 'admin', to: 'admin#admin'
   post 'admin/tracking', to: 'admin#upload_tracking'
   post 'admin/extend_trial_period', to: 'admin#extend_trial_period'
+  post 'admin/export_orders_range', to: 'admin#export_orders_range'
   post 'admin/add_inventory', to: 'admin#add_inventory'
 
   post 'progress-job' => 'tees#increment_publish'

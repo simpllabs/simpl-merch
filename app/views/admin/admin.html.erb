@@ -20,23 +20,29 @@
 				        <th>MALE</th>
 				        <th>Black</th>
 				        <th>White</th>
+				        <th>Gray</th>
 				        <th>Navy</th>
 				        <th>Green</th>
 				        <th>Red</th>
 				      </tr>
 				    </thead>
 				    <tbody>
-				      <tr><td>S</td> 	<td><%=MaleInventory.all.first.black_s %></td> <td><%=MaleInventory.all.first.white_s %></td>
+				      <tr><td>S</td> 	<td><%=MaleInventory.all.first.black_s %></td> <td><%=MaleInventory.all.first.white_s %></td> <td><%=MaleInventory.all.first.gray_s %></td>
 				          <td><%=MaleInventory.all.first.navy_s %></td> 	<td><%=MaleInventory.all.first.green_s %></td> <td><%=MaleInventory.all.first.red_s %></td></tr>
-				      <tr><td>M</td> 	<td><%=MaleInventory.all.first.black_m %></td><td><%=MaleInventory.all.first.white_m %></td>
+
+				      <tr><td>M</td> 	<td><%=MaleInventory.all.first.black_m %></td><td><%=MaleInventory.all.first.white_m %></td> <td><%=MaleInventory.all.first.gray_m %></td>
 				          <td><%=MaleInventory.all.first.navy_m %></td>		<td><%=MaleInventory.all.first.green_m %></td><td><%=MaleInventory.all.first.red_m %></td></tr>
-				      <tr><td>L</td>	<td><%=MaleInventory.all.first.black_l %></td><td><%=MaleInventory.all.first.white_l %></td>
+
+				      <tr><td>L</td>	<td><%=MaleInventory.all.first.black_l %></td><td><%=MaleInventory.all.first.white_l %></td> <td><%=MaleInventory.all.first.gray_l %></td>
 				          <td><%=MaleInventory.all.first.navy_l %></td>		<td><%=MaleInventory.all.first.green_l %></td><td><%=MaleInventory.all.first.red_l %></td></tr>
-				      <tr><td>XL</td>	<td><%=MaleInventory.all.first.black_xl %></td><td><%=MaleInventory.all.first.white_xl %></td>
+
+				      <tr><td>XL</td>	<td><%=MaleInventory.all.first.black_xl %></td><td><%=MaleInventory.all.first.white_xl %></td> <td><%=MaleInventory.all.first.gray_xl %></td>
 				          <td><%=MaleInventory.all.first.navy_xl %></td>		<td><%=MaleInventory.all.first.green_xl %></td><td><%=MaleInventory.all.first.red_xl %></td></tr>
-				      <tr><td>2XL</td>	<td><%=MaleInventory.all.first.black_2xl %></td><td><%=MaleInventory.all.first.white_2xl %></td>
+
+				      <tr><td>2XL</td>	<td><%=MaleInventory.all.first.black_2xl %></td><td><%=MaleInventory.all.first.white_2xl %></td> <td><%=MaleInventory.all.first.gray_2xl %></td>
 				          <td><%=MaleInventory.all.first.navy_2xl %></td>		<td><%=MaleInventory.all.first.green_2xl %></td><td><%=MaleInventory.all.first.red_2xl %></td></tr>
-				      <tr><td>3XL</td>	<td><%=MaleInventory.all.first.black_3xl %></td><td><%=MaleInventory.all.first.white_3xl %></td>
+
+				      <tr><td>3XL</td>	<td><%=MaleInventory.all.first.black_3xl %></td><td><%=MaleInventory.all.first.white_3xl %></td> <td><%=MaleInventory.all.first.gray_3xl %></td>
 				          <td><%=MaleInventory.all.first.navy_3xl %></td>		<td><%=MaleInventory.all.first.green_3xl %></td><td><%=MaleInventory.all.first.red_3xl %></td></tr>
 				    </tbody>
 				</table>
@@ -75,6 +81,12 @@
 
 				<hr class="separator">
 
+				<%= form_tag("admin/export_orders_range", authenticity_token: true, id: "export_orders_range") do %> 
+					<p>Export Orders By Order ID Range: <%= text_field_tag "range_from", nil, size: 5 %>   <%= text_field_tag "range_to", nil, size: 5 %></p>
+					<%= submit_tag "Export Orders", class: "btn btn-danger export-orders-btn" %>
+				<% end %>
+
+				<!--
 				<table class="table table-bordered admin-table">
 				    <thead>
 				      <tr>
@@ -87,10 +99,12 @@
 				    </tbody>
 				</table>
 
+
 				<%= form_tag("admin/extend_trial_period", authenticity_token: true, id: "extend_trial_period") do %> 
 					<p>Create Trial Extention Link For This Store: <%= text_field_tag "shop_domain", nil, size: 75 %></p>
 					<%= submit_tag "Create Link", class: "btn btn-danger create-extention" %>
 				<% end %>
+				-->
 
 				<% debug flash[:param] %>
 		<% else %>

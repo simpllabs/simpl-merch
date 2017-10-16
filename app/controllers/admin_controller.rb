@@ -10,12 +10,12 @@ class AdminController < ApplicationController
 			  flash[:type] = "danger" if !session[:logged_in]
   		end
 
-      @extention_links = ""
-      Shop.all.sort_by(&:updated_at).reverse.each do |shop|
-        @extention_links = @extention_links + "<tr><td>#{shop.shopify_domain}</td><td>#{shop.trial_extention_link}</td></tr>"
-      end
+      #@extention_links = ""
+      #Shop.all.sort_by(&:updated_at).reverse.each do |shop|
+      #  @extention_links = @extention_links + "<tr><td>#{shop.shopify_domain}</td><td>#{shop.trial_extention_link}</td></tr>"
+      #end
 
-      @extention_links = @extention_links.html_safe
+      #@extention_links = @extention_links.html_safe
       
 
   	end
@@ -53,6 +53,14 @@ class AdminController < ApplicationController
       Delayed::Job.enqueue ExtendTrialJob.new(params[:shop_domain])
       
       flash[:notice] = "Creating trial extention link."
+      flash[:type] = "success"
+      redirect_to "/admin"
+    end
+
+    def export_orders_range 
+      Delayed::Job.enqueue ExportOrdersRangeJob.new(params[:range_from], params[:range_to])
+      
+      flash[:notice] = "You will receive an email shortly."
       flash[:type] = "success"
       redirect_to "/admin"
     end

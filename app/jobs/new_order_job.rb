@@ -13,7 +13,7 @@ class NewOrderJob < ProgressJob::Base
         @params[:line_items].each do |line_item|
           tee = Tee.where(shopify_product_id: line_item[:product_id]).first
 
-          if line_item[:vendor] == "rocketees"
+          if line_item[:vendor] == "rocketees" || line_item[:vendor] == "Rocketees"
             order = Order.new
             order.shop_domain = @domain
             order.shopify_order_id = @params[:id]

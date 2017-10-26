@@ -58,11 +58,13 @@ class PublishJob < ProgressJob::Base
       back_h = (@data[:back_size][1].to_i*1.96).round
 
 
-      front_design_light = MiniMagick::Image.new("#{ENV['STORAGE_URL']}/#{@data[:uuid]}_#{File.basename(@data[:front_name])}")
-      front_design_light.resize("#{front_w}")
+      if @data[:front_name].present?
+        front_design_light = MiniMagick::Image.new("#{ENV['STORAGE_URL']}/#{@data[:uuid]}_#{File.basename(@data[:front_name])}")
+        front_design_light.resize("#{front_w}")
 
-      front_design_dark = MiniMagick::Image.new("#{ENV['STORAGE_URL']}/#{@data[:uuid]}_#{File.basename(@data[:front_name].gsub('light', 'dark'))}") if @data[:light_or_dark].include?("dark")
-      front_design_dark.resize("#{front_w}") if @data[:light_or_dark].include?("dark")
+        front_design_dark = MiniMagick::Image.new("#{ENV['STORAGE_URL']}/#{@data[:uuid]}_#{File.basename(@data[:front_name].gsub('light', 'dark'))}") if @data[:light_or_dark].include?("dark")
+        front_design_dark.resize("#{front_w}") if @data[:light_or_dark].include?("dark")
+      end
 
       back_design = nil
       if @data[:back_name].present?
@@ -96,55 +98,59 @@ class PublishJob < ProgressJob::Base
 
       @data[:colors].each do |color|
 
-        front_design = parsed_lod[color.downcase] == "light" ? front_design_light : front_design_dark
+        if @data[:front_name].present?
+          front_design = parsed_lod[color.downcase] == "light" ? front_design_light : front_design_dark
 
-        #add new stuff
-        FileUtils.cp("app/assets/images/#{pre_f}#{color.downcase}_mockup_f.png", "#{ENV['STORAGE_URL']}/#{f_uuid}_#{pre_f}#{color.downcase}_mockup_f.png")
-        FileUtils.cp("app/assets/images/#{pre_f}#{color.downcase}_mockup_b.png", "#{ENV['STORAGE_URL']}/#{b_uuid}_#{pre_f}#{color.downcase}_mockup_b.png") if @data[:back_name].present?
-        #end new stuff
+          #add new stuff
+          FileUtils.cp("app/assets/images/#{pre_f}#{color.downcase}_mockup_f.png", "#{ENV['STORAGE_URL']}/#{f_uuid}_#{pre_f}#{color.downcase}_mockup_f.png")
+          #end new stuff
+          mockup_f  = MiniMagick::Image.new("#{ENV['STORAGE_URL']}/#{f_uuid}_#{pre_f}#{color.downcase}_mockup_f.png")
 
-        mockup_f  = MiniMagick::Image.new("#{ENV['STORAGE_URL']}/#{f_uuid}_#{pre_f}#{color.downcase}_mockup_f.png")
-        mockup_b  = MiniMagick::Image.new("#{ENV['STORAGE_URL']}/#{b_uuid}_#{pre_f}#{color.downcase}_mockup_b.png") if @data[:back_name].present?
+          #mockup_f  = MiniMagick::Image.open("app/assets/images/#{pre_f}#{color.downcase}_mockup_f.png")
+          #mockup_b  = MiniMagick::Image.open("app/assets/images/#{pre_f}#{color.downcase}_mockup_b.png") if @data[:back_name].present?
 
-        #mockup_f  = MiniMagick::Image.open("app/assets/images/#{pre_f}#{color.downcase}_mockup_f.png")
-        #mockup_b  = MiniMagick::Image.open("app/assets/images/#{pre_f}#{color.downcase}_mockup_b.png") if @data[:back_name].present?
+          if result_f.blank? 
+            FileUtils.mkdir("#{ENV['STORAGE_URL']}/#{f_uuid}/")
+            FileUtils.cp('bin/tshirt', "#{ENV['STORAGE_URL']}/#{f_uuid}/")
+            FileUtils.cp('bin/tshirtwarp', "#{ENV['STORAGE_URL']}/#{f_uuid}/")
+            text = File.read("#{ENV['STORAGE_URL']}/#{f_uuid}/tshirtwarp")
 
-        if result_f.blank? 
-          FileUtils.mkdir("#{ENV['STORAGE_URL']}/#{f_uuid}/")
-          FileUtils.cp('bin/tshirt', "#{ENV['STORAGE_URL']}/#{f_uuid}/")
-          FileUtils.cp('bin/tshirtwarp', "#{ENV['STORAGE_URL']}/#{f_uuid}/")
-          text = File.read("#{ENV['STORAGE_URL']}/#{f_uuid}/tshirtwarp")
-
-          Dir.chdir("#{ENV['STORAGE_URL']}/#{f_uuid}/") do 
-            result_f = `./tshirt -r #{front_w}x#{front_h}+#{front_y}+#{front_x} -b 0 -l 25 -E ../#{File.basename(front_design.path)} ../#{File.basename(mockup_f.path)} ../#{f_uuid}_#{color.downcase}.png`
-            #result_f = `./tshirt -r #{front_w}x#{front_h}+#{front_y}+#{front_x} -b 0 -l 25 -E ../#{File.basename(front_design.path)} #{mockup_f.path} ../#{f_uuid}_#{color.downcase}.png`
-            #TestMailMailer.test_email("./tshirt -r #{front_w}x#{front_h}+#{front_y}+#{front_x} -s 1 -E #{front_design.path} #{mockup_f.path} ../#{f_uuid}_#{color.downcase}.png").deliver_now
+            Dir.chdir("#{ENV['STORAGE_URL']}/#{f_uuid}/") do 
+              result_f = `./tshirt -r #{front_w}x#{front_h}+#{front_y}+#{front_x} -b 0 -l 25 -E ../#{File.basename(front_design.path)} ../#{File.basename(mockup_f.path)} ../#{f_uuid}_#{color.downcase}.png`
+              #result_f = `./tshirt -r #{front_w}x#{front_h}+#{front_y}+#{front_x} -b 0 -l 25 -E ../#{File.basename(front_design.path)} #{mockup_f.path} ../#{f_uuid}_#{color.downcase}.png`
+              #TestMailMailer.test_email("./tshirt -r #{front_w}x#{front_h}+#{front_y}+#{front_x} -s 1 -E #{front_design.path} #{mockup_f.path} ../#{f_uuid}_#{color.downcase}.png").deliver_now
+            end
+            
+            replace = text.force_encoding("ISO-8859-1").encode("utf-8", replace: nil).gsub(/-- REPLACE IN CODE WITH REGEX --/, result_f)
+            File.open("#{ENV['STORAGE_URL']}/#{f_uuid}/tshirtwarp", "w") {|file| file.puts replace}
+          else
+            Dir.chdir("#{ENV['STORAGE_URL']}/#{f_uuid}/") do 
+              `./tshirtwarp ./lighting.png ./displace.png ../#{File.basename(front_design.path)} ../#{File.basename(mockup_f.path)} ../#{f_uuid}_#{color.downcase}.png`
+              #`./tshirtwarp ./lighting.png ./displace.png ../#{File.basename(front_design.path)} #{mockup_f.path} ../#{f_uuid}_#{color.downcase}.png`
+            end
           end
-          
-          replace = text.force_encoding("ISO-8859-1").encode("utf-8", replace: nil).gsub(/-- REPLACE IN CODE WITH REGEX --/, result_f)
-          File.open("#{ENV['STORAGE_URL']}/#{f_uuid}/tshirtwarp", "w") {|file| file.puts replace}
-        else
-          Dir.chdir("#{ENV['STORAGE_URL']}/#{f_uuid}/") do 
-            `./tshirtwarp ./lighting.png ./displace.png ../#{File.basename(front_design.path)} ../#{File.basename(mockup_f.path)} ../#{f_uuid}_#{color.downcase}.png`
-            #`./tshirtwarp ./lighting.png ./displace.png ../#{File.basename(front_design.path)} #{mockup_f.path} ../#{f_uuid}_#{color.downcase}.png`
+
+          mockup_f_done = MiniMagick::Image.new("#{ENV['STORAGE_URL']}/#{f_uuid}_#{color.downcase}.png")
+
+          variants_all = ShopifyAPI::Variant.find(:all, params: {product_id: new_tee.id}) # This is an array of ShopifyAPI::Variant objects
+          variants_one_color = []
+          variants_all.each do |v| 
+            variants_one_color.push(v.id) if v.option2 == color
           end
-        end
+          new_tee_img_f = ShopifyAPI::Image.new(:product_id => new_tee.id) 
+          new_tee_img_f.attach_image(mockup_f_done.to_blob)
+          new_tee_img_f.variant_ids = variants_one_color
+          new_tee_img_f.save
 
-        mockup_f_done = MiniMagick::Image.new("#{ENV['STORAGE_URL']}/#{f_uuid}_#{color.downcase}.png")
-
-        variants_all = ShopifyAPI::Variant.find(:all, params: {product_id: new_tee.id}) # This is an array of ShopifyAPI::Variant objects
-        variants_one_color = []
-        variants_all.each do |v| 
-          variants_one_color.push(v.id) if v.option2 == color
         end
-        new_tee_img_f = ShopifyAPI::Image.new(:product_id => new_tee.id) 
-        new_tee_img_f.attach_image(mockup_f_done.to_blob)
-        new_tee_img_f.variant_ids = variants_one_color
-        new_tee_img_f.save
 
         update_progress(step: progress_count)
 
+
         if @data[:back_name].present?
+          FileUtils.cp("app/assets/images/#{pre_f}#{color.downcase}_mockup_b.png", "#{ENV['STORAGE_URL']}/#{b_uuid}_#{pre_f}#{color.downcase}_mockup_b.png")
+          mockup_b  = MiniMagick::Image.new("#{ENV['STORAGE_URL']}/#{b_uuid}_#{pre_f}#{color.downcase}_mockup_b.png")
+          
           if result_b.blank? 
             FileUtils.mkdir("#{ENV['STORAGE_URL']}/#{b_uuid}/")
             FileUtils.cp('bin/tshirt', "#{ENV['STORAGE_URL']}/#{b_uuid}/")
@@ -183,13 +189,15 @@ class PublishJob < ProgressJob::Base
       #DO THIS AFTER 100% ON FRONT-END
 
       #5. Store reference images based on last mockups
-      S3_BUCKET.put_object(body: mockup_f_done.to_blob, key: "designs/REF-#{@data[:ref_uuid]}", acl: "public-read-write")
+      S3_BUCKET.put_object(body: mockup_f_done.to_blob, key: "designs/REF-#{@data[:ref_uuid]}", acl: "public-read-write") if @data[:front_name].present?
       S3_BUCKET.put_object(body: mockup_b_done.to_blob, key: "designs/REF-B-#{@data[:ref_uuid]}", acl: "public-read-write") if @data[:back_name].present?
 
       #6. Save designs to S3, and delete local ones
-      obj = S3_BUCKET.put_object(key: "designs/#{@data[:uuid]}_#{@data[:front_name]}", acl: "public-read-write")
-      obj.upload_file("#{ENV['STORAGE_URL']}/#{@data[:uuid]}_#{@data[:front_name]}")
-      FileUtils.rm_rf("#{ENV['STORAGE_URL']}/#{f_uuid}/")
+      if @data[:front_name].present?
+        obj = S3_BUCKET.put_object(key: "designs/#{@data[:uuid]}_#{@data[:front_name]}", acl: "public-read-write")
+        obj.upload_file("#{ENV['STORAGE_URL']}/#{@data[:uuid]}_#{@data[:front_name]}")
+        FileUtils.rm_rf("#{ENV['STORAGE_URL']}/#{f_uuid}/")
+      end
       
       if @data[:back_name].present?
         obj = S3_BUCKET.put_object(key: "designs/B#{@data[:uuid]}_#{@data[:back_name]}", acl: "public-read-write")
@@ -199,12 +207,12 @@ class PublishJob < ProgressJob::Base
       end
 
       # Delete here in case b is also using this one
-      FileUtils.rm("#{ENV['STORAGE_URL']}/#{@data[:uuid]}_#{@data[:front_name]}")
+      FileUtils.rm("#{ENV['STORAGE_URL']}/#{@data[:uuid]}_#{@data[:front_name]}") if @data[:front_name].present?
 
       @data[:colors].each do |color|
-        FileUtils.rm("#{ENV['STORAGE_URL']}/#{f_uuid}_#{color.downcase}.png")
+        FileUtils.rm("#{ENV['STORAGE_URL']}/#{f_uuid}_#{color.downcase}.png") if @data[:front_name].present?
         FileUtils.rm("#{ENV['STORAGE_URL']}/B#{b_uuid}_#{color.downcase}.png") if @data[:back_name].present?
-        FileUtils.rm("#{ENV['STORAGE_URL']}/#{f_uuid}_#{pre_f}#{color.downcase}_mockup_f.png")
+        FileUtils.rm("#{ENV['STORAGE_URL']}/#{f_uuid}_#{pre_f}#{color.downcase}_mockup_f.png") if @data[:front_name].present?
         FileUtils.rm("#{ENV['STORAGE_URL']}/#{b_uuid}_#{pre_f}#{color.downcase}_mockup_b.png") if @data[:back_name].present?
       end
       

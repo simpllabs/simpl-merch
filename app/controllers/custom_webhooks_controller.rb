@@ -2,7 +2,7 @@ class CustomWebhooksController < ApplicationController
   include ShopifyApp::WebhookVerification
 
   def orders_create
-  	Delayed::Job.enqueue NewOrderJob.new(shop_domain, params)
+  	Delayed::Job.enqueue NewOrderJob.new(shop_domain, params, false)
     head :ok
   end
 

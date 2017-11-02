@@ -66,10 +66,9 @@ class AdminController < ApplicationController
 
     def try_again_new_order
 
-
-      Delayed::Job.enqueue NewOrderJob.new(params[:shop_domain], params[:order_number])
+      Delayed::Job.enqueue NewOrderJob.new(params[:shop_domain], params[:order_number], true)
       
-      flash[:notice] = "You will receive an email shortly."
+      flash[:notice] = "Creating order in the background."
       flash[:type] = "success"
       redirect_to "/admin"
     end

@@ -89,7 +89,9 @@
 				<hr class="separator">
 
 				<%= form_tag("admin/try_again_new_order", authenticity_token: true, id: "try_again_new_order") do %> 
-					<p>Export Orders By Order ID Range: <%= text_field_tag "shop_domain", nil, size: 5 %>   <%= text_field_tag "order_number", nil, size: 5 %></p>
+					<p>Trigger Webhook For This Product:</p> 
+					<p>Shop Domain: <%= text_field_tag "shop_domain", nil, size: 40 %></p>   
+					<p>Order Number: <%= text_field_tag "order_number", nil, size: 7 %></p>
 					<%= submit_tag "Try Creating Order Again", class: "btn btn-danger export-orders-btn" %>
 				<% end %>
 

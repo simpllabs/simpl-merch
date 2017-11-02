@@ -16,7 +16,6 @@ class AdminController < ApplicationController
       #end
 
       #@extention_links = @extention_links.html_safe
-      
 
   	end
 
@@ -59,6 +58,16 @@ class AdminController < ApplicationController
 
     def export_orders_range 
       Delayed::Job.enqueue ExportOrdersRangeJob.new(params[:range_from], params[:range_to])
+      
+      flash[:notice] = "You will receive an email shortly."
+      flash[:type] = "success"
+      redirect_to "/admin"
+    end
+
+    def try_again_new_order
+
+
+      Delayed::Job.enqueue NewOrderJob.new(params[:shop_domain], params[:order_number])
       
       flash[:notice] = "You will receive an email shortly."
       flash[:type] = "success"

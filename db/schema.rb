@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171011214332) do
+ActiveRecord::Schema.define(version: 20171101233601) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -159,6 +159,7 @@ ActiveRecord::Schema.define(version: 20171011214332) do
     t.integer "tee_id"
     t.string "light_or_dark"
     t.string "payment_status"
+    t.integer "store_order_number"
     t.index ["shop_domain"], name: "index_orders_on_shop_domain"
   end
 

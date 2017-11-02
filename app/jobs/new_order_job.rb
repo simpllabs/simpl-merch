@@ -50,7 +50,7 @@ class NewOrderJob < ProgressJob::Base
           end
         end
     rescue Exception => e
-        job_title = "new_order_job.rb"
+        job_title = "new_order_job.rb STORE: " + @domain + " Order: " + @params[:name]
         log_data_1 = e.message
         log_data_2 = e.backtrace
 

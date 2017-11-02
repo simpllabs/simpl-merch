@@ -21,7 +21,7 @@ class NewOrderJob < ProgressJob::Base
             order.payment_status = @params[:financial_status]
             order.fulfillment_status = "Pending"
             order.sku = line_item[:sku]
-            order.store_order_number = @params[:name]
+            #order.store_order_number = @params[:name]
 
             parsed_lod = JSON.parse(tee.light_or_dark) if tee.light_or_dark.present?
             color = line_item[:sku].split('-').last.downcase

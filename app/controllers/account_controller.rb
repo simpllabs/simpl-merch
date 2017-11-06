@@ -57,7 +57,7 @@ class AccountController < ShopifyApp::AuthenticatedController
       card.address_line1 = params[:billing_address]
       card.name = params[:company_name]
       card.address_city = params[:city]
-      card.address_state = params[:province] == nil ? params[:city] : params[:province]
+      card.address_state = params[:province].blank? ? params[:city] : params[:province]
       card.address_zip = params[:zip]
       card.address_country = params[:country]
       card.save

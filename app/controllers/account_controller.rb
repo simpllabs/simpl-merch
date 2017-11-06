@@ -57,11 +57,11 @@ class AccountController < ShopifyApp::AuthenticatedController
       card.address_line1 = params[:billing_address]
       card.name = params[:company_name]
       card.address_city = params[:city]
-      card.address_state = params[:province]
+      card.address_state = params[:province] == nil ? params[:city] : params[:province]
       card.address_zip = params[:zip]
       card.address_country = params[:country]
       card.save
-      if params[:packing_slip] == "Yes"
+      if params[:packing_slip] == "Yes" || params[:packing_slip_logo].present?
         #if already have a saved logo in bucket/logos, delete it before saving new one
         if shop.packing_slip_logo.present?
           existing_logo = S3_BUCKET.object(URI.parse(URI.encode(shop.packing_slip_logo)).path[1..-1])

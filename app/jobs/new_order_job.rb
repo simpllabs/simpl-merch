@@ -107,9 +107,6 @@ class NewOrderJob < ProgressJob::Base
                 end
             end
         end
-
-        
-
         
     rescue Exception => e
         if @trying_again

@@ -34,6 +34,8 @@ class TeesController < ShopifyApp::AuthenticatedController
 
     end
 
+    session[:multicolor] = params[:multicolor]
+
     session[:front_name] = params[:front_design] if params[:front_design].present?
     session[:back_name] = params[:back_design] if params[:back_design].present?
 
@@ -94,6 +96,7 @@ class TeesController < ShopifyApp::AuthenticatedController
     session[:free_design] = false
     session[:light_or_dark] = nil
     session[:dark_exists] = false
+    session[:multicolor] = nil
   end
 
   def new
@@ -170,6 +173,7 @@ class TeesController < ShopifyApp::AuthenticatedController
     @tee.one_time_fee_charged = session[:free_design]
     @tee.back_one_time_fee_charged = session[:back_name].present? ? false : true
     @tee.light_or_dark = session[:light_or_dark]
+    @tee.multicolor = session[:multicolor]
     @tee.save
 
     #store session values

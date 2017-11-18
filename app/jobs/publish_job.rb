@@ -217,7 +217,7 @@ class PublishJob < ProgressJob::Base
       end
       
     rescue Exception => e
-      job_title = "publish_job.rb"
+      job_title = "publish_job.rb STORE: #{@domain}"
       log_data_1 = e.message
       log_data_2 = e.backtrace
 

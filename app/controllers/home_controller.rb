@@ -15,6 +15,7 @@ class HomeController < ShopifyApp::AuthenticatedController
         session[:free_design] = false
         session[:light_or_dark] = nil
         session[:dark_exists] = false
+        session[:multicolor] = nil
 
         @pending = Order.where(shop_domain: ShopifyAPI::Shop.current.myshopify_domain, fulfillment_status: "Pending").count
         @in_production = Order.where(shop_domain: ShopifyAPI::Shop.current.myshopify_domain, fulfillment_status: "In-Production").count

@@ -550,6 +550,14 @@ $(function(){
        return false;
     }
 
+    // didn't answer if multi-color
+    /*if ($("input[class='multicolor-radio']:checked").length == 0) {
+      $('#multicolor-question-empty').modal('show');
+       return false;
+    }*/
+
+    //return false;
+
     if (is_front) {
       x = $(".draggable-front").position();
       front_pos = [x.top, x.left];

@@ -26,9 +26,11 @@ class NewOrderJob < ProgressJob::Base
 
             #raise "order_params: #{order_params}"
 
+            shopify_product_id = nil
             order_params.line_items.each do |line_item|
                 tee = Tee.where(shopify_product_id: line_item.product_id).first
 
+                shopify_product_id = line_item.product_id
                 if line_item.vendor == "rocketees" || line_item.vendor == "Rocketees"
                     order = Order.new
                     order.shop_domain = @domain
@@ -38,6 +40,7 @@ class NewOrderJob < ProgressJob::Base
                     order.fulfillment_status = "Pending"
                     order.sku = line_item.sku
                     order.store_order_number = order_params.order_number
+                    order.multicolor = tee.multicolor
 
                     parsed_lod = JSON.parse(tee.light_or_dark) if tee.light_or_dark.present?
                     color = line_item.sku.split('-').last.downcase
@@ -67,9 +70,11 @@ class NewOrderJob < ProgressJob::Base
             end
 
         else
+            shopify_product_id = nil
             @params[:line_items].each do |line_item|
                 tee = Tee.where(shopify_product_id: line_item[:product_id]).first
 
+                shopify_product_id = line_item[:product_id]
                 if line_item[:vendor] == "rocketees" || line_item[:vendor] == "Rocketees"
                     order = Order.new
                     order.shop_domain = @domain
@@ -79,6 +84,7 @@ class NewOrderJob < ProgressJob::Base
                     order.fulfillment_status = "Pending"
                     order.sku = line_item[:sku]
                     order.store_order_number = @params[:order_number]
+                    order.multicolor = tee.multicolor
 
                     parsed_lod = JSON.parse(tee.light_or_dark) if tee.light_or_dark.present?
                     color = line_item[:sku].split('-').last.downcase
@@ -110,9 +116,9 @@ class NewOrderJob < ProgressJob::Base
         
     rescue Exception => e
         if @trying_again
-            job_title = "new_order_job.rb STORE: #{@domain} ORDER: #{@params}"
+            job_title = "new_order_job.rb STORE: #{@domain}, ORDER: #{@params}, shopify_product_id: #{shopify_product_id}"
         else
-            job_title = "new_order_job.rb STORE: #{@domain} ORDER: #{@params[:order_number]}"
+            job_title = "new_order_job.rb STORE: #{@domain}, ORDER: #{@params[:order_number]}"
         end
         
         log_data_1 = e.message

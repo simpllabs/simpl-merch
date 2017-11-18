@@ -50,6 +50,18 @@ class PublishJob < ProgressJob::Base
       collection.add_product(new_tee) if !@params[:add_to_collection].include?("- None -") && collection.present?
       collection.save if !@params[:add_to_collection].include?("- None -") && collection.present?
 
+      # ( 2.5 Save un-resized designs to S3 )
+
+      if @data[:front_name].present?
+        obj = S3_BUCKET.put_object(key: "designs/#{@data[:uuid]}_#{@data[:front_name]}", acl: "public-read-write")
+        obj.upload_file("#{ENV['STORAGE_URL']}/#{@data[:uuid]}_#{@data[:front_name]}")
+      end
+      
+      if @data[:back_name].present?
+        obj = S3_BUCKET.put_object(key: "designs/B#{@data[:uuid]}_#{@data[:back_name]}", acl: "public-read-write")
+        obj.upload_file("#{ENV['STORAGE_URL']}/#{@data[:uuid]}_#{@data[:back_name]}")
+      end
+
       # 3. Resize designs
       update_progress(step: 10)
       front_w = (@data[:front_size][0].to_i*1.96).round
@@ -192,16 +204,16 @@ class PublishJob < ProgressJob::Base
       S3_BUCKET.put_object(body: mockup_f_done.to_blob, key: "designs/REF-#{@data[:ref_uuid]}", acl: "public-read-write") if @data[:front_name].present?
       S3_BUCKET.put_object(body: mockup_b_done.to_blob, key: "designs/REF-B-#{@data[:ref_uuid]}", acl: "public-read-write") if @data[:back_name].present?
 
-      #6. Save designs to S3, and delete local ones
+      #6. Delete local versions
       if @data[:front_name].present?
-        obj = S3_BUCKET.put_object(key: "designs/#{@data[:uuid]}_#{@data[:front_name]}", acl: "public-read-write")
-        obj.upload_file("#{ENV['STORAGE_URL']}/#{@data[:uuid]}_#{@data[:front_name]}")
+        #obj = S3_BUCKET.put_object(key: "designs/#{@data[:uuid]}_#{@data[:front_name]}", acl: "public-read-write")
+        #obj.upload_file("#{ENV['STORAGE_URL']}/#{@data[:uuid]}_#{@data[:front_name]}")
         FileUtils.rm_rf("#{ENV['STORAGE_URL']}/#{f_uuid}/")
       end
       
       if @data[:back_name].present?
-        obj = S3_BUCKET.put_object(key: "designs/B#{@data[:uuid]}_#{@data[:back_name]}", acl: "public-read-write")
-        obj.upload_file("#{ENV['STORAGE_URL']}/#{@data[:uuid]}_#{@data[:back_name]}")
+        #obj = S3_BUCKET.put_object(key: "designs/B#{@data[:uuid]}_#{@data[:back_name]}", acl: "public-read-write")
+        #obj.upload_file("#{ENV['STORAGE_URL']}/#{@data[:uuid]}_#{@data[:back_name]}")
         FileUtils.rm_rf("#{ENV['STORAGE_URL']}/#{b_uuid}/")
         FileUtils.rm("#{ENV['STORAGE_URL']}/#{@data[:uuid]}_#{@data[:back_name]}") if @data[:back_name] != @data[:front_name]
       end

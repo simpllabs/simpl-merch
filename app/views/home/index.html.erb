@@ -2,10 +2,10 @@
 
 <div class="container-fluid splash-container">
   <div class="row splash">
-    <%= image_tag("splash-logo.png", alt: "Rocketees - Just $6, including shipping.", usemap: "#mapname") %>
-    <map name="mapname">
+    <%= image_tag("splash-logo.png", alt: "Rocketees - $5 tees, rocket-speed fulfillment.", usemap: "#mapname") %>
+    <!--<map name="mapname">
       <area shape="rect" coords="0,130,250,200" href="tees/new">
-  </map>
+    </map>-->
   </div>
 </div>
 
@@ -25,16 +25,24 @@
 
   <div class="row">
     <div class="bottom-dash">
-      <div class="col-xs-6 just-padding-right">
+      <div class="col-xs-6 weekly-tee left-panel">
+        <div class="panel panel-default weekly-tee-panel">
+          <div class="panel-heading text-center"><strong>LAST WEEK'S NEW FREE DESIGN</strong></div>
+          <div class="panel-body">
+            <img src="https://s3.us-east-2.amazonaws.com/rocketees/weekly/025_light.png", alt: "Rocketees - This Week's New Design" style="width:100%;">
+          </div>
+        </div>
+        <!--
         <a href="/library" class="btn btn-primary" style="width:100%">Access The FREE Design Library</a>
         <a href="https://www.dropbox.com/sh/0ceq8522w4tluce/AABBCt40a4ygYbJHcS_Mkzrra?dl=0" target="_blank" class="btn btn-primary" style="width:100%">Access $16,936 Case Study</a>
         <a href="https://www.facebook.com/groups/1931332703805828/" target="_blank" class="btn btn-primary" style="width:100%">Join The Rocketees Facebook Group</a>
+        -->
       </div>
-      <div class="col-xs-6 weekly-tee">
+      <div class="col-xs-6 weekly-tee right-panel">
         <div class="panel panel-default weekly-tee-panel">
           <div class="panel-heading text-center"><strong>THIS WEEK'S NEW FREE DESIGN - <%= Date.today.beginning_of_week(:sunday) %></strong></div>
           <div class="panel-body">
-            <img src="https://s3.us-east-2.amazonaws.com/rocketees/weekly/025_light.png", alt: "Rocketees - This Week's New Design" style="width:100%;">
+            <img src="https://s3.us-east-2.amazonaws.com/rocketees/weekly/011_light.png", alt: "Rocketees - This Week's New Design" style="width:100%;">
           </div>
         </div>
       </div>

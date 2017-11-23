@@ -33,6 +33,9 @@ body { background-color: #35414A; color: #F4F6F8;}
 		padding-left: 0;
 		padding-right: 40px;
 	}
+	.weekly-tee {width: 49%}
+	.left-panel {margin-right: 1%;}
+	.right-panel {margin-left: 1%;}
 }
 
 .weekly-tee {background-color: #2D3840; margin-bottom: 40px; border-radius: 3px; padding: 0;
@@ -41,29 +44,36 @@ body { background-color: #35414A; color: #F4F6F8;}
 		.panel-heading {background-color: #20272D; color: #F4F6F8; border-color: #20272D;}
 		.panel-body {background-color: #2D3840}
 	}
+	
 }
+
 
 /************/
 /* New Tee */
 /************/
 
-.new-tee { width: 1120px; margin: 20px 20px 20px 40px; padding: 0 0;
+.new-tee-wrapper {width: 100%; background-color: #2D3840;}
+
+.new-tee {width: 1120px; margin: 0; padding: 20px 20px 20px 40px; 
 	.tee-mockup { width: 540px; position: relative; margin-top: 20px;}
 	.mockup-img-wrapper {background-color: #F4F6F8; border-radius: 3px;}
 	#mockup-img, #mockup-img-f { width: 510px; margin: 0; border-radius: 3px;}
 	#design-color-flip {position: absolute; width: 40px; top: 450px; left: 20px; cursor: pointer;}
-	.specs { background-color: #2D3840; padding: 10px 20px;}
+	.specs { background-color: #35414A; padding: 10px 20px;}
 	li { color: #F4F6F8; font-size: 0.9em; line-height: 18px;}
 	table { color: #F4F6F8; font-size: 0.9em; }
 	.color-palettes { margin-bottom: 10px;
-		div { display: inline-block; width: 30px; margin-right: 20px; }
-		.palette { height: 30px; border: 2px solid #fff; }
-		.color-checkbox { margin-left: 9px; margin-top: 0; }
+		div { display: inline-block; width: 28px; margin-right: 15px; }
+		.palette { height: 28px; border: 2px solid #fff; }
+		.color-checkbox { margin-left: 8.5px; margin-top: 0; margin-bottom: 10px;}
 		.black { background-color: #0c0c0c;
 			&:hover { border: 2px solid #0c0c0c; cursor: pointer; }
 		}
 		.gray { background-color: #474747;
 			&:hover { border: 2px solid #474747; cursor: pointer; }
+		}
+		.sportgray { background-color: #c8cace;
+			&:hover { border: 2px solid #c8cace; cursor: pointer; }
 		}
 		.white { background-color: #fdfdfd;
 			&:hover { border: 2px solid #fdfdfd; cursor: pointer; }
@@ -71,15 +81,27 @@ body { background-color: #35414A; color: #F4F6F8;}
 		.navy { background-color: #050a35;
 			&:hover { border: 2px solid #050a35; cursor: pointer; }
 		}
+		.royalblue { background-color: #265c9e;
+			&:hover { border: 2px solid #265c9e; cursor: pointer; }
+		}
 		.green { background-color: #419459;
 			&:hover { border: 2px solid #419459; cursor: pointer; }
+		}
+		.pink { background-color: #d36ea4;
+			&:hover { border: 2px solid #d36ea4; cursor: pointer; }
+		}
+		.purple { background-color: #4b275d;
+			&:hover { border: 2px solid #4b275d; cursor: pointer; }
 		}
 		.red { background-color: #ae0c11;
 			&:hover { border: 2px solid #ae0c11; cursor: pointer; }
 		}
+		.orange { background-color: #f24a23;
+			&:hover { border: 2px solid #f24a23; cursor: pointer; }
+		}
 	}
 	.size-palettes { margin-bottom: 10px; color: #F4F6F8;
-		div.size-box { display: inline-block; width: 45px; margin-right: 10px; background-color: #2D3840; padding: 10px; overflow: auto; text-align: center; }
+		div.size-box { display: inline-block; width: 45px; margin-right: 10px; background-color: #35414A; padding: 10px; overflow: auto; text-align: center; }
 		.size-checkbox { margin-top: 0; }
 	}
 }
@@ -91,14 +113,14 @@ body { background-color: #35414A; color: #F4F6F8;}
 	button { padding: 5px 20px; width: 100%; height: 35px; font-size: 1.1em;}
 }
 
-.image-upload-box { margin-top: 10px; background-color: #2D3840; padding-bottom: 10px; padding-top: 10px;
+.image-upload-box { margin-top: 10px; background-color: #35414A; padding-bottom: 10px; padding-top: 10px;
  	.file-input { text-align: center; }
  	input { display: inline; margin: 0 auto 15px auto; }
 }
 
 .img-wrapper { display: inline-block; }
 
-.progress { width: 90%; margin: 0 auto; background-color: #2D3840; margin-bottom: 10px; }
+.progress { width: 90%; margin: 0 auto; background-color: #35414A; margin-bottom: 10px; }
 
 .front-design-img, .back-design-img { cursor: move; border: 1px dashed #999; width: 100%; }
 

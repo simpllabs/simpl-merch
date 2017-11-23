@@ -1,8 +1,8 @@
 class HomeController < ShopifyApp::AuthenticatedController
     def index
         #@products = ShopifyAPI::Product.find(:all, params: { limit: 10 })
-        session[:colors] = ["Black", "Gray", "White"]
-        session[:sizes] = ["XS", "S", "M", "L", "XL", "2XL", ""]
+        session[:colors] = ["Black", "Gray", "SportGray", "White"]
+        session[:sizes] = ["XS", "S", "M", "L", "XL", "2XL", "3XL"]
         session[:front_name] = ""
         session[:back_name] = ""
         session[:front_pos] = [0,0]

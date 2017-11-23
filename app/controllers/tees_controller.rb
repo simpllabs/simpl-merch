@@ -15,10 +15,15 @@ class TeesController < ShopifyApp::AuthenticatedController
 
       session[:colors] =  [params[:checkbox_black],
                           params[:checkbox_gray],
+                          params[:checkbox_sportgray],
                           params[:checkbox_white],
                           params[:checkbox_navy],
+                          params[:checkbox_royalblue],
                           params[:checkbox_green],
-                          params[:checkbox_red]] 
+                          params[:checkbox_pink],
+                          params[:checkbox_purple],
+                          params[:checkbox_orange],
+                          params[:checkbox_red]]
 
       session[:colors] =  session[:colors].reject { |c| c.blank? }
 
@@ -82,8 +87,8 @@ class TeesController < ShopifyApp::AuthenticatedController
   end
 
   def reset_tee_session 
-    session[:colors] = ["Black", "Gray", "White"]
-    session[:sizes] = ["XS", "S", "M", "L", "XL", "2XL", ""]
+    session[:colors] = ["Black", "Gray", "SportGray", "White"]
+    session[:sizes] = ["XS", "S", "M", "L", "XL", "2XL", "3XL"]
     session[:front_name] = ""
     session[:back_name] = ""
     session[:front_pos] = [0,0]
@@ -140,7 +145,7 @@ class TeesController < ShopifyApp::AuthenticatedController
     session[:gender] = params[:gender] if params[:gender].present?
 
     if session[:gender] == "female"
-      session[:sizes][4] = ""
+      #session[:sizes][4] = ""
     end
 
     @stripe_customer_id = Shop.where(shopify_domain: ShopifyAPI::Shop.current.myshopify_domain).first.stripe_customer_id

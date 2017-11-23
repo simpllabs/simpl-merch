@@ -2,7 +2,7 @@ $(function(){
 
 	var is_front = true;
 	var current_color = "black";
-  var light_or_dark = {"black": "light", "gray": "light", "white": "light", "navy": "light", "green": "light", "red": "light"};
+  var light_or_dark = {"black": "light", "gray": "light", "sportgray": "light", "white": "light", "royalblue": "light", "navy": "light", "purple": "light", "pink": "light", "green": "light", "red": "light", "orange": "light"};
 
   if (gon.light_or_dark != null) {
     light_or_dark = JSON.parse(gon.light_or_dark);
@@ -84,15 +84,30 @@ $(function(){
         case "gray":
             $(".gray").click();
             break;
+        case "sportgray":
+            $(".sportgray").click();
+            break;
 		    case "white":
 		        $(".white").click();
 		        break;
 		    case "navy":
 		        $(".navy").click();
 		        break;
+        case "royalblue":
+            $(".royalblue").click();
+            break;
 		    case "red":
 		        $(".red").click();
 		        break;
+        case "orange":
+            $(".orange").click();
+            break;
+        case "pink":
+            $(".pink").click();
+            break;
+        case "purple":
+            $(".purple").click();
+            break;
 		    case "green":
 		        $(".green").click();
 		        break;
@@ -154,6 +169,29 @@ $(function(){
     }
   });
 
+  $(".sportgray").click(function(){
+    current_color = "sportgray";
+    if (is_front) {
+      $("#mockup-img").attr('src','<%= asset_url("sportgray-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    } else {
+      $("#mockup-img").attr('src','<%= asset_url("sportgray-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    }
+
+    if (is_front) {
+      $("#mockup-img-f").attr('src','<%= asset_url("f-sportgray-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    } else {
+      $("#mockup-img-f").attr('src','<%= asset_url("f-sportgray-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    }
+
+    if ($('#design-color-flip').length != 0) {
+      if (light_or_dark["sportgray"] == "light") {
+        $(".front-design-img").attr('src', '<%= asset_url("' + light_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
+      } else {
+        $(".front-design-img").attr('src', '<%= asset_url("' + dark_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
+      }
+    }
+  });
+
   $(".white").click(function(){
     current_color = "white";
     if (is_front) {
@@ -201,6 +239,29 @@ $(function(){
     }
   });
 
+  $(".royalblue").click(function(){
+    current_color = "royalblue";
+    if (is_front) {
+      $("#mockup-img").attr('src','<%= asset_url("royalblue-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    } else {
+      $("#mockup-img").attr('src','<%= asset_url("royalblue-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    }
+
+    if (is_front) {
+      $("#mockup-img-f").attr('src','<%= asset_url("f-royalblue-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    } else {
+      $("#mockup-img-f").attr('src','<%= asset_url("f-royalblue-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    }
+
+    if ($('#design-color-flip').length != 0) {
+      if (light_or_dark["royalblue"] == "light") {
+        $(".front-design-img").attr('src', '<%= asset_url("' + light_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
+      } else {
+        $(".front-design-img").attr('src', '<%= asset_url("' + dark_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
+      }
+    }
+  });
+
   $(".green").click(function(){
     current_color = "green";
     if (is_front) {
@@ -224,6 +285,52 @@ $(function(){
     }
   });
 
+  $(".pink").click(function(){
+    current_color = "pink";
+    if (is_front) {
+      $("#mockup-img").attr('src','<%= asset_url("pink-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    } else {
+      $("#mockup-img").attr('src','<%= asset_url("pink-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    }
+
+    if (is_front) {
+      $("#mockup-img-f").attr('src','<%= asset_url("f-pink-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    } else {
+      $("#mockup-img-f").attr('src','<%= asset_url("f-pink-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    }
+
+    if ($('#design-color-flip').length != 0) {
+      if (light_or_dark["pink"] == "light") {
+        $(".front-design-img").attr('src', '<%= asset_url("' + light_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
+      } else {
+        $(".front-design-img").attr('src', '<%= asset_url("' + dark_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
+      }
+    }
+  });
+
+  $(".purple").click(function(){
+    current_color = "purple";
+    if (is_front) {
+      $("#mockup-img").attr('src','<%= asset_url("purple-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    } else {
+      $("#mockup-img").attr('src','<%= asset_url("purple-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    }
+
+    if (is_front) {
+      $("#mockup-img-f").attr('src','<%= asset_url("f-purple-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    } else {
+      $("#mockup-img-f").attr('src','<%= asset_url("f-purple-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    }
+
+    if ($('#design-color-flip').length != 0) {
+      if (light_or_dark["purple"] == "light") {
+        $(".front-design-img").attr('src', '<%= asset_url("' + light_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
+      } else {
+        $(".front-design-img").attr('src', '<%= asset_url("' + dark_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
+      }
+    }
+  });
+
   $(".red").click(function(){
     current_color = "red";
     if (is_front) {
@@ -240,6 +347,29 @@ $(function(){
 
     if ($('#design-color-flip').length != 0) {
       if (light_or_dark["red"] == "light") {
+        $(".front-design-img").attr('src', '<%= asset_url("' + light_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
+      } else {
+        $(".front-design-img").attr('src', '<%= asset_url("' + dark_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
+      }
+    }
+  });
+
+  $(".orange").click(function(){
+    current_color = "orange";
+    if (is_front) {
+      $("#mockup-img").attr('src','<%= asset_url("orange-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    } else {
+      $("#mockup-img").attr('src','<%= asset_url("orange-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    }
+
+    if (is_front) {
+      $("#mockup-img-f").attr('src','<%= asset_url("f-orange-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    } else {
+      $("#mockup-img-f").attr('src','<%= asset_url("f-orange-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    }
+
+    if ($('#design-color-flip').length != 0) {
+      if (light_or_dark["orange"] == "light") {
         $(".front-design-img").attr('src', '<%= asset_url("' + light_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
       } else {
         $(".front-design-img").attr('src', '<%= asset_url("' + dark_src + '") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });
@@ -626,49 +756,93 @@ $(function(){
     "<%= asset_path('black-front-web.jpg') %>",
     "<%= asset_path('gray-back-web.jpg') %>",
     "<%= asset_path('gray-front-web.jpg') %>",
+    "<%= asset_path('sportgray-back-web.jpg') %>",
+    "<%= asset_path('sportgray-front-web.jpg') %>",
     "<%= asset_path('white-back-web.jpg') %>",
     "<%= asset_path('white-front-web.jpg') %>",
     "<%= asset_path('navy-back-web.jpg') %>",
     "<%= asset_path('navy-front-web.jpg') %>",
+    "<%= asset_path('royalblue-back-web.jpg') %>",
+    "<%= asset_path('royalblue-front-web.jpg') %>",
     "<%= asset_path('red-back-web.jpg') %>",
     "<%= asset_path('red-front-web.jpg') %>",
+    "<%= asset_path('orange-back-web.jpg') %>",
+    "<%= asset_path('orange-front-web.jpg') %>",
     "<%= asset_path('green-back-web.jpg') %>",
     "<%= asset_path('green-front-web.jpg') %>",
+    "<%= asset_path('pink-back-web.jpg') %>",
+    "<%= asset_path('pink-front-web.jpg') %>",
+    "<%= asset_path('purple-back-web.jpg') %>",
+    "<%= asset_path('purple-front-web.jpg') %>",
 
     "<%= asset_path('black_mockup_f.png') %>",
     "<%= asset_path('black_mockup_b.png') %>",
     "<%= asset_path('gray_mockup_f.png') %>",
     "<%= asset_path('gray_mockup_b.png') %>",
+    "<%= asset_path('sportgray_mockup_f.png') %>",
+    "<%= asset_path('sportgray_mockup_b.png') %>",
     "<%= asset_path('white_mockup_f.png') %>",
     "<%= asset_path('white_mockup_b.png') %>",
     "<%= asset_path('navy_mockup_f.png') %>",
     "<%= asset_path('navy_mockup_b.png') %>",
+    "<%= asset_path('royalblue_mockup_f.png') %>",
+    "<%= asset_path('royalblue_mockup_b.png') %>",
     "<%= asset_path('red_mockup_f.png') %>",
     "<%= asset_path('red_mockup_b.png') %>",
+    "<%= asset_path('orange_mockup_f.png') %>",
+    "<%= asset_path('orange_mockup_b.png') %>",
     "<%= asset_path('green_mockup_f.png') %>",
     "<%= asset_path('green_mockup_b.png') %>",
+    "<%= asset_path('pink_mockup_f.png') %>",
+    "<%= asset_path('pink_mockup_b.png') %>",
+    "<%= asset_path('purple_mockup_f.png') %>",
+    "<%= asset_path('purple_mockup_b.png') %>",
 
     "<%= asset_path('f-black-back-web.jpg') %>",
     "<%= asset_path('f-black-front-web.jpg') %>",
     "<%= asset_path('f-white-back-web.jpg') %>",
     "<%= asset_path('f-white-front-web.jpg') %>",
+    "<%= asset_path('f-gray-back-web.jpg') %>",
+    "<%= asset_path('f-gray-front-web.jpg') %>",
+    "<%= asset_path('f-sportgray-back-web.jpg') %>",
+    "<%= asset_path('f-sportgray-front-web.jpg') %>",
     "<%= asset_path('f-navy-back-web.jpg') %>",
     "<%= asset_path('f-navy-front-web.jpg') %>",
+    "<%= asset_path('f-royalblue-back-web.jpg') %>",
+    "<%= asset_path('f-royalblue-front-web.jpg') %>",
     "<%= asset_path('f-red-back-web.jpg') %>",
     "<%= asset_path('f-red-front-web.jpg') %>",
+    "<%= asset_path('f-orange-back-web.jpg') %>",
+    "<%= asset_path('f-orange-front-web.jpg') %>",
     "<%= asset_path('f-green-back-web.jpg') %>",
     "<%= asset_path('f-green-front-web.jpg') %>",
+    "<%= asset_path('f-pink-back-web.jpg') %>",
+    "<%= asset_path('f-pink-front-web.jpg') %>",
+    "<%= asset_path('f-purple-back-web.jpg') %>",
+    "<%= asset_path('f-purple-front-web.jpg') %>",
 
     "<%= asset_path('f_black_mockup_f.png') %>",
     "<%= asset_path('f_black_mockup_b.png') %>",
     "<%= asset_path('f_white_mockup_f.png') %>",
     "<%= asset_path('f_white_mockup_b.png') %>",
+    "<%= asset_path('f_gray_mockup_f.png') %>",
+    "<%= asset_path('f_gray_mockup_b.png') %>",
+    "<%= asset_path('f_sportgray_mockup_f.png') %>",
+    "<%= asset_path('f_sportgray_mockup_b.png') %>",
     "<%= asset_path('f_navy_mockup_f.png') %>",
     "<%= asset_path('f_navy_mockup_b.png') %>",
+    "<%= asset_path('f_royalblue_mockup_f.png') %>",
+    "<%= asset_path('f_royalblue_mockup_b.png') %>",
     "<%= asset_path('f_red_mockup_f.png') %>",
     "<%= asset_path('f_red_mockup_b.png') %>",
+    "<%= asset_path('f_orange_mockup_f.png') %>",
+    "<%= asset_path('f_orange_mockup_b.png') %>",
     "<%= asset_path('f_green_mockup_f.png') %>",
     "<%= asset_path('f_green_mockup_b.png') %>",
+    "<%= asset_path('f_pink_mockup_f.png') %>",
+    "<%= asset_path('f_pink_mockup_b.png') %>",
+    "<%= asset_path('f_purple_mockup_f.png') %>",
+    "<%= asset_path('f_purple_mockup_b.png') %>",
 
     "<%= asset_path('design-library-splash.jpg') %>"
   ]);

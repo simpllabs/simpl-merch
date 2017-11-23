@@ -30,6 +30,8 @@ class PublishJob < ProgressJob::Base
       update_stage('Generating variants...')
       variants = []
       @data[:colors].each do |c|
+        c = c == "SportGray" ? "Light Gray" : c
+        c = c == "RoyalBlue" ? "Royal Blue" : c
         @data[:sizes].each do |s|
           variants.push({
               "option1" => s,
@@ -147,6 +149,8 @@ class PublishJob < ProgressJob::Base
           variants_all = ShopifyAPI::Variant.find(:all, params: {product_id: new_tee.id}) # This is an array of ShopifyAPI::Variant objects
           variants_one_color = []
           variants_all.each do |v| 
+            color = color == "SportGray" ? "Light Gray" : color
+            color = color == "RoyalBlue" ? "Royal Blue" : color
             variants_one_color.push(v.id) if v.option2 == color
           end
           new_tee_img_f = ShopifyAPI::Image.new(:product_id => new_tee.id) 

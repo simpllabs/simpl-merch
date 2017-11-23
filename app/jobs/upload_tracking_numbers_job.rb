@@ -11,14 +11,19 @@ class UploadTrackingNumbersJob < ProgressJob::Base
           session = ShopifyAPI::Session.new(order[3], Shop.where(shopify_domain: "#{order[3]}").first.shopify_token)
           ShopifyAPI::Base.activate_session(session)
 
-          tracking_url = order[1] == "USPS" ? "https://tools.usps.com/go/TrackConfirmAction.action?tLabels=#{order[0]}" : "https://track.aftership.com/china-post/#{order[0]}"
+          tracking_num = order[0]
+          if order[0].include?(",")
+            tracking_num.slice!(0)
+          end
+
+          tracking_url = order[1] == "USPS" ? "https://tools.usps.com/go/TrackConfirmAction.action?tLabels=#{tracking_num}" : "https://track.aftership.com/china-post/#{tracking_num}"
 
           order_from_model = Order.where(id: "#{order[2]}").first
-
+          
           shipment_hash = {
             tracking_company: "#{order[1]}",
             status: "success",
-            tracking_numbers: ["#{order[0]}"],
+            tracking_numbers: ["#{tracking_num}"],
             tracking_urls: ["#{tracking_url}"],
             line_items: [{id: "#{order_from_model.shopify_line_item_id}", fulfillment_status: "fulfilled"}],
             notify_customer: false,

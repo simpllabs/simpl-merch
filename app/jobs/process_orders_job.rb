@@ -122,9 +122,9 @@
 	    CsvOrdersMailer.csv_file_email(csv_string).deliver_now
 
 	    #update inventory
-    	orders.each do |order|
-    		updateInvetoryTables(order.gender, order.quantity, order.sku)
-    	end
+    	#orders.each do |order|
+    	#	updateInvetoryTables(order.gender, order.quantity, order.sku)
+    	#end
 
     rescue Exception => e
     	job_title = "process_orders_job.rb"

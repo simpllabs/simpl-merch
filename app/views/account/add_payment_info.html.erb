@@ -37,7 +37,7 @@
 					<br>
 					<p>Send You Email Receipts? <%= select_tag :send_receipts, options_for_select(['Yes','No'], @shop.send_receipts == "Yes" ? "Yes" : "No") %></p>
 					<br>
-					<p>Use China Post For International Orders? <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="bottom" title="If you choose yes, then international shipping costs will be $0, but orders could take a month to arrive depending on the country."></span> <%= select_tag :china_post, options_for_select(['Yes','No'], @shop.chose_china_post == "Yes" ? "Yes" : "No") %></p>
+					<p>Use China Post For International Orders? <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="bottom" title="If you choose yes, then we will not ship from our Dallas, USA factory, and will instead ship from our Shanghai factory. Shipping will cost only $4.50 for international orders, but orders could take a month to arrive depending on the country."></span> <%= select_tag :china_post, options_for_select(['Yes','No'], @shop.chose_china_post == "Yes" ? "Yes" : "No") %></p>
 					<br>
 					<p>Send Customer Custom Packing Slip? (FREE) <%= select_tag :packing_slip, options_for_select(['Yes','No'], @shop.packing_slip.present? ? "#{@shop.packing_slip}" : "No") %></p>
 					<br>

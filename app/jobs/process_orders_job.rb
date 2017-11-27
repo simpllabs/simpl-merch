@@ -37,25 +37,32 @@
 				  # Don't process order if its payment status is pending
 				  if order.payment_status != "pending"
 
-				    tee = Tee.where(id: order.tee_id).first
-				    if !tee.one_time_fee_charged
-				      design_fee += 3 
-				      tee.one_time_fee_charged = true
-				    end
-				    if !tee.back_one_time_fee_charged
-				      design_fee += 3 
-				      tee.back_one_time_fee_charged = true
-				    end
-				    tee.save
+				    #tee = Tee.where(id: order.tee_id).first
+				    #if !tee.one_time_fee_charged
+				    #  design_fee += 3 
+				    #  tee.one_time_fee_charged = true
+				    #end
+				    #if !tee.back_one_time_fee_charged
+				    #  design_fee += 3 
+				    #  tee.back_one_time_fee_charged = true
+				    #end
+				    #tee.save
 
-				    base_cost = order.back_design.present? ? 7 : 6
+				    base_cost = order.gender == "male" ? 5 : 5.5
+				    #base_cost = order.back_design.present? ? 7 : 6
 				    #base_cost = order.multicolor == 'yes' ? base_cost + 1.5 : base_cost
 
 				    is_US = order.country.include?("United States")
 				    chose_china_post = shop.chose_china_post == "Yes"
 
-				    if !is_US && !chose_china_post
-				      base_cost = base_cost + 4 
+				    if is_US
+				    	base_cost = base_cost + 3
+				    else
+				    	if chose_china_post
+					      	base_cost = base_cost + 4.5
+					    else
+					    	base_cost = base_cost + 7
+					    end
 				    end
 
 				    if shop.shopify_domain == order.shop_domain
@@ -97,7 +104,7 @@
 				    status = "#ValidationError: #{e.message}"
 				  end
 
-				  intl_shipping = (shop.chose_china_post == "No" || shop.chose_china_post.blank?) ? "USPS" : "China Post"
+				  intl_shipping = (shop.chose_china_post == "No" || shop.chose_china_post.blank?) ? "UPS" : "China Post"
 
 				  Order.where(fulfillment_status: "Pending").each do |order|
 				    if shop.shopify_domain == order.shop_domain && order.payment_status != "pending"

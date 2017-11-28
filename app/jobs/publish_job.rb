@@ -44,6 +44,8 @@ class PublishJob < ProgressJob::Base
       end
       new_tee.variants = variants
       new_tee.save
+
+      #raise "variants_all: #{ShopifyAPI::Variant.find(:all, params: {product_id: new_tee.id, limit: 100})}"
       
       @tee.shopify_product_id = new_tee.id
       @tee.save # Store product id in Tee table row
@@ -146,17 +148,24 @@ class PublishJob < ProgressJob::Base
 
           mockup_f_done = MiniMagick::Image.new("#{ENV['STORAGE_URL']}/#{f_uuid}_#{color.downcase}.png")
 
-          variants_all = ShopifyAPI::Variant.find(:all, params: {product_id: new_tee.id}) # This is an array of ShopifyAPI::Variant objects
+
+          color = color == "SportGray" ? "Light Gray" : color
+          color = color == "RoyalBlue" ? "Royal Blue" : color
+
+          variants_all = ShopifyAPI::Variant.find(:all, params: {product_id: new_tee.id, limit: 100}) # This is an array of ShopifyAPI::Variant objects
           variants_one_color = []
           variants_all.each do |v| 
-            color = color == "SportGray" ? "Light Gray" : color
-            color = color == "RoyalBlue" ? "Royal Blue" : color
+
             variants_one_color.push(v.id) if v.option2 == color
           end
           new_tee_img_f = ShopifyAPI::Image.new(:product_id => new_tee.id) 
           new_tee_img_f.attach_image(mockup_f_done.to_blob)
           new_tee_img_f.variant_ids = variants_one_color
           new_tee_img_f.save
+
+          #if color == "Purple"
+          #  raise "Color: #{color}. variants_one_color: #{variants_one_color.length}"
+          #end
 
         end
 

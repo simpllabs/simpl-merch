@@ -51,6 +51,8 @@ class AccountController < ShopifyApp::AuthenticatedController
       #customer.save
 
       shop.send_receipts = params[:send_receipts]
+      shop.non_plastic = params[:non_plastic]
+      shop.remove_tag = params[:remove_tag]
       shop.chose_china_post = params[:china_post]
 
       card = customer.sources.retrieve(customer.sources.data[0].id)

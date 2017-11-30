@@ -11,7 +11,7 @@
     	orders = []
 	    csv_string = CSV.generate do |csv|
 
-	      	header = ["TRACKING NUMBER", "Shipping Method", "Order ID", "Order Date", "Product Name", "Shop Domain", "Shop Name", "Gender", "Front Design URL", "Back Design URL", "Front Reference URL", "Back Reference URL", "Status", "SKU", "Light/Dark", "Quantity", "Shipping Name", "Shipping Address1", "Shipping Address2", "Shipping Company", "Shipping City", "Shipping ZIP", "Shipping Province/State", "Shipping Country"]
+	      	header = ["TRACKING NUMBER", "Shipping Method", "Order ID", "Order Date", "Product Name", "Shop Domain", "Shop Name", "Gender", "Front Design URL", "Back Design URL", "Front Reference URL", "Back Reference URL", "Status", "Non-Plastic Packaging", "Remove Tag", "Light/Dark", "Quantity", "Shipping Name", "Shipping Address1", "Shipping Address2", "Shipping Company", "Shipping City", "Shipping ZIP", "Shipping Province/State", "Shipping Country"]
 	      	packing_slip = ["Packing Slip Logo URL", "Packing Slip Message"]
 	      	csv << [*header, *packing_slip]
 
@@ -65,6 +65,14 @@
 					    end
 				    end
 
+				    if shop.non_plastic == "Yes"
+				    	base_cost = base_cost + 0.5
+				    end
+
+				    if shop.remove_tag == "Yes"
+				    	base_cost = base_cost + 0.05
+				    end
+
 				    if shop.shopify_domain == order.shop_domain
 				      charge_amount = charge_amount + (order.quantity * base_cost)
 				    end
@@ -108,7 +116,7 @@
 
 				  Order.where(fulfillment_status: "Pending").each do |order|
 				    if shop.shopify_domain == order.shop_domain && order.payment_status != "pending"
-				      row = ["", order.country == "United States" ? "USPS" : intl_shipping, order.id, order.created_at, order.product_name, order.shop_domain, order.shop_name, order.gender, order.front_design, order.back_design, order.front_ref, order.back_ref, status, order.sku, order.light_or_dark, order.quantity, order.name, order.address1, order.address2, order.company, order.city, order.zip, order.province, order.country]
+				      row = ["", order.country == "United States" ? "USPS" : intl_shipping, order.id, order.created_at, order.product_name, order.shop_domain, order.shop_name, order.gender, order.front_design, order.back_design, order.front_ref, order.back_ref, status, shop.non_plastic, shop.remove_tag, order.light_or_dark, order.quantity, order.name, order.address1, order.address2, order.company, order.city, order.zip, order.province, order.country]
 				      packing_slip = shop.packing_slip == "Yes" ? [shop.packing_slip_logo, shop.packing_slip_message.sub("[customer_name]", order.name)] : ["",""]
 				      csv << [*row, *packing_slip]
 				      order.processed = true

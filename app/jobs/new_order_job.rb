@@ -19,7 +19,7 @@ class NewOrderJob < ProgressJob::Base
             num = @params
             order_params = 0
             orders.each do |order|
-                if order.order_number.to_i == 32873 #num.to_i
+                if order.order_number.to_i == num.to_i
                     order_params = order
                 end
             end

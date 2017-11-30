@@ -21,7 +21,7 @@
 			<%= text_field_tag 'product_title', nil, placeholder: 'My Tee Title...', maxlength: 60 %>
 
 			<p>Product Description: </p>
-			<%= text_area_tag 'product_description', "4.5 oz. &#10;<br>100% Ring-spun Combed Cotton &#10;<br>Semi-slim Fit".html_safe, rows: 6 %>
+			<%= text_area_tag 'product_description', "4.5 oz. &#10;<br>100% Ring-spun Combed Cotton &#10;<br>Semi-slim Fit&#10;<br><a href='http://rocketees.com/sizing-chart.pdf' target='to_blank'>[SIZING CHART]</a>".html_safe, rows: 6 %>
 
 			<p>Add To Collection: </p>
 			<!-- store them in an html stril in the controller -->
@@ -33,7 +33,7 @@
 			<p>Your Selling Price: </p>
 			<%= text_field_tag 'product_price', nil, as: :currency%>
 
-			<p><small>Note: If you change vendor from "rocketees" or edit any SKU value, the app will not work. </small></p>
+			<p><small>Note: If you change vendor from "rocketees", the app will not work. </small></p>
 		</div>
 
 		<div class="col-sm-4">

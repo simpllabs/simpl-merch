@@ -34,6 +34,7 @@ class NewOrderJob < ProgressJob::Base
                 if line_item.vendor == "rocketees" || line_item.vendor == "Rocketees"
                     order = Order.new
                     order.shop_domain = @domain
+                    order.shop_name = ShopifyAPI::Shop.current.name
                     order.shopify_order_id = order_params.id
                     order.shopify_line_item_id = line_item.id
                     order.payment_status = order_params.financial_status
@@ -78,6 +79,7 @@ class NewOrderJob < ProgressJob::Base
                 if line_item[:vendor] == "rocketees" || line_item[:vendor] == "Rocketees"
                     order = Order.new
                     order.shop_domain = @domain
+                    order.shop_name = ShopifyAPI::Shop.current.name
                     order.shopify_order_id = @params[:id]
                     order.shopify_line_item_id = line_item[:id]
                     order.payment_status = @params[:financial_status]

@@ -7,8 +7,8 @@ class UploadTrackingNumbersJob < ProgressJob::Base
     begin
 
       CSV.foreach(@file_path) do |order|
-        if order[9] == "In-Production"
-          session = ShopifyAPI::Session.new(order[3], Shop.where(shopify_domain: "#{order[3]}").first.shopify_token)
+        if order[12] == "In-Production"
+          session = ShopifyAPI::Session.new(order[5], Shop.where(shopify_domain: "#{order[5]}").first.shopify_token)
           ShopifyAPI::Base.activate_session(session)
 
           tracking_num = order[0]

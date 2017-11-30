@@ -9,11 +9,11 @@ class NewOrderJob < ProgressJob::Base
 
     begin
 
+        token = Shop.where(shopify_domain: @domain).first.shopify_token
+        session = ShopifyAPI::Session.new(@domain, token)
+        ShopifyAPI::Base.activate_session(session)
+        
         if @trying_again == true
-
-            token = Shop.where(shopify_domain: @domain).first.shopify_token
-            session = ShopifyAPI::Session.new(@domain, token)
-            ShopifyAPI::Base.activate_session(session)
 
             orders = ShopifyAPI::Order.all
             num = @params
@@ -71,6 +71,7 @@ class NewOrderJob < ProgressJob::Base
             end
 
         else
+
             shopify_product_id = nil
             @params[:line_items].each do |line_item|
                 tee = Tee.where(shopify_product_id: line_item[:product_id]).first

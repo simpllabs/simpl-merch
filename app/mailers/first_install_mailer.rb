@@ -1,5 +1,5 @@
 class FirstInstallMailer < ApplicationMailer
-	default from: 'amorimluc@gmail.com'
+	default from: 'support@rocketees.com'
 	
 	def welcome_email(name, email)
 		@name = name

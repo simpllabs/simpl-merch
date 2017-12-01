@@ -32,8 +32,8 @@ Rails.application.configure do
     :address        => 'smtp.gmail.com',
     :domain         => 'mail.google.com',
     :port           => 587,
-    :user_name      => 'amorimluc@gmail.com',
-    :password       => 'I will learn Mandarin.',
+    :user_name      => 'support@rocketees.com',
+    :password       => '4m0rim1uc!',
     :authentication => :plain,
     :enable_starttls_auto => true,
     :openssl_verify_mode  => 'none'

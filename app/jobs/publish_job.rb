@@ -149,14 +149,14 @@ class PublishJob < ProgressJob::Base
           mockup_f_done = MiniMagick::Image.new("#{ENV['STORAGE_URL']}/#{f_uuid}_#{color.downcase}.png")
 
 
-          color = color == "SportGray" ? "Light Gray" : color
-          color = color == "RoyalBlue" ? "Royal Blue" : color
+          color_tmp = color == "SportGray" ? "Light Gray" : color
+          color_tmp = color == "RoyalBlue" ? "Royal Blue" : color_tmp
 
           variants_all = ShopifyAPI::Variant.find(:all, params: {product_id: new_tee.id, limit: 100}) # This is an array of ShopifyAPI::Variant objects
           variants_one_color = []
           variants_all.each do |v| 
 
-            variants_one_color.push(v.id) if v.option2 == color
+            variants_one_color.push(v.id) if v.option2 == color_tmp
           end
           new_tee_img_f = ShopifyAPI::Image.new(:product_id => new_tee.id) 
           new_tee_img_f.attach_image(mockup_f_done.to_blob)

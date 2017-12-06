@@ -31,6 +31,14 @@ class AdminController < ApplicationController
   		redirect_to "/admin"
   	end
 
+    def upload_tracking_num
+      Delayed::Job.enqueue UploadTrackingNumberJob.new(params[:tracking_number], params[:order_number])
+
+      flash[:notice] = "Tracking number being uploaded in the background."
+      flash[:type] = "success"
+      redirect_to "/admin"
+    end
+
   	def add_inventory
   		@incoming_file = params[:inventory]
   		file_name = params[:inventory].original_filename

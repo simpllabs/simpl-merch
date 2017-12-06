@@ -32,6 +32,7 @@ class UploadTrackingNumbersJob < ProgressJob::Base
 
           ShopifyAPI::Fulfillment.create(shipment_hash)
           order_from_model.fulfillment_status = "Shipped"
+          order_from_model.tracking_number = tracking_num
           order_from_model.save
           sleep(3)
         end

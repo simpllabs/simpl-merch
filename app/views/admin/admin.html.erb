@@ -7,11 +7,21 @@
 			  	<%= flash[:notice] %>
 			</div>
 			<h2>Rocketees Admin</h2>
+				<%= form_tag("admin/tracking_num", authenticity_token: true, id: "admin-login", multipart: true, action: :upload) do %> 
+					<p>Upload Tracking Number: <%= text_field_tag "tracking_number" %></p>
+					<p>Order Number: <%= text_field_tag "order_number" %></p>
+					<%= submit_tag "Submit Tracking Number", class: "btn btn-danger tracking-num-submit" %>
+				<% end %>
+
+				<hr class="separator">
+				<br>
+				
 				<%= form_tag("admin/tracking", authenticity_token: true, id: "admin-login", multipart: true, action: :upload) do %> 
 					<p>Upload Tracking Numbers CSV File: <%= file_field_tag "spreadsheet" %></p>
 					<%= submit_tag "Submit Tracking Numbers", class: "btn btn-danger tracking-submit" %>
 				<% end %>
 				<br>
+				<!--
 				<hr class="separator">
 
 				<table class="table table-bordered admin-table">
@@ -79,6 +89,8 @@
 					<%= submit_tag "Add Inventory", class: "btn btn-danger inventory-submit" %>
 				<% end %>
 
+			-->
+
 				<hr class="separator">
 
 				<%= form_tag("admin/export_orders_range", authenticity_token: true, id: "export_orders_range") do %> 
@@ -89,7 +101,7 @@
 				<hr class="separator">
 
 				<%= form_tag("admin/try_again_new_order", authenticity_token: true, id: "try_again_new_order") do %> 
-					<p>Trigger Webhook For This Product:</p> 
+					<p>Trigger Webhook For This Order:</p> 
 					<p>Shop Domain: <%= text_field_tag "shop_domain", nil, size: 40 %></p>   
 					<p>Order Number: <%= text_field_tag "order_number", nil, size: 7 %></p>
 					<%= submit_tag "Try Creating Order Again", class: "btn btn-danger export-orders-btn" %>

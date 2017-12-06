@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get 'admin', to: 'admin#admin'
   post 'admin', to: 'admin#admin'
   post 'admin/tracking', to: 'admin#upload_tracking'
+  post 'admin/tracking_num', to: 'admin#upload_tracking_num'
   post 'admin/extend_trial_period', to: 'admin#extend_trial_period'
   post 'admin/export_orders_range', to: 'admin#export_orders_range'
   post 'admin/try_again_new_order', to: 'admin#try_again_new_order'

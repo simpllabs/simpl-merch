@@ -1,18 +1,277 @@
- class ProcessOrdersJob < ProgressJob::Base
-  def initialize
+class ProcessOrdersJob < ProgressJob::Base
+	def initialize
 
-  end
+	end
 
-  # run everyday 11:59 pm MST
-  def perform
+	def update_color_names(sku)
+		if sku.include?("Light Grey")
+			return sku.sub("Light Grey", "Charcoal")
+		elsif sku.include?("Grey")
+			return sku.sub("Grey", "Sport Grey")
+		elsif sku.include?("Green")
+			return sku.sub("Green", "Irish Green")
+		else
+			return sku
+		end
+	end
+
+	def to_country_code(country)
+		COUNTRY_CODES.key(country)
+	end
+
+  	# convert country name to country code
+	COUNTRY_CODES = {
+		'AF'=>'Afghanistan',
+		'AL'=>'Albania',
+		'DZ'=>'Algeria',
+		'AS'=>'American Samoa',
+		'AD'=>'Andorra',
+		'AO'=>'Angola',
+		'AI'=>'Anguilla',
+		'AQ'=>'Antarctica',
+		'AG'=>'Antigua And Barbuda',
+		'AR'=>'Argentina',
+		'AM'=>'Armenia',
+		'AW'=>'Aruba',
+		'AU'=>'Australia',
+		'AT'=>'Austria',
+		'AZ'=>'Azerbaijan',
+		'BS'=>'Bahamas',
+		'BH'=>'Bahrain',
+		'BD'=>'Bangladesh',
+		'BB'=>'Barbados',
+		'BY'=>'Belarus',
+		'BE'=>'Belgium',
+		'BZ'=>'Belize',
+		'BJ'=>'Benin',
+		'BM'=>'Bermuda',
+		'BT'=>'Bhutan',
+		'BO'=>'Bolivia',
+		'BA'=>'Bosnia And Herzegovina',
+		'BW'=>'Botswana',
+		'BV'=>'Bouvet Island',
+		'BR'=>'Brazil',
+		'IO'=>'British Indian Ocean Territory',
+		'BN'=>'Brunei',
+		'BG'=>'Bulgaria',
+		'BF'=>'Burkina Faso',
+		'BI'=>'Burundi',
+		'KH'=>'Cambodia',
+		'CM'=>'Cameroon',
+		'CA'=>'Canada',
+		'CV'=>'Cape Verde',
+		'KY'=>'Cayman Islands',
+		'CF'=>'Central African Republic',
+		'TD'=>'Chad',
+		'CL'=>'Chile',
+		'CN'=>'China',
+		'CX'=>'Christmas Island',
+		'CC'=>'Cocos (Keeling) Islands',
+		'CO'=>'Columbia',
+		'KM'=>'Comoros',
+		'CG'=>'Congo',
+		'CK'=>'Cook Islands',
+		'CR'=>'Costa Rica',
+		'CI'=>'Cote D\'Ivorie (Ivory Coast)',
+		'HR'=>'Croatia (Hrvatska)',
+		'CU'=>'Cuba',
+		'CY'=>'Cyprus',
+		'CZ'=>'Czech Republic',
+		'CD'=>'Democratic Republic Of Congo (Zaire)',
+		'DK'=>'Denmark',
+		'DJ'=>'Djibouti',
+		'DM'=>'Dominica',
+		'DO'=>'Dominican Republic',
+		'TP'=>'East Timor',
+		'EC'=>'Ecuador',
+		'EG'=>'Egypt',
+		'SV'=>'El Salvador',
+		'GQ'=>'Equatorial Guinea',
+		'ER'=>'Eritrea',
+		'EE'=>'Estonia',
+		'ET'=>'Ethiopia',
+		'FK'=>'Falkland Islands (Malvinas)',
+		'FO'=>'Faroe Islands',
+		'FJ'=>'Fiji',
+		'FI'=>'Finland',
+		'FR'=>'France',
+		'FX'=>'France, Metropolitan',
+		'GF'=>'French Guinea',
+		'PF'=>'French Polynesia',
+		'TF'=>'French Southern Territories',
+		'GA'=>'Gabon',
+		'GM'=>'Gambia',
+		'GE'=>'Georgia',
+		'DE'=>'Germany',
+		'GH'=>'Ghana',
+		'GI'=>'Gibraltar',
+		'GR'=>'Greece',
+		'GL'=>'Greenland',
+		'GD'=>'Grenada',
+		'GP'=>'Guadeloupe',
+		'GU'=>'Guam',
+		'GT'=>'Guatemala',
+		'GN'=>'Guinea',
+		'GW'=>'Guinea-Bissau',
+		'GY'=>'Guyana',
+		'HT'=>'Haiti',
+		'HM'=>'Heard And McDonald Islands',
+		'HN'=>'Honduras',
+		'HK'=>'Hong Kong',
+		'HU'=>'Hungary',
+		'IS'=>'Iceland',
+		'IN'=>'India',
+		'ID'=>'Indonesia',
+		'IR'=>'Iran',
+		'IQ'=>'Iraq',
+		'IE'=>'Ireland',
+		'IL'=>'Israel',
+		'IT'=>'Italy',
+		'JM'=>'Jamaica',
+		'JP'=>'Japan',
+		'JO'=>'Jordan',
+		'KZ'=>'Kazakhstan',
+		'KE'=>'Kenya',
+		'KI'=>'Kiribati',
+		'KW'=>'Kuwait',
+		'KG'=>'Kyrgyzstan',
+		'LA'=>'Laos',
+		'LV'=>'Latvia',
+		'LB'=>'Lebanon',
+		'LS'=>'Lesotho',
+		'LR'=>'Liberia',
+		'LY'=>'Libya',
+		'LI'=>'Liechtenstein',
+		'LT'=>'Lithuania',
+		'LU'=>'Luxembourg',
+		'MO'=>'Macau',
+		'MK'=>'Macedonia',
+		'MG'=>'Madagascar',
+		'MW'=>'Malawi',
+		'MY'=>'Malaysia',
+		'MV'=>'Maldives',
+		'ML'=>'Mali',
+		'MT'=>'Malta',
+		'MH'=>'Marshall Islands',
+		'MQ'=>'Martinique',
+		'MR'=>'Mauritania',
+		'MU'=>'Mauritius',
+		'YT'=>'Mayotte',
+		'MX'=>'Mexico',
+		'FM'=>'Micronesia',
+		'MD'=>'Moldova',
+		'MC'=>'Monaco',
+		'MN'=>'Mongolia',
+		'MS'=>'Montserrat',
+		'MA'=>'Morocco',
+		'MZ'=>'Mozambique',
+		'MM'=>'Myanmar (Burma)',
+		'NA'=>'Namibia',
+		'NR'=>'Nauru',
+		'NP'=>'Nepal',
+		'NL'=>'Netherlands',
+		'AN'=>'Netherlands Antilles',
+		'NC'=>'New Caledonia',
+		'NZ'=>'New Zealand',
+		'NI'=>'Nicaragua',
+		'NE'=>'Niger',
+		'NG'=>'Nigeria',
+		'NU'=>'Niue',
+		'NF'=>'Norfolk Island',
+		'KP'=>'North Korea',
+		'MP'=>'Northern Mariana Islands',
+		'NO'=>'Norway',
+		'OM'=>'Oman',
+		'PK'=>'Pakistan',
+		'PW'=>'Palau',
+		'PA'=>'Panama',
+		'PG'=>'Papua New Guinea',
+		'PY'=>'Paraguay',
+		'PE'=>'Peru',
+		'PH'=>'Philippines',
+		'PN'=>'Pitcairn',
+		'PL'=>'Poland',
+		'PT'=>'Portugal',
+		'PR'=>'Puerto Rico',
+		'QA'=>'Qatar',
+		'RE'=>'Reunion',
+		'RO'=>'Romania',
+		'RU'=>'Russia',
+		'RW'=>'Rwanda',
+		'SH'=>'Saint Helena',
+		'KN'=>'Saint Kitts And Nevis',
+		'LC'=>'Saint Lucia',
+		'PM'=>'Saint Pierre And Miquelon',
+		'VC'=>'Saint Vincent And The Grenadines',
+		'SM'=>'San Marino',
+		'ST'=>'Sao Tome And Principe',
+		'SA'=>'Saudi Arabia',
+		'SN'=>'Senegal',
+		'SC'=>'Seychelles',
+		'SL'=>'Sierra Leone',
+		'SG'=>'Singapore',
+		'SK'=>'Slovak Republic',
+		'SI'=>'Slovenia',
+		'SB'=>'Solomon Islands',
+		'SO'=>'Somalia',
+		'ZA'=>'South Africa',
+		'GS'=>'South Georgia And South Sandwich Islands',
+		'KR'=>'South Korea',
+		'ES'=>'Spain',
+		'LK'=>'Sri Lanka',
+		'SD'=>'Sudan',
+		'SR'=>'Suriname',
+		'SJ'=>'Svalbard And Jan Mayen',
+		'SZ'=>'Swaziland',
+		'SE'=>'Sweden',
+		'CH'=>'Switzerland',
+		'SY'=>'Syria',
+		'TW'=>'Taiwan',
+		'TJ'=>'Tajikistan',
+		'TZ'=>'Tanzania',
+		'TH'=>'Thailand',
+		'TG'=>'Togo',
+		'TK'=>'Tokelau',
+		'TO'=>'Tonga',
+		'TT'=>'Trinidad And Tobago',
+		'TN'=>'Tunisia',
+		'TR'=>'Turkey',
+		'TM'=>'Turkmenistan',
+		'TC'=>'Turks And Caicos Islands',
+		'TV'=>'Tuvalu',
+		'UG'=>'Uganda',
+		'UA'=>'Ukraine',
+		'AE'=>'United Arab Emirates',
+		'UK'=>'United Kingdom',
+		'US'=>'United States',
+		'UM'=>'United States Minor Outlying Islands',
+		'UY'=>'Uruguay',
+		'UZ'=>'Uzbekistan',
+		'VU'=>'Vanuatu',
+		'VA'=>'Vatican City (Holy See)',
+		'VE'=>'Venezuela',
+		'VN'=>'Vietnam',
+		'VG'=>'Virgin Islands (British)',
+		'VI'=>'Virgin Islands (US)',
+		'WF'=>'Wallis And Futuna Islands',
+		'EH'=>'Western Sahara',
+		'WS'=>'Western Samoa',
+		'YE'=>'Yemen',
+		'YU'=>'Yugoslavia',
+		'ZM'=>'Zambia',
+		'ZW'=>'Zimbabwe'
+	}
+
+  	# run everyday 11:59 pm MST
+  	def perform
 
     begin
     	
     	orders = []
 	    csv_string = CSV.generate do |csv|
 
-	      	header = ["TRACKING NUMBER", "Shipping Method", "Order ID", "Order Date", "Product Name", "Shop Domain", "Shop Name", "Gender", "Front Design URL", "Back Design URL", "Front Reference URL", "Back Reference URL", "Status", "Non-Plastic Packaging", "Remove Tag", "Light/Dark", "Quantity", "Shipping Name", "Shipping Address1", "Shipping Address2", "Shipping Company", "Shipping City", "Shipping ZIP", "Shipping Province/State", "Shipping Country"]
-	      	packing_slip = ["Packing Slip Logo URL", "Packing Slip Message"]
+	      	header = ["TRACKING NUMBER", "Shipping Method", "Order ID", "Order Date", "Shop Name", "Shop Domain", "Gender", "Product Name", "Front Design URL", "Back Design URL", "Front Reference URL", "Back Reference URL", "Status", "SKU", "Light/Dark", "Quantity", "Shipping Name", "Shipping Address1", "Shipping Address2", "Shipping Company", "Shipping City", "Shipping ZIP", "Shipping Province/State", "Shipping Country"]
+	      	packing_slip = ["Packing Slip Logo URL", "Packing Slip Message", "Non-Plastic Packaging", "Remove Tag"]
 	      	csv << [*header, *packing_slip]
 
 	      	Shop.where.not(stripe_customer_id: nil).each do |shop|
@@ -116,9 +375,9 @@
 
 				  Order.where(fulfillment_status: "Pending").each do |order|
 				    if shop.shopify_domain == order.shop_domain && order.payment_status != "pending"
-				      row = ["", order.country == "United States" ? "USPS" : intl_shipping, order.id, order.created_at, order.product_name, order.shop_domain, order.shop_name, order.gender, order.front_design, order.back_design, order.front_ref, order.back_ref, status, shop.non_plastic, shop.remove_tag, order.light_or_dark, order.quantity, order.name, order.address1, order.address2, order.company, order.city, order.zip, order.province, order.country]
+				      row = ["", order.country == "United States" ? "USPS" : intl_shipping, order.id, order.created_at, order.shop_name, order.shop_domain, order.gender, order.product_name, order.front_design, order.back_design, order.front_ref, order.back_ref, status, update_color_names(order.sku), order.light_or_dark, order.quantity, order.name, order.address1, order.address2, order.company, order.city, order.zip, order.province, to_country_code(order.country) == nil ? order.country : to_country_code(order.country)]
 				      packing_slip = shop.packing_slip == "Yes" ? [shop.packing_slip_logo, shop.packing_slip_message.sub("[customer_name]", order.name)] : ["",""]
-				      csv << [*row, *packing_slip]
+				      csv << [*row, *packing_slip, shop.non_plastic, shop.remove_tag]
 				      order.processed = true
 				      order.fulfillment_status = status == "In-Production" ? status : "Pending"
 				      order.save

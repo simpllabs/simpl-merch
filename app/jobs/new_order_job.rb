@@ -41,7 +41,7 @@ class NewOrderJob < ProgressJob::Base
                     order.fulfillment_status = "Pending"
                     order.sku = line_item.sku
                     order.store_order_number = order_params.order_number
-                    order.multicolor = tee.multicolor
+                    #order.multicolor = tee.multicolor
 
                     parsed_lod = JSON.parse(tee.light_or_dark) if tee.light_or_dark.present?
                     color = line_item.sku.split('-').last.downcase
@@ -87,7 +87,7 @@ class NewOrderJob < ProgressJob::Base
                     order.fulfillment_status = "Pending"
                     order.sku = line_item[:sku]
                     order.store_order_number = @params[:order_number]
-                    order.multicolor = tee.multicolor
+                    #order.multicolor = tee.multicolor
 
                     parsed_lod = JSON.parse(tee.light_or_dark) if tee.light_or_dark.present?
                     color = line_item[:sku].split('-').last.downcase

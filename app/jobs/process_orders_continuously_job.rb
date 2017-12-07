@@ -271,7 +271,7 @@ class ProcessOrdersJob < ProgressJob::Base
 	    csv_string = CSV.generate do |csv|
 
 	      	header = ["TRACKING NUMBER", "Shipping Method", "Order ID", "Order Date", "Shop Name", "Shop Domain", "Gender", "Product Name", "Front Design URL", "Back Design URL", "Front Reference URL", "Back Reference URL", "Status", "SKU", "Light/Dark", "Quantity", "Shipping Name", "Shipping Address1", "Shipping Address2", "Shipping Company", "Shipping City", "Shipping ZIP", "Shipping Province/State", "Shipping Country"]
-	      	packing_slip = ["Packing Slip Logo URL", "Packing Slip Message", "Non-Plastic Packaging", "Remove Tag", "Shop Shipping Address1", "Shop Shipping Address2", "Shop Shipping City", "Shop Shipping ZIP", "Shop Shipping Province/State", "Shop Shipping Country"]
+	      	packing_slip = ["Packing Slip Logo URL", "Packing Slip Message", "Non-Plastic Packaging", "Remove Tag"]
 	      	csv << [*header, *packing_slip]
 
 	      	Shop.where.not(stripe_customer_id: nil).each do |shop|
@@ -373,13 +373,11 @@ class ProcessOrdersJob < ProgressJob::Base
 
 				  intl_shipping = (shop.chose_china_post == "No" || shop.chose_china_post.blank?) ? "UPS" : "China Post"
 
-				  shop_from_api = ShopifyAPI::Shop.current
-
 				  Order.where(fulfillment_status: "Pending").each do |order|
 				    if shop.shopify_domain == order.shop_domain && order.payment_status != "pending"
 				      row = ["", order.country == "United States" ? "USPS" : intl_shipping, order.id, order.created_at, order.shop_name, order.shop_domain, order.gender, order.product_name, order.front_design, order.back_design, order.front_ref, order.back_ref, status, update_color_names(order.sku), order.light_or_dark, order.quantity, order.name, order.address1, order.address2, order.company, order.city, order.zip, order.province, to_country_code(order.country) == nil ? order.country : to_country_code(order.country)]
 				      packing_slip = shop.packing_slip == "Yes" ? [shop.packing_slip_logo, shop.packing_slip_message.sub("[customer_name]", order.name)] : ["",""]
-				      csv << [*row, *packing_slip, shop.non_plastic, shop.remove_tag, shop_from_api.address1, shop_from_api.address2, shop_from_api.city, shop_from_api.zip, shop_from_api.province, shop_from_api.country_name]
+				      csv << [*row, *packing_slip, shop.non_plastic, shop.remove_tag]
 				      order.processed = true
 				      order.fulfillment_status = status == "In-Production" ? status : "Pending"
 				      order.save
@@ -396,7 +394,6 @@ class ProcessOrdersJob < ProgressJob::Base
 
 	    #send out email
 	    CsvOrdersMailer.csv_file_email(csv_string).deliver_now
-	    send_email_per_order(csv_string)
 
 	    #update inventory
     	#orders.each do |order|
@@ -411,13 +408,6 @@ class ProcessOrdersJob < ProgressJob::Base
 	    ErrorMailer.error_email(job_title, log_data_1, log_data_2).deliver_now
     end
 
-  end
-
-  def send_email_per_order(csv_string)
-  	CSV.parse(csv_string, {headers: true}) do |order|
-  		PerOrderMailer.order_email(order).deliver_now
-        sleep(3)
-    end
   end
 
   def updateInvetoryTables(gender, quantity, sku)

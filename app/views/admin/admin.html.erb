@@ -8,7 +8,7 @@
 			</div>
 			<h2>Rocketees Admin</h2>
 				<%= form_tag("admin/tracking_num", authenticity_token: true, id: "admin-login", multipart: true, action: :upload) do %> 
-					<p>Upload Tracking Number: <%= text_field_tag "tracking_number" %></p>
+					<p>Upload Tracking Number: <%= text_field_tag "tracking_number", nil, size: 50 %></p>
 					<p>Order Number: <%= text_field_tag "order_number" %></p>
 					<%= submit_tag "Submit Tracking Number", class: "btn btn-danger tracking-num-submit" %>
 				<% end %>

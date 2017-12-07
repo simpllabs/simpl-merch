@@ -110,7 +110,7 @@ class PublishJob < ProgressJob::Base
       f_uuid = SecureRandom.uuid
       b_uuid = SecureRandom.uuid
 
-      parsed_lod = JSON.parse(@data[:light_or_dark])
+      parsed_lod = @data[:light_or_dark].present? ? JSON.parse(@data[:light_or_dark]) : "light"
 
       @data[:colors].each do |color|
 

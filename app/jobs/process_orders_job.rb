@@ -279,11 +279,18 @@ class ProcessOrdersJob < ProgressJob::Base
 				session = ShopifyAPI::Session.new(shop.shopify_domain, shop.shopify_token)
 				ShopifyAPI::Base.activate_session(session)
 
+				#shop_from_api = ShopifyAPI::Shop.current
+
 				#start by checking if orders with pending payment status have been paid
 				Order.where(fulfillment_status: "Pending").each do |order|
 				  if order.payment_status == "pending"
 				    #Do a Shopify API call to check is still pending
-				    payment_status = ShopifyAPI::Order.find(order.shopify_order_id).financial_status
+				    payment_status = "pending"
+				    begin
+				  	  payment_status = ShopifyAPI::Order.find(order.shopify_order_id).financial_status
+				    rescue Exception => e
+				  	
+				    end
 				    order.payment_status = payment_status
 				    order.save
 				  end
@@ -373,13 +380,19 @@ class ProcessOrdersJob < ProgressJob::Base
 
 				  intl_shipping = (shop.chose_china_post == "No" || shop.chose_china_post.blank?) ? "UPS" : "China Post"
 
-				  shop_from_api = ShopifyAPI::Shop.current
+				  shop_from_api = nil
+				  begin
+				  	shop_from_api = ShopifyAPI::Shop.current 
+				  rescue Exception => e
+
+				  end
+
 
 				  Order.where(fulfillment_status: "Pending").each do |order|
 				    if shop.shopify_domain == order.shop_domain && order.payment_status != "pending"
 				      row = ["", order.country == "United States" ? "USPS" : intl_shipping, order.id, order.created_at, order.shop_name, order.shop_domain, order.gender, order.product_name, order.front_design, order.back_design, order.front_ref, order.back_ref, status, update_color_names(order.sku), order.light_or_dark, order.quantity, order.name, order.address1, order.address2, order.company, order.city, order.zip, order.province, to_country_code(order.country) == nil ? order.country : to_country_code(order.country)]
 				      packing_slip = shop.packing_slip == "Yes" ? [shop.packing_slip_logo, shop.packing_slip_message.sub("[customer_name]", order.name)] : ["",""]
-				      csv << [*row, *packing_slip, shop.non_plastic, shop.remove_tag, shop_from_api.address1, shop_from_api.address2, shop_from_api.city, shop_from_api.zip, shop_from_api.province, shop_from_api.country_name]
+				      csv << [*row, *packing_slip, shop.non_plastic, shop.remove_tag, shop_from_api.blank? ? "" : shop_from_api.address1, shop_from_api.blank? ? "" : shop_from_api.address2, shop_from_api.blank? ? "" : shop_from_api.city, shop_from_api.blank? ? "" : shop_from_api.zip, shop_from_api.blank? ? "" : shop_from_api.province, shop_from_api.blank? ? "" : shop_from_api.country_name]
 				      order.processed = true
 				      order.fulfillment_status = status == "In-Production" ? status : "Pending"
 				      order.save

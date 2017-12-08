@@ -428,7 +428,9 @@ class ProcessOrdersJob < ProgressJob::Base
 
   def send_email_per_order(csv_string)
   	CSV.parse(csv_string, {headers: true}) do |order|
-  		PerOrderMailer.order_email(order).deliver_now
+  		if order[12] == "In-Production"
+	  		PerOrderMailer.order_email(order).deliver_now
+	  	end
         sleep(3)
     end
   end

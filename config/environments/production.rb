@@ -33,11 +33,11 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
   
   ActionMailer::Base.smtp_settings = {
-    :address        => 'smtp.gmail.com',
-    :domain         => 'mail.google.com',
+    :address        => 'smtp.sendgrid.net',
+    :domain         => 'rocketees.com',
     :port           => 587,
-    :user_name      => 'support@rocketees.com',
-    :password       => '4m0rim1uc!',
+    :user_name      => 'apikey',
+    :password       => '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',
     :authentication => :plain,
     :enable_starttls_auto => true,
     :openssl_verify_mode  => 'none'

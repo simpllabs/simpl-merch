@@ -1,4 +1,5 @@
 class AdminController < ApplicationController
+  skip_before_action :verify_authenticity_token
  	layout "admin"
 
   	def admin
@@ -37,6 +38,27 @@ class AdminController < ApplicationController
       flash[:notice] = "Tracking number being uploaded in the background."
       flash[:type] = "success"
       redirect_to "/admin"
+    end
+
+    def tracking_number_email
+      begin
+
+        #raise 'fake error'
+        message_array = params[:message].split()
+        order_index = message_array.index("Order:")
+        tracking_index = message_array.index("Tracking:")
+
+        order_number = message_array[order_index + 1]
+        tracking_number = message_array[tracking_index + 1]
+        
+        Delayed::Job.enqueue UploadTrackingNumberJob.new(tracking_number, order_number)
+
+        head :ok
+      rescue Exception => e
+        head 500
+      end
+
+      
     end
 
   	def add_inventory

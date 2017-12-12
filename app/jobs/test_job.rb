@@ -1,8 +1,9 @@
 class TestJob < ProgressJob::Base
-  def initialize
+  def initialize(text)
+  	@text = text
   end
 
   def perform
-        CsvOrdersMailer.csv_file_email(" ").deliver_now
+        TestMailMailer.test_email(@text).deliver_now
   end
 end

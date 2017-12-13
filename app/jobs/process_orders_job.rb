@@ -433,6 +433,12 @@ class ProcessOrdersJob < ProgressJob::Base
 	  	end
         sleep(3)
     end
+
+    check_if_any_in_same_order(csv_string)
+  end
+
+  def check_if_any_in_same_order(csv_string)
+  	#
   end
 
   def updateInvetoryTables(gender, quantity, sku)

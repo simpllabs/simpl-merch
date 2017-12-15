@@ -13,4 +13,4 @@ every(1.day, 'clean_tmp.job', :at => '00:00', :tz => 'MST') { Delayed::Job.enque
 
 every(1.day, 'midnight.job', :at => '00:00', :tz => 'MST') { Delayed::Job.enqueue ProcessOrdersJob.new}
 
-#every(5.hours, 'process_test.job') { Delayed::Job.enqueue ProcessOrdersJob.new }
+#every(30.seconds, 'process_test.job') { Delayed::Job.enqueue ProcessOrdersJob.new }

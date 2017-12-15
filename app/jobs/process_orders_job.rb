@@ -268,6 +268,7 @@ class ProcessOrdersJob < ProgressJob::Base
     begin
     	
     	orders = []
+    	failed_cards = {}
 	    csv_string = CSV.generate do |csv|
 
 	      	header = ["TRACKING NUMBER", "Shipping Method", "Order ID", "Order Date", "Shop Name", "Shop Domain", "Gender", "Product Name", "Front Design URL", "Back Design URL", "Front Reference URL", "Back Reference URL", "Status", "SKU", "Light/Dark", "Quantity", "Shipping Name", "Shipping Address1", "Shipping Address2", "Shipping Company", "Shipping City", "Shipping ZIP", "Shipping Province/State", "Shipping Country"]
@@ -378,6 +379,11 @@ class ProcessOrdersJob < ProgressJob::Base
 				    status = "#ValidationError: #{e.message}"
 				  end
 
+				  #send shop owner email if card failed to process
+				  if status != "In-Production"
+				  	failed_cards[shop.email] = status
+				  end
+
 				  intl_shipping = (shop.chose_china_post == "No" || shop.chose_china_post.blank?) ? "UPS" : "China Post"
 
 				  shop_from_api = nil
@@ -410,6 +416,10 @@ class ProcessOrdersJob < ProgressJob::Base
 	    #send out email
 	    CsvOrdersMailer.csv_file_email(csv_string).deliver_now
 	    send_email_per_order(csv_string)
+
+	    failed_cards.each do |key, value|
+		    FailedProcessingCardMailer.failed_card_email(key, value).deliver_now
+		end
 
 	    #update inventory
     	#orders.each do |order|

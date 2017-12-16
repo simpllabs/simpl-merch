@@ -9,31 +9,37 @@
 	<!-- begin form -->
 
 		<div class="col-xs-6">
+			<!--
 			<% if session[:gender] == "male" %>
 				<h2>Rocketees Men's T-Shirt - $5</h2>
 			<% else %>
 				<h2>Rocketees Women's T-Shirt - $5.5</h2>
 			<% end %>
+			-->
+			<h2>Rocketees T-Shirt - $5</h2>
 			
 			<div class='specs'>
 				<h5>SPECIFICATIONS</h5>
 				<ul>
-					<li>4.5 ounces, semi-fitted, comparable to the <%= session[:gender] == "male" ? "Gildan G640" : "Gildan G640L" %></li>
+					<li>4.5 ounces, semi-fitted, comparable to the Gildan G640 <!--<%= session[:gender] == "male" ? "Gildan G640" : "Gildan G640L" %>--></li>
 					<li>100% ring-spun combed cotton</li>
 					<li>Shipping Cost: US $3, INTL $7
-						<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="bottom" title="Domestic US delivery takes about 3-4 days to arrive once we ship. International shipping can take several weeks to arrive depending on the country. NOTE: Would you like cheaper international shipping? If you don't mind shipping from Shanghai using e-packet, we have a solution for you that would cost less than $10, including shipping (for 1-2 week delivery time). Contact us directly to discuss this option."></span>
+						<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="Domestic US delivery takes about 3-4 days to arrive once we ship. International shipping can take several weeks to arrive depending on the country. NOTE: Would you like cheaper international shipping? If you don't mind shipping from Shanghai using e-packet, we have a solution for you that would cost less than $10, including shipping (for 1-2 week delivery time). Contact us directly to discuss this option."></span>
 					</li>
 					<!--<li>One-time new design fee: $3
 						<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="bottom" title="This fee is NOT charged if you use one of our free designs in the Design Library. If you upload your own design, this fee is charged only ONCE with your first sale of the design. This fee goes toward producing the printing pattern for our DTG machine."></span>
 					</li>-->
 					<li>Stripe fee: 3% + 30¢ of daily total
-				        <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="bottom" title="For example, if you were to get 10 sales one day for the US, at the end of the day you would be charged $80 plus $2.7. Since we don't profit off the $8 per T-shirt, we need to charge for these Stripe transaction fees."></span>
+				        <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="For example, if you were to get 10 sales one day for the US, at the end of the day you would be charged $80 plus $2.7. Since we don't profit off the $8 per T-shirt, we need to charge for these Stripe transaction fees."></span>
 					</li>
 					<!--<li>Temporary Holiday Season Shipping Fee: $0.5
 				        <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="bottom" title="Fee charged per shirt. NOTE: This extra fee is temporary! We are forced to charge it at the moment because shipping costs have increased during the holiday shopping season."></span>
 					</li>-->
 				</ul>
-				<table class="table table-condensed table-bordered">
+
+				<a href="http://rocketees.com/sizing-chart.pdf" target='to_blank' class="btn btn-primary" style="margin-bottom:10px;">View Sizing Chart</a>
+
+				<!--<table class="table table-condensed table-bordered">
 				    <tbody>
 				    	<tr>
 				        <td>SIZE</td>
@@ -73,7 +79,8 @@
 							</tr>
 						<% #end %>
 					</tbody>
-				</table>
+				</table>-->
+
 			</div>
 
 			<br>
@@ -171,6 +178,14 @@
 				<% #end %>
 			</div>
 
+			<p>Choose genders: <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="An extra $0.5 is charged for each female tee. Kids tees will be available soon."></span></p>
+
+			<div class="gender-palettes">
+				<%= check_box_tag 'checkbox_male', 'Male', session[:genders].include?("Male"), class: 'gender-checkbox' %> <span id='male-checkbox-text'>Male</span> &nbsp;&nbsp;
+				<%= check_box_tag 'checkbox_female', 'Female', session[:genders].include?("Female"), class: 'gender-checkbox' %> <span id='female-checkbox-text'>Female</span> &nbsp;&nbsp;
+				<%= check_box_tag 'checkbox_kids', 'Kids', session[:genders].include?("Kids"), class: 'gender-checkbox', disabled: true %> <span id='kids-checkbox-text'>Kids</span>
+			</div>
+
 			<!--
 			<p>IMPORTANT: Is this a multi-color design? <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="bottom" title="At the moment we need to charge an extra $1.5 per shirt for multi-color designs. This fee is temporary! Early next year or sooner we will remove this fee completely. (If you mistakenly choose no but the design is multi-color, we will use only the more prominent design color for the entire design)."></span></p>
 			<p><%= radio_button_tag 'multicolor', 'yes', session[:multicolor] == 'yes', class: 'multicolor-radio' %> Yes ($1.5 fee, per shirt) <span style="padding-left:2em"> <%= radio_button_tag 'multicolor', 'no', session[:multicolor] == 'no', class: 'multicolor-radio' %> No </span></p>
@@ -215,11 +230,15 @@
 		      		<%= image_tag("design-color-flip.png", id: 'design-color-flip') %>
 		      	<% end %>
 
+		      	<!--
 		      	<% if session[:gender] == "male" %>
 					<%= image_tag("black-front-web.jpg", alt: "T-shirt Mockup", id: 'mockup-img') %>
 				<% else %>
 					<%= image_tag("f-black-front-web.jpg", alt: "T-shirt Mockup", id: 'mockup-img-f') %>
 				<% end %>
+				-->
+				<%= image_tag("black-front-web.jpg", alt: "T-shirt Mockup", id: 'mockup-img') %>
+				<%= image_tag("f-black-front-web.jpg", alt: "T-shirt Mockup", id: 'mockup-img-f') %>
 			</div>
 			
 			<div class="flip-clear-box">
@@ -260,7 +279,26 @@
 
 <!-- Modals Are Below -->
 
-<div class="modal fade" id="multicolor-question-empty" role="dialog">
+<div class="modal fade" id="variants-limit-modal" role="dialog">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Rocketees</h4>
+        </div>
+        <div class="modal-body">
+         	<p>ALERT: Variants limit exceeded. This product would have <span class="variants-calc">0</span> variants.</p> 
+         	<p><b>Shopify only allows <u>100</u> variants per product definition.</b></p>
+         	<p>Please unselect a few options (maybe some colors, or a gender) and try again.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="modal fade" id="missing-gender-modal" role="dialog">
 <div class="modal-dialog modal-md">
   <div class="modal-content">
     <div class="modal-header">
@@ -268,7 +306,7 @@
       <h4 class="modal-title">Rocketees</h4>
     </div>
     <div class="modal-body">
-      <p>Please select "Yes" or "No" for the last question of this form, which asks if the design is multi-color.</p>
+      <p>Please select at least one gender.</p>
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>

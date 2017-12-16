@@ -10,7 +10,7 @@ class HomeController < ShopifyApp::AuthenticatedController
         session[:front_size] = [0,0]
         session[:back_size] = [0,0]
         session[:published] = false
-        session[:gender] = nil
+        session[:genders] = ["Male"]
         session[:uuid] = SecureRandom.uuid
         session[:free_design] = false
         session[:light_or_dark] = nil

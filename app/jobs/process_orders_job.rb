@@ -268,7 +268,6 @@ class ProcessOrdersJob < ProgressJob::Base
     begin
     	
     	orders = []
-    	failed_cards = {}
 	    csv_string = CSV.generate do |csv|
 
 	      	header = ["TRACKING NUMBER", "Shipping Method", "Order ID", "Order Date", "Shop Name", "Shop Domain", "Gender", "Product Name", "Front Design URL", "Back Design URL", "Front Reference URL", "Back Reference URL", "Status", "SKU", "Light/Dark", "Quantity", "Shipping Name", "Shipping Address1", "Shipping Address2", "Shipping Company", "Shipping City", "Shipping ZIP", "Shipping Province/State", "Shipping Country"]
@@ -353,7 +352,7 @@ class ProcessOrdersJob < ProgressJob::Base
 
 				status = "In-Production"
 
-				if charge_amount > 0 
+				if charge_amount > 0
 
 				  begin
 				    charge = Stripe::Charge.create(
@@ -377,11 +376,6 @@ class ProcessOrdersJob < ProgressJob::Base
 				    status = "#APIError: #{e.message}"
 				  rescue Stripe::ValidationError => e
 				    status = "#ValidationError: #{e.message}"
-				  end
-
-				  #send shop owner email if card failed to process
-				  if status != "In-Production"
-				  	failed_cards[shop.email] = status
 				  end
 
 				  intl_shipping = (shop.chose_china_post == "No" || shop.chose_china_post.blank?) ? "UPS" : "China Post"
@@ -417,10 +411,6 @@ class ProcessOrdersJob < ProgressJob::Base
 	    CsvOrdersMailer.csv_file_email(csv_string).deliver_now
 	    send_email_per_order(csv_string)
 
-	    failed_cards.each do |key, value|
-		    FailedProcessingCardMailer.failed_card_email(key, value).deliver_now
-		end
-
 	    #update inventory
     	#orders.each do |order|
     	#	updateInvetoryTables(order.gender, order.quantity, order.sku)
@@ -441,6 +431,11 @@ class ProcessOrdersJob < ProgressJob::Base
   		if order[12] == "In-Production"
 	  		PerOrderMailer.order_email(order).deliver_now
 	  	end
+	  	if order[12] != "In-Production" && order[12] != "Pending"
+	  		email = Shop.where(shopify_domain: order[5]).first.email
+	  		FailedProcessingCardMailer.failed_card_email(email, order[12]).deliver_now
+	  	end
+	  	
         sleep(3)
     end
 

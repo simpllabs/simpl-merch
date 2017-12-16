@@ -35,7 +35,13 @@ class TeesController < ShopifyApp::AuthenticatedController
                           params[:checkbox_2xl],
                           params[:checkbox_3xl]] 
 
-    session[:sizes] =   session[:sizes].reject { |c| c.blank? }
+      session[:sizes] =   session[:sizes].reject { |c| c.blank? }
+
+      session[:genders] = [params[:checkbox_male],
+                          params[:checkbox_female],
+                          params[:checkbox_kids]]
+
+      session[:genders] =   session[:genders].reject { |c| c.blank? }
 
     end
 
@@ -96,7 +102,7 @@ class TeesController < ShopifyApp::AuthenticatedController
     session[:front_size] = [0,0]
     session[:back_size] = [0,0]
     session[:published] = false
-    session[:gender] = nil
+    session[:genders] = ["Male"]
     session[:uuid] = SecureRandom.uuid
     session[:free_design] = false
     session[:light_or_dark] = nil
@@ -174,7 +180,7 @@ class TeesController < ShopifyApp::AuthenticatedController
     @tee.tee_front_ref = "#{S3_BUCKET.url}/designs/REF-#{ref_uuid}"
     @tee.tee_back_ref = "#{S3_BUCKET.url}/designs/REF-B-#{ref_uuid}" if session[:back_name].present?
     @tee.shop_domain = ShopifyAPI::Shop.current.myshopify_domain
-    @tee.gender = session[:gender]
+    @tee.gender = session[:genders].join(",")
     @tee.one_time_fee_charged = session[:free_design]
     @tee.back_one_time_fee_charged = session[:back_name].present? ? false : true
     @tee.light_or_dark = session[:light_or_dark]
@@ -183,7 +189,7 @@ class TeesController < ShopifyApp::AuthenticatedController
 
     #store session values
     @data = {}
-    @data[:gender] = session[:gender]
+    @data[:genders] = session[:genders]
     @data[:colors] = session[:colors]
     @data[:sizes] = session[:sizes]
     @data[:front_name] = session[:front_name]

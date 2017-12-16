@@ -13,7 +13,7 @@
 		<div class="col-sm-8">
 			<h2>Rocketees Modern T-Shirt - $5</h2>
 
-			<p>Adding <%= pluralize(session[:colors].length, 'color') %> in <%= pluralize(session[:sizes].length, 'size') %> (<%= pluralize(session[:sizes].length * session[:colors].length, 'variant') %> in total)</p>
+			<p>Adding <%= pluralize(session[:colors].length, 'color') %> in <%= pluralize(session[:sizes].length, 'size') %> in <%= pluralize(session[:genders].length, 'gender') %> (<%= pluralize(session[:sizes].length * session[:colors].length * session[:genders].length, 'variant') %> in total)</p>
 
 			<p class="next">Next set the product title, description, tags, and collection:</p>
 
@@ -58,7 +58,7 @@
 	<% end %>
 	
 	<% end %> <!-- End Form -->
-  <%= debug params %>
+  <% debug params %>
 
 </div>
 

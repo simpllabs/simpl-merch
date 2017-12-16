@@ -2,11 +2,12 @@ $(function(){
 
 	var is_front = true;
 	var current_color = "black";
+  var current_gender = "Male";
   var light_or_dark = {"black": "light", "gray": "light", "sportgray": "light", "white": "light", "royalblue": "light", "navy": "light", "purple": "light", "pink": "light", "green": "light", "red": "light", "orange": "light"};
 
   if (gon.light_or_dark != null) {
     light_or_dark = JSON.parse(gon.light_or_dark);
-    console.log("light_or_dark: ", light_or_dark);
+    //console.log("light_or_dark: ", light_or_dark);
   }
 
   // TOOLTIPS
@@ -23,7 +24,7 @@ $(function(){
       light_src = light_src.substring(1, light_src.indexOf('light')+5).concat(".png");
       preload(['<%= asset_url("' + dark_src + '") %>']);
     }
-  }  
+  }
 
   $('#design-color-flip').click(function(){
     if (light_or_dark[current_color] == "light") {
@@ -35,6 +36,49 @@ $(function(){
     }
 
     //console.log("light_or_dark: %o", light_or_dark)
+  });
+
+
+  // if click gender name switch to it
+  $("#male-checkbox-text").click(function(){
+    current_gender = "Male";
+    $("#mockup-img").show();
+    $("#mockup-img-f").hide();
+    $("." + current_color).click();
+  });
+
+  $("#female-checkbox-text").click(function(){
+    current_gender = "Female";
+    $("#mockup-img").hide();
+    $("#mockup-img-f").show();
+    $("." + current_color).click();
+  });
+
+  // if only one gender selected, change mockup to that gender
+  $("#checkbox_male").click(function(){
+    if($('#checkbox_male').is(':checked') && !$('#checkbox_female').is(':checked')) {
+      current_gender = "Male";
+      $("#mockup-img").show();
+      $("#mockup-img-f").hide();
+    }
+    if(!$('#checkbox_male').is(':checked') && $('#checkbox_female').is(':checked')) {
+      current_gender = "Female";
+      $("#mockup-img").hide();
+      $("#mockup-img-f").show();
+    }
+  });
+
+  $("#checkbox_female").click(function(){
+    if($('#checkbox_male').is(':checked') && !$('#checkbox_female').is(':checked')) {
+      current_gender = "Male";
+      $("#mockup-img").show();
+      $("#mockup-img-f").hide();
+    }
+    if(!$('#checkbox_male').is(':checked') && $('#checkbox_female').is(':checked')) {
+      current_gender = "Female";
+      $("#mockup-img").hide();
+      $("#mockup-img-f").show();
+    }
   });
 
   /*********************/
@@ -122,16 +166,21 @@ $(function(){
 
   $(".black").click(function(){
    	current_color = "black";
-    if (is_front) {
-      $("#mockup-img").attr('src','<%= asset_url("black-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
-    } else {
-      $("#mockup-img").attr('src','<%= asset_url("black-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+
+    if (current_gender == "Male") {
+      if (is_front) {
+        $("#mockup-img").attr('src','<%= asset_url("black-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      } else {
+        $("#mockup-img").attr('src','<%= asset_url("black-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      }
     }
 
-    if (is_front) {
-      $("#mockup-img-f").attr('src','<%= asset_url("f-black-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
-    } else {
-      $("#mockup-img-f").attr('src','<%= asset_url("f-black-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    if (current_gender == "Female") {
+      if (is_front) {
+        $("#mockup-img-f").attr('src','<%= asset_url("f-black-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      } else {
+        $("#mockup-img-f").attr('src','<%= asset_url("f-black-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      }
     }
 
     if ($('#design-color-flip').length != 0) {
@@ -148,16 +197,20 @@ $(function(){
 
   $(".gray").click(function(){
     current_color = "gray";
-    if (is_front) {
-      $("#mockup-img").attr('src','<%= asset_url("gray-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
-    } else {
-      $("#mockup-img").attr('src','<%= asset_url("gray-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    if (current_gender == "Male") {
+      if (is_front) {
+        $("#mockup-img").attr('src','<%= asset_url("gray-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      } else {
+        $("#mockup-img").attr('src','<%= asset_url("gray-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      }
     }
 
-    if (is_front) {
-      $("#mockup-img-f").attr('src','<%= asset_url("f-gray-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
-    } else {
-      $("#mockup-img-f").attr('src','<%= asset_url("f-gray-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    if (current_gender == "Female") {
+      if (is_front) {
+        $("#mockup-img-f").attr('src','<%= asset_url("f-gray-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      } else {
+        $("#mockup-img-f").attr('src','<%= asset_url("f-gray-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      }
     }
 
     if ($('#design-color-flip').length != 0) {
@@ -171,16 +224,20 @@ $(function(){
 
   $(".sportgray").click(function(){
     current_color = "sportgray";
-    if (is_front) {
-      $("#mockup-img").attr('src','<%= asset_url("sportgray-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
-    } else {
-      $("#mockup-img").attr('src','<%= asset_url("sportgray-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    if (current_gender == "Male") {
+      if (is_front) {
+        $("#mockup-img").attr('src','<%= asset_url("sportgray-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      } else {
+        $("#mockup-img").attr('src','<%= asset_url("sportgray-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      }
     }
 
-    if (is_front) {
-      $("#mockup-img-f").attr('src','<%= asset_url("f-sportgray-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
-    } else {
-      $("#mockup-img-f").attr('src','<%= asset_url("f-sportgray-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    if (current_gender == "Female") {
+      if (is_front) {
+        $("#mockup-img-f").attr('src','<%= asset_url("f-sportgray-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      } else {
+        $("#mockup-img-f").attr('src','<%= asset_url("f-sportgray-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      }
     }
 
     if ($('#design-color-flip').length != 0) {
@@ -194,16 +251,20 @@ $(function(){
 
   $(".white").click(function(){
     current_color = "white";
-    if (is_front) {
-      $("#mockup-img").attr('src','<%= asset_url("white-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
-    } else {
-      $("#mockup-img").attr('src','<%= asset_url("white-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    if (current_gender == "Male") {
+      if (is_front) {
+        $("#mockup-img").attr('src','<%= asset_url("white-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      } else {
+        $("#mockup-img").attr('src','<%= asset_url("white-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      }
     }
 
-    if (is_front) {
-      $("#mockup-img-f").attr('src','<%= asset_url("f-white-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
-    } else {
-      $("#mockup-img-f").attr('src','<%= asset_url("f-white-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    if (current_gender == "Female") {
+      if (is_front) {
+        $("#mockup-img-f").attr('src','<%= asset_url("f-white-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      } else {
+        $("#mockup-img-f").attr('src','<%= asset_url("f-white-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      }
     }
 
     if ($('#design-color-flip').length != 0) {
@@ -218,16 +279,20 @@ $(function(){
 
   $(".navy").click(function(){
     current_color = "navy";
-    if (is_front) {
-      $("#mockup-img").attr('src','<%= asset_url("navy-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
-    } else {
-      $("#mockup-img").attr('src','<%= asset_url("navy-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    if (current_gender == "Male") {
+      if (is_front) {
+        $("#mockup-img").attr('src','<%= asset_url("navy-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      } else {
+        $("#mockup-img").attr('src','<%= asset_url("navy-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      }
     }
 
-    if (is_front) {
-      $("#mockup-img-f").attr('src','<%= asset_url("f-navy-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
-    } else {
-      $("#mockup-img-f").attr('src','<%= asset_url("f-navy-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    if (current_gender == "Female") {
+      if (is_front) {
+        $("#mockup-img-f").attr('src','<%= asset_url("f-navy-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      } else {
+        $("#mockup-img-f").attr('src','<%= asset_url("f-navy-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      }
     }
 
     if ($('#design-color-flip').length != 0) {
@@ -241,16 +306,20 @@ $(function(){
 
   $(".royalblue").click(function(){
     current_color = "royalblue";
-    if (is_front) {
-      $("#mockup-img").attr('src','<%= asset_url("royalblue-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
-    } else {
-      $("#mockup-img").attr('src','<%= asset_url("royalblue-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    if (current_gender == "Male") {
+      if (is_front) {
+        $("#mockup-img").attr('src','<%= asset_url("royalblue-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      } else {
+        $("#mockup-img").attr('src','<%= asset_url("royalblue-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      }
     }
 
-    if (is_front) {
-      $("#mockup-img-f").attr('src','<%= asset_url("f-royalblue-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
-    } else {
-      $("#mockup-img-f").attr('src','<%= asset_url("f-royalblue-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    if (current_gender == "Female") {
+      if (is_front) {
+        $("#mockup-img-f").attr('src','<%= asset_url("f-royalblue-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      } else {
+        $("#mockup-img-f").attr('src','<%= asset_url("f-royalblue-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      }
     }
 
     if ($('#design-color-flip').length != 0) {
@@ -264,16 +333,20 @@ $(function(){
 
   $(".green").click(function(){
     current_color = "green";
-    if (is_front) {
-      $("#mockup-img").attr('src','<%= asset_url("green-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
-    } else {
-      $("#mockup-img").attr('src','<%= asset_url("green-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    if (current_gender == "Male") {
+      if (is_front) {
+        $("#mockup-img").attr('src','<%= asset_url("green-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      } else {
+        $("#mockup-img").attr('src','<%= asset_url("green-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      }
     }
 
-    if (is_front) {
-      $("#mockup-img-f").attr('src','<%= asset_url("f-green-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
-    } else {
-      $("#mockup-img-f").attr('src','<%= asset_url("f-green-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    if (current_gender == "Female") {
+      if (is_front) {
+        $("#mockup-img-f").attr('src','<%= asset_url("f-green-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      } else {
+        $("#mockup-img-f").attr('src','<%= asset_url("f-green-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      }
     }
 
     if ($('#design-color-flip').length != 0) {
@@ -287,16 +360,20 @@ $(function(){
 
   $(".pink").click(function(){
     current_color = "pink";
-    if (is_front) {
-      $("#mockup-img").attr('src','<%= asset_url("pink-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
-    } else {
-      $("#mockup-img").attr('src','<%= asset_url("pink-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    if (current_gender == "Male") {
+      if (is_front) {
+        $("#mockup-img").attr('src','<%= asset_url("pink-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      } else {
+        $("#mockup-img").attr('src','<%= asset_url("pink-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      }
     }
 
-    if (is_front) {
-      $("#mockup-img-f").attr('src','<%= asset_url("f-pink-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
-    } else {
-      $("#mockup-img-f").attr('src','<%= asset_url("f-pink-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    if (current_gender == "Female") {
+      if (is_front) {
+        $("#mockup-img-f").attr('src','<%= asset_url("f-pink-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      } else {
+        $("#mockup-img-f").attr('src','<%= asset_url("f-pink-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      }
     }
 
     if ($('#design-color-flip').length != 0) {
@@ -310,16 +387,20 @@ $(function(){
 
   $(".purple").click(function(){
     current_color = "purple";
-    if (is_front) {
-      $("#mockup-img").attr('src','<%= asset_url("purple-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
-    } else {
-      $("#mockup-img").attr('src','<%= asset_url("purple-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    if (current_gender == "Male") {
+      if (is_front) {
+        $("#mockup-img").attr('src','<%= asset_url("purple-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      } else {
+        $("#mockup-img").attr('src','<%= asset_url("purple-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      }
     }
 
-    if (is_front) {
-      $("#mockup-img-f").attr('src','<%= asset_url("f-purple-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
-    } else {
-      $("#mockup-img-f").attr('src','<%= asset_url("f-purple-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    if (current_gender == "Female") {
+      if (is_front) {
+        $("#mockup-img-f").attr('src','<%= asset_url("f-purple-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      } else {
+        $("#mockup-img-f").attr('src','<%= asset_url("f-purple-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      }
     }
 
     if ($('#design-color-flip').length != 0) {
@@ -333,16 +414,20 @@ $(function(){
 
   $(".red").click(function(){
     current_color = "red";
-    if (is_front) {
-      $("#mockup-img").attr('src','<%= asset_url("red-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
-    } else {
-      $("#mockup-img").attr('src','<%= asset_url("red-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    if (current_gender == "Male") {
+      if (is_front) {
+        $("#mockup-img").attr('src','<%= asset_url("red-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      } else {
+        $("#mockup-img").attr('src','<%= asset_url("red-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      }
     }
 
-    if (is_front) {
-      $("#mockup-img-f").attr('src','<%= asset_url("f-red-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
-    } else {
-      $("#mockup-img-f").attr('src','<%= asset_url("f-red-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    if (current_gender == "Female") {
+      if (is_front) {
+        $("#mockup-img-f").attr('src','<%= asset_url("f-red-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      } else {
+        $("#mockup-img-f").attr('src','<%= asset_url("f-red-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      }
     }
 
     if ($('#design-color-flip').length != 0) {
@@ -356,16 +441,20 @@ $(function(){
 
   $(".orange").click(function(){
     current_color = "orange";
-    if (is_front) {
-      $("#mockup-img").attr('src','<%= asset_url("orange-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
-    } else {
-      $("#mockup-img").attr('src','<%= asset_url("orange-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    if (current_gender == "Male") {
+      if (is_front) {
+        $("#mockup-img").attr('src','<%= asset_url("orange-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      } else {
+        $("#mockup-img").attr('src','<%= asset_url("orange-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      }
     }
 
-    if (is_front) {
-      $("#mockup-img-f").attr('src','<%= asset_url("f-orange-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
-    } else {
-      $("#mockup-img-f").attr('src','<%= asset_url("f-orange-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+    if (current_gender == "Female") {
+      if (is_front) {
+        $("#mockup-img-f").attr('src','<%= asset_url("f-orange-front-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      } else {
+        $("#mockup-img-f").attr('src','<%= asset_url("f-orange-back-web.jpg") %>').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0); });;
+      }
     }
 
     if ($('#design-color-flip').length != 0) {
@@ -680,12 +769,20 @@ $(function(){
        return false;
     }
 
-    // didn't answer if multi-color
-    /*if ($("input[class='multicolor-radio']:checked").length == 0) {
-      $('#multicolor-question-empty').modal('show');
+    // didn't select any genders
+    if ($("input[class='gender-checkbox']:checked").length == 0) {
+      $('#missing-gender-modal').modal('show');
        return false;
-    }*/
+    }
 
+    // variants exceeded 100 limit
+    if (($("input[class='color-checkbox']:checked").length * $("input[class='size-checkbox']:checked").length * $("input[class='gender-checkbox']:checked").length) > 100) {
+      $('#variants-limit-modal').modal('show');
+      $('#variants-limit-modal .modal-body .variants-calc').empty().prepend(($("input[class='color-checkbox']:checked").length * $("input[class='size-checkbox']:checked").length * $("input[class='gender-checkbox']:checked").length));
+      return false;
+    }
+
+    //console.log("Variants:" +  ($("input[class='color-checkbox']:checked").length * $("input[class='size-checkbox']:checked").length * $("input[class='gender-checkbox']:checked").length));
     //return false;
 
     if (is_front) {

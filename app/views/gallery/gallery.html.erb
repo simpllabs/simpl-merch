@@ -67,6 +67,7 @@
 
 		    img_src = ""
 
+		    /*
 		    $('.pick-male').click(function() {
 				$('#pick-gender-modal').modal('hide');
 
@@ -80,13 +81,16 @@
 		    	window.location = '/tees/new?img_src=' + img_src.substr(0, img_src.indexOf('thumbnail')).concat("light.png").split('/').slice(3).join('/') + '&gender=female';
 
 			});
+			*/
 
 		    // If design clicked, send URL in params and load image in tees/new
 		    $('.img-div').click(function(){
-		    	$('#pick-gender-modal .modal-body').empty().prepend("<p>Which gender would like to publish this design to?</p>");
-      			$('#pick-gender-modal').modal('show');
+		    	//$('#pick-gender-modal .modal-body').empty().prepend("<p>Which gender would like to publish this design to?</p>");
+      			//$('#pick-gender-modal').modal('show');
 
       			img_src = $(this).find('img').attr("src");
+
+      			window.location = '/tees/new?img_src=' + img_src.substr(0, img_src.indexOf('thumbnail')).concat("light.png").split('/').slice(3).join('/');
 		    });
 
 		});

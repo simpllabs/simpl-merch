@@ -104,6 +104,12 @@ body { background-color: #35414A; color: #F4F6F8;}
 		div.size-box { display: inline-block; width: 45px; margin-right: 10px; background-color: #35414A; padding: 10px; overflow: auto; text-align: center; }
 		.size-checkbox { margin-top: 0; }
 	}
+
+	#male-checkbox-text:hover { cursor: pointer; text-decoration: underline;}
+	#female-checkbox-text:hover { cursor: pointer; text-decoration: underline;}
+
+	#mockup-img-f {display: none;}
+
 }
 
 .new-tee-submit { margin: 20px auto; margin-bottom: 100px; padding: 12px 30px; font-size: 1.2em; display: block;}

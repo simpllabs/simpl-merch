@@ -433,7 +433,7 @@ class ProcessOrdersJob < ProgressJob::Base
 	  	end
 	  	if order[12] != "In-Production" && order[12] != "Pending"
 	  		email = Shop.where(shopify_domain: order[5]).first.email
-	  		FailedProcessingCardMailer.failed_card_email(email, order[12]).deliver_now
+	  		FailedProcessingCardMailer.failed_card_email(email, order[12], Order.where(id: order[2]).first.store_order_number).deliver_now
 	  	end
 	  	
         sleep(3)

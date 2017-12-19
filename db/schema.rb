@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171206172832) do
+ActiveRecord::Schema.define(version: 20171219175959) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -136,7 +136,7 @@ ActiveRecord::Schema.define(version: 20171206172832) do
     t.string "fulfillment_status"
     t.string "sku"
     t.integer "quantity"
-    t.decimal "price", precision: 5, scale: 2
+    t.decimal "price", precision: 10, scale: 2
     t.string "name"
     t.boolean "processed"
     t.datetime "created_at", null: false

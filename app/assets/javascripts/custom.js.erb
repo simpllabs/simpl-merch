@@ -775,7 +775,7 @@ $(function(){
       str = str.substring(0, str.length - 4)
       //is_alphanum = /^[a-zA-Z0-9]+$/.test(str);
       is_alphanum = /^\w+$/.test(str);
-      console.log("str: " + str ", is_alphanum: " + is_alphanum);
+      console.log("str: " + str + ", is_alphanum: " + is_alphanum);
       if (!is_alphanum) {
         $('#missing-image-modal').modal('show');
         $('#missing-image-modal .modal-body').empty().prepend("File name invalid, it cannot contain spaces and must be alphanumeric (it can only contain letters and numbers). Please click the CLEAR IMAGE button to upload again.");

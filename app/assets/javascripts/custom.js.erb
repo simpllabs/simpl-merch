@@ -770,7 +770,7 @@ $(function(){
     }
 
     // file name must be alphanumeric
-    if ($(".front-design-img").length != 0) {
+    if ($(".front-design-img").length != 0 && $("input[name='front_design']").val() != "") {
       str = $("input[name='front_design']").val().split('\\').pop();
       str = str.substring(0, str.length - 4)
       //is_alphanum = /^[a-zA-Z0-9]+$/.test(str);
@@ -782,7 +782,7 @@ $(function(){
         return false;
       }
     }
-    if ($(".back-design-img").length != 0) {
+    if ($(".back-design-img").length != 0 && $("input[name='back_design']").val() != "") {
       str = $("input[name='back_design']").val().split('\\').pop();
       str = str.substring(0, str.length - 4)
       //is_alphanum = /^[a-zA-Z0-9]+$/.test(str);

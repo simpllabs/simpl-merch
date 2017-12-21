@@ -773,7 +773,8 @@ $(function(){
     if ($(".front-design-img").length != 0) {
       str = $("input[name='front_design']").val().split('\\').pop();
       str = str.substring(0, str.length - 4)
-      is_alphanum = /^[a-zA-Z0-9]+$/.test(str);
+      //is_alphanum = /^[a-zA-Z0-9]+$/.test(str);
+      is_alphanum = /^\w+$/.test(str);
       //console.log("front_design: " + is_alphanum);
       if (!is_alphanum) {
         $('#missing-image-modal').modal('show');
@@ -784,7 +785,8 @@ $(function(){
     if ($(".back-design-img").length != 0) {
       str = $("input[name='back_design']").val().split('\\').pop();
       str = str.substring(0, str.length - 4)
-      is_alphanum = /^[a-zA-Z0-9]+$/.test(str);
+      //is_alphanum = /^[a-zA-Z0-9]+$/.test(str);
+      is_alphanum = /^\w+$/.test(str);
       //console.log("front_design: " + is_alphanum);
       if (!is_alphanum) {
         $('#missing-image-modal').modal('show');

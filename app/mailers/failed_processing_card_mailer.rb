@@ -1,6 +1,5 @@
 class FailedProcessingCardMailer < ApplicationMailer
-	default from: 'support@rocketees.com',
-			cc: "amorimluc@gmail.com"
+	default from: 'support@rocketees.com'
 	
 	def failed_card_email(email, status, order_number)
 		@status = status

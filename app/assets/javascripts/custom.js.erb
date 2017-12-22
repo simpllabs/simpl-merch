@@ -701,8 +701,8 @@ $(function(){
       var input = $("<input />", { type:'hidden', name: backDesignInput.attr('name'), value: data.files[0].name });
       form.append(input);
 
-      //$('#file-error-modal .modal-body').empty().prepend("<p>NOTE: Adding a back design increases the T-shirt cost by $1, from $6 to $7. </p>");
-      //$('#file-error-modal').modal('show');
+      $('#file-error-modal .modal-body').empty().prepend("<p>NOTE: Adding a back design increases the cost by $6.</p> <p>If there's no front design, then this extra cost won't be charged. </p>");
+      $('#file-error-modal').modal('show');
 
       //preload([url]);
 

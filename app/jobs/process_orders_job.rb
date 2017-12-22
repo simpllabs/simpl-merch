@@ -315,7 +315,10 @@ class ProcessOrdersJob < ProgressJob::Base
 				    #tee.save
 
 				    base_cost = order.gender == "male" ? 5 : 5.5
-				    #base_cost = order.back_design.present? ? 7 : 6
+				    if order.back_design.present? && order.front_design.present? 
+				    	base_cost = base_cost + 6
+				    end
+				    
 				    #base_cost = order.multicolor == 'yes' ? base_cost + 1.5 : base_cost
 
 				    is_US = order.country.include?("United States")

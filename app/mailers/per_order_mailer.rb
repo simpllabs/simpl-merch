@@ -1,6 +1,5 @@
 class PerOrderMailer < ApplicationMailer
-	default from: 'amorimluc@gmail.com',
-			cc: 'amorimluc@gmail.com'
+	default from: 'amorimluc@gmail.com'
 
 	def order_email(order)
 		@order = order

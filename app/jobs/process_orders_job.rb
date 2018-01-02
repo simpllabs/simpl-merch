@@ -74,7 +74,7 @@ class ProcessOrdersJob < ProgressJob::Base
 				    
 				    #base_cost = order.multicolor == 'yes' ? base_cost + 1.5 : base_cost
 
-				    is_US = order.country.include?("United States")
+				    is_US = order.country.include?("United States") || order.country.include?("US")
 				    chose_china_post = shop.chose_china_post == "Yes"
 
 				    if is_US

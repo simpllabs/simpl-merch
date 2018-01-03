@@ -67,21 +67,31 @@ class ProcessOrdersJob < ProgressJob::Base
 				    #end
 				    #tee.save
 
-				    base_cost = order.gender == "male" || order.gender == "Male" ? 5 : 5.5
+				    #is it a male shirt?
+				    base_cost = 0
+				    if order.gender == "Male,Female"
+				    	base_cost = 5 if order.sku.include?("Male")
+				    	base_cost = 5.5 if order.sku.include?("Female")
+				    else
+				    	base_cost = order.gender == "male" || order.gender == "Male" ? 5 : 5.5
+				    end
+
 				    if order.back_design.present? && order.front_design.present? 
 				    	base_cost = base_cost + 6
 				    end
 				    
 				    #base_cost = order.multicolor == 'yes' ? base_cost + 1.5 : base_cost
 
+				    
 				    is_US = order.country.include?("United States") || order.country.include?("US")
+
 				    chose_china_post = shop.chose_china_post == "Yes"
 
 				    if is_US
 				    	base_cost = base_cost + 3
 				    else
 				    	if chose_china_post
-					      	base_cost = base_cost + 4.5
+					      	base_cost = base_cost + 7 #used to be 4.5, maybe bring back down when can do $6 total?
 					    else
 					    	base_cost = base_cost + 7
 					    end
@@ -143,19 +153,28 @@ class ProcessOrdersJob < ProgressJob::Base
 
 				  end
 
-
 				  Order.where(fulfillment_status: "Pending").each do |order|
 				    if shop.shopify_domain == order.shop_domain && order.payment_status != "pending"
-				      row = ["", order.country == "United States" ? "USPS" : intl_shipping, order.id, order.created_at, order.shop_name, order.shop_domain, order.gender, order.product_name, order.front_design, order.back_design, order.front_ref, order.back_ref, status, update_color_names(order.sku), order.light_or_dark, order.quantity, order.name, order.address1, order.address2, order.company, order.city, order.zip, order.province, order.country]
-				      packing_slip = shop.packing_slip == "Yes" ? [shop.packing_slip_logo, shop.packing_slip_message.sub("[customer_name]", order.name)] : ["",""]
-				      csv << [*row, *packing_slip, shop.non_plastic, shop.remove_tag, shop_from_api.blank? ? "" : shop_from_api.address1, shop_from_api.blank? ? "" : shop_from_api.address2, shop_from_api.blank? ? "" : shop_from_api.city, shop_from_api.blank? ? "" : shop_from_api.zip, shop_from_api.blank? ? "" : shop_from_api.province, shop_from_api.blank? ? "" : shop_from_api.country_name]
-				      order.processed = true
-				      order.fulfillment_status = status == "In-Production" ? status : "Pending"
-				      order.save
 
-				      sleep(3)
+				    	sku = ""
+				    	if order.gender != "Male,Female"
+					    	if order.gender == "male" || order.gender == "Male"
+					    		sku = "#{order.sku}-Male" if order.sku.include?("Male")
+					    	else
+					    		sku = "#{order.sku}-Female" if order.sku.include?("Female")
+					    	end
+					    end
 
-				      orders.push(order) if status == "In-Production"
+						row = ["", order.country == "US" ? "USPS" : intl_shipping, order.id, order.created_at, order.shop_name, order.shop_domain, order.gender, order.product_name, order.front_design, order.back_design, order.front_ref, order.back_ref, status, update_color_names(sku), order.light_or_dark, order.quantity, order.name, order.address1, order.address2, order.company, order.city, order.zip, order.province, order.country]
+						packing_slip = shop.packing_slip == "Yes" ? [shop.packing_slip_logo, shop.packing_slip_message.sub("[customer_name]", order.name)] : ["",""]
+						csv << [*row, *packing_slip, shop.non_plastic, shop.remove_tag, shop_from_api.blank? ? "" : shop_from_api.address1, shop_from_api.blank? ? "" : shop_from_api.address2, shop_from_api.blank? ? "" : shop_from_api.city, shop_from_api.blank? ? "" : shop_from_api.zip, shop_from_api.blank? ? "" : shop_from_api.province, shop_from_api.blank? ? "" : shop_from_api.country_name]
+						order.processed = true
+						order.fulfillment_status = status == "In-Production" ? status : "Pending"
+						order.save
+
+						sleep(3)
+
+						orders.push(order) if status == "In-Production"
 				    end
 				  end
 				end
@@ -183,17 +202,32 @@ class ProcessOrdersJob < ProgressJob::Base
   end
 
   def send_email_per_order(csv_string)
+  	orders = []
   	CSV.parse(csv_string, {headers: true}) do |order|
-  		if order[12] == "In-Production"
+  		if order[12] == "In-Production" && order[1] != "China Post"
 	  		PerOrderMailer.order_email(order).deliver_now
 	  	end
 	  	if order[12] != "In-Production" && order[12] != "Pending"
 	  		email = Shop.where(shopify_domain: order[5]).first.email
 	  		FailedProcessingCardMailer.failed_card_email(email, order[12], Order.where(id: order[2]).first.store_order_number).deliver_now
 	  	end
+	  	if order[1] == "China Post"
+	  		orders.push(order)
+	  	end
 	  	
         sleep(3)
     end
+
+    csv_string2 = CSV.generate do |csv|
+      	header = ["TRACKING NUMBER", "Shipping Method", "Order ID", "Order Date", "Shop Name", "Shop Domain", "Gender", "Product Name", "Front Design URL", "Back Design URL", "Front Reference URL", "Back Reference URL", "Status", "SKU", "Light/Dark", "Quantity", "Shipping Name", "Shipping Address1", "Shipping Address2", "Shipping Company", "Shipping City", "Shipping ZIP", "Shipping Province/State", "Shipping Country"]
+      	packing_slip = ["Packing Slip Logo URL", "Packing Slip Message", "Non-Plastic Packaging", "Remove Tag", "Shop Shipping Address1", "Shop Shipping Address2", "Shop Shipping City", "Shop Shipping ZIP", "Shop Shipping Province/State", "Shop Shipping Country"]
+      	csv << [*header, *packing_slip]
+
+      	orders.each do |order|
+      		csv << order
+      	end
+    end
+    CsvOrdersMailer.csv_file_email(csv_string2).deliver_now
 
     check_if_any_in_same_order(csv_string)
   end

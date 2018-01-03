@@ -41,7 +41,7 @@
 					<br>
 					<p>Remove Collar Tag? <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="bottom" title="If you choose this option, an additional 5¢ will be charged per order."></span> <%= select_tag :remove_tag, options_for_select(['Yes','No'], @shop.remove_tag == "Yes" ? "Yes" : "No") %></p>
 					<br>
-					<p>Use China Post For International Orders? <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="bottom" title="If you choose yes, then we will not ship from our Dallas, USA factory, and will instead ship from our Shanghai factory. Shipping will cost only $4.50 for international orders, but orders could take a month to arrive depending on the country."></span> <%= select_tag :china_post, options_for_select(['Yes','No'], @shop.chose_china_post == "Yes" ? "Yes" : "No") %></p>
+					<p>Ship From Shanghai? <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="bottom" title="We make this option available for special circumstances. If you choose this option, the printing quality will not be very good, and delivery time could take more than a month."></span> <%= select_tag :china_post, options_for_select(['Yes','No'], @shop.chose_china_post == "Yes" ? "Yes" : "No") %></p>
 					<br>
 					<p>Send Customer Custom Packing Slip? (FREE) <%= select_tag :packing_slip, options_for_select(['Yes','No'], @shop.packing_slip.present? ? "#{@shop.packing_slip}" : "No") %></p>
 					<br>

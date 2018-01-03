@@ -43,10 +43,10 @@ class NewOrderJob < ProgressJob::Base
                     order.store_order_number = order_params.order_number
                     #order.multicolor = tee.multicolor
 
-                    parsed_lod = JSON.parse(tee.light_or_dark) if tee.light_or_dark.present?
+                    parsed_lod = JSON.parse(tee.light_or_dark) if tee.present?
                     color = line_item.sku.split('-').last.downcase
 
-                    order.light_or_dark = parsed_lod[color] if tee.light_or_dark.present?
+                    order.light_or_dark = parsed_lod[color] if tee.present?
                     order.quantity = line_item.quantity
                     order.price = line_item.price
                     order.name = order_params.shipping_address.name
@@ -89,10 +89,10 @@ class NewOrderJob < ProgressJob::Base
                     order.store_order_number = @params[:order_number]
                     #order.multicolor = tee.multicolor
 
-                    parsed_lod = JSON.parse(tee.light_or_dark) if tee.light_or_dark.present?
+                    parsed_lod = JSON.parse(tee.light_or_dark) if tee.present?
                     color = line_item[:sku].split('-').last.downcase
 
-                    order.light_or_dark = parsed_lod[color] if tee.light_or_dark.present?
+                    order.light_or_dark = parsed_lod[color] if tee.present?
                     order.quantity = line_item[:quantity]
                     order.price = line_item[:price]
                     order.name = @params[:shipping_address][:name]

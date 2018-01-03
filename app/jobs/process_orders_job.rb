@@ -67,7 +67,7 @@ class ProcessOrdersJob < ProgressJob::Base
 				    #end
 				    #tee.save
 
-				    base_cost = order.gender == "male" ? 5 : 5.5
+				    base_cost = order.gender == "male" || order.gender == "Male" ? 5 : 5.5
 				    if order.back_design.present? && order.front_design.present? 
 				    	base_cost = base_cost + 6
 				    end

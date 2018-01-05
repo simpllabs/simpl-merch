@@ -50,32 +50,37 @@ class AdminController < ApplicationController
 
         order_number = message_array[order_index + 1]
         tracking_number = message_array[tracking_index + 1]
-        
+
         Delayed::Job.enqueue UploadTrackingNumberJob.new(tracking_number, order_number)
 
         head :ok
       rescue Exception => e
+
+        job_title = "Rocketees ERRROR: admin_controller.rb"
+        log_data_1 = e.message
+        log_data_2 = e.backtrace
+
+        ErrorMailer.error_email(job_title, log_data_1, log_data_2).deliver_now
         head 500
       end
 
-      
     end
 
   	def add_inventory
   		@incoming_file = params[:inventory]
   		file_name = params[:inventory].original_filename
-		FileUtils.mv @incoming_file.tempfile, "#{ENV['STORAGE_URL']}/#{file_name}"
+  		FileUtils.mv @incoming_file.tempfile, "#{ENV['STORAGE_URL']}/#{file_name}"
 
-		Delayed::Job.enqueue AddInventoryJob.new("#{ENV['STORAGE_URL']}/#{file_name}")
+  		Delayed::Job.enqueue AddInventoryJob.new("#{ENV['STORAGE_URL']}/#{file_name}")
 
-		flash[:notice] = "Adding inventory: Refresh page in a few seconds."
-		flash[:type] = "success"
-		redirect_to "/admin"
+  		flash[:notice] = "Adding inventory: Refresh page in a few seconds."
+  		flash[:type] = "success"
+  		redirect_to "/admin"
 
-		#male_inventory = MaleInventory.all.first
-        #female_inventory = FemaleInventory.all.first
-		#arr_of_arrs = CSV.read("db/inventory/#{file_name}")
-		#redirect_to :controller => 'admin', :action => 'admin', :param1 => arr_of_arrs[1]
+  		#male_inventory = MaleInventory.all.first
+          #female_inventory = FemaleInventory.all.first
+  		#arr_of_arrs = CSV.read("db/inventory/#{file_name}")
+  		#redirect_to :controller => 'admin', :action => 'admin', :param1 => arr_of_arrs[1]
   	end
 
     def extend_trial_period 

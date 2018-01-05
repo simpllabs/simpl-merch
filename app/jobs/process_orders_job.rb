@@ -4,10 +4,10 @@ class ProcessOrdersJob < ProgressJob::Base
 	end
 
 	def update_color_names(sku)
-		if sku.include?("Light Grey")
-			return sku.sub("Light Grey", "Charcoal")
-		elsif sku.include?("Grey")
-			return sku.sub("Grey", "Sport Grey")
+		if sku.include?("Light Gray")
+			return sku.sub("Light Gray", "Sport Gray")
+		elsif sku.include?("Gray")
+			return sku.sub("Gray", "Charcoal")
 		elsif sku.include?("Green")
 			return sku.sub("Green", "Irish Green")
 		else
@@ -159,10 +159,12 @@ class ProcessOrdersJob < ProgressJob::Base
 				    	sku = ""
 				    	if order.gender != "Male,Female"
 					    	if order.gender == "male" || order.gender == "Male"
-					    		sku = "#{order.sku}-Male" if order.sku.include?("Male")
+					    		sku = "#{order.sku}-Male"
 					    	else
-					    		sku = "#{order.sku}-Female" if order.sku.include?("Female")
+					    		sku = "#{order.sku}-Female"
 					    	end
+					    else
+					    	sku = order.sku
 					    end
 
 						row = ["", order.country == "US" ? "USPS" : intl_shipping, order.id, order.created_at, order.shop_name, order.shop_domain, order.gender, order.product_name, order.front_design, order.back_design, order.front_ref, order.back_ref, status, update_color_names(sku), order.light_or_dark, order.quantity, order.name, order.address1, order.address2, order.company, order.city, order.zip, order.province, order.country]

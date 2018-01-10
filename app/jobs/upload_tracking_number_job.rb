@@ -17,8 +17,15 @@ class UploadTrackingNumberJob < ProgressJob::Base
         intl_shipping = (shop.chose_china_post == "No" || shop.chose_china_post.blank?) ? "UPS" : "China Post"
         intl_shipping = order.country == "United States" ? "USPS" : intl_shipping
 
-        tracking_url = intl_shipping == "USPS" ? "https://tools.usps.com/go/TrackConfirmAction.action?tLabels=#{@tracking_number}" : "https://track.aftership.com/china-post/#{@tracking_number}"
-        
+        tracking_url = ""
+        if intl_shipping == "USPS" 
+          tracking_url = "https://tools.usps.com/go/TrackConfirmAction.action?tLabels=#{@tracking_number}"
+        elsif intl_shipping == "UPS"
+          tracking_url = "http://wwwapps.ups.com/WebTracking/track?track=yes&trackNums=#{@tracking_number}"
+        else
+          tracking_url = "https://track.aftership.com/china-post/#{@tracking_number}"
+        end        
+
         shipment_hash = {
           tracking_company: "#{intl_shipping}",
           status: "success",

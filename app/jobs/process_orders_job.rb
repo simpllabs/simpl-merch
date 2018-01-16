@@ -7,12 +7,15 @@ class ProcessOrdersJob < ProgressJob::Base
 		if sku.include?("Light Gray")
 			return sku.sub("Light Gray", "Sport Gray")
 		elsif sku.include?("Gray")
-			return sku.sub("Gray", "Charcoal")
+			return sku.sub("Gray", "Dark Heather")
 		elsif sku.include?("Green")
 			return sku.sub("Green", "Irish Green")
+		elsif sku.include?("Orange") && sku.include?("Female")
+			return sku.sub("Orange", "Heather Orange")
 		else
 			return sku
 		end
+
 	end
 
   	# run everyday 11:59 pm MST

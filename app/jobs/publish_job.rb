@@ -85,6 +85,11 @@ class PublishJob < ProgressJob::Base
       if @data[:front_name].present?
         obj = S3_BUCKET.put_object(key: "designs/#{@data[:uuid]}_#{@data[:front_name]}", acl: "public-read-write")
         obj.upload_file("#{ENV['STORAGE_URL']}/#{@data[:uuid]}_#{@data[:front_name]}")
+
+        if @data[:light_or_dark].include?("dark")
+          obj = S3_BUCKET.put_object(key: "designs/#{@data[:uuid]}_#{@data[:front_name].gsub('light', 'dark')}", acl: "public-read-write")
+          obj.upload_file("#{ENV['STORAGE_URL']}/#{@data[:uuid]}_#{@data[:front_name].gsub('light', 'dark')}")
+        end
       end
       
       if @data[:back_name].present?

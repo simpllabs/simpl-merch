@@ -236,5 +236,11 @@ class TeesController < ShopifyApp::AuthenticatedController
     end
   end
 
+  def get_image
+    File.open("#{ENV['STORAGE_URL']}/#{params[:image]}.png", 'rb') do |f|
+      send_data f.read, :type => "image/png", :disposition => "inline"
+    end
+  end
+
 
 end

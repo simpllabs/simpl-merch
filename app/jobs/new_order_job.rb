@@ -16,7 +16,7 @@ class NewOrderJob < ProgressJob::Base
         if @trying_again == true
 
             orders = ShopifyAPI::Order.all
-            raise "order_params: #{orders}"
+            #raise "order: #{orders}"
             num = @params
             order_params = 0
             orders.each do |order|

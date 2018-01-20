@@ -107,4 +107,13 @@ class AdminController < ApplicationController
       flash[:type] = "success"
       redirect_to "/admin"
     end
+
+    def reshipment
+
+      Delayed::Job.enqueue ResubmitOrderJob.new(params[:order_id])
+      
+      flash[:notice] = "Resubmitting in the background."
+      flash[:type] = "success"
+      redirect_to "/admin"
+    end
 end

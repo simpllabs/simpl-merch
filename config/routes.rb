@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   post 'admin/extend_trial_period', to: 'admin#extend_trial_period'
   post 'admin/export_orders_range', to: 'admin#export_orders_range'
   post 'admin/try_again_new_order', to: 'admin#try_again_new_order'
+  post 'admin/reshipment', to: 'admin#reshipment'
   post 'admin/add_inventory', to: 'admin#add_inventory'
 
   post 'progress-job' => 'tees#increment_publish'

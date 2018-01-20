@@ -107,6 +107,14 @@
 					<%= submit_tag "Try Creating Order Again", class: "btn btn-danger export-orders-btn" %>
 				<% end %>
 
+				<hr class="separator">
+
+				<%= form_tag("admin/reshipment", authenticity_token: true, id: "reshipment") do %> 
+					<p>Resubmit Order For Re-shipment:</p>
+					<p>Order ID: <%= text_field_tag "order_id", nil, size: 7 %></p>
+					<%= submit_tag "Resubmit For Re-shipment", class: "btn btn-danger export-orders-btn" %>
+				<% end %>
+
 				<!--
 				<table class="table table-bordered admin-table">
 				    <thead>

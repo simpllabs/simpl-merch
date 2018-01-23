@@ -61,7 +61,17 @@
 	    $('.orders_export_submit').click(function(){
 	    	uploadErrors = [];
 
-	    	if ($('.to-date input').val() < $('.from-date input').val()) {
+	    	to = new Date($('.to-date input').val());
+	    	from = new Date($('.from-date input').val());
+
+	    	//console.log("From Date: " + from);
+	    	//console.log("To Date: " + to);
+
+	    	//result = (from < to);
+	    	//console.log("from < to: " + result);
+		    //return false;
+
+	    	if (from > to) {
 				uploadErrors.push("Start date can't be greater than end date.");
 			}
 
@@ -80,9 +90,8 @@
 		    } else {
 		    	return true;
 		    }
+
 	    });
 	});
-
-
 
 </script>

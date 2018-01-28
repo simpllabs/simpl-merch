@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   post 'admin/try_again_new_order', to: 'admin#try_again_new_order'
   post 'admin/reshipment', to: 'admin#reshipment'
   post 'admin/add_inventory', to: 'admin#add_inventory'
+  post 'admin/get_system_order_number', to: 'admin#get_system_order_number'
 
   post 'progress-job' => 'tees#increment_publish'
 

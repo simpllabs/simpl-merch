@@ -115,6 +115,29 @@
 					<%= submit_tag "Resubmit For Re-shipment", class: "btn btn-danger export-orders-btn" %>
 				<% end %>
 
+				<hr class="separator">
+
+				<%= form_tag("admin/get_system_order_number", authenticity_token: true, id: "get_system_order_number", multipart: true, action: :upload) do %> 
+					<p>Get System Order Number: </p>
+					<p>Shopify Order #:<%= text_field_tag "order_number", nil, size: 7 %> </p>
+					<p>Shopify Domain: <%= text_field_tag "domain", nil, size: 15 %></p>
+					<%= submit_tag "Get System Order Number", class: "btn btn-danger export-orders-btn" %>
+				<% end %>
+
+				<table class="table table-bordered admin-table">
+				    <thead>
+				      <tr>
+				        <th>Shopify Order #</th>
+				        <th>Shopify Domain</th>
+				        <th>System Order #</th>
+				      </tr>
+				    </thead>
+				    <tbody>
+				      <tr><td><%= session[:tmp_order_number] %></td> <td><%= session[:tmp_domain] %></td> <td><%= session[:tmp_order_id] %></td></tr>
+				    </tbody>
+				</table>
+
+
 				<!--
 				<table class="table table-bordered admin-table">
 				    <thead>

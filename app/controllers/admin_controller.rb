@@ -32,6 +32,17 @@ class AdminController < ApplicationController
   		redirect_to "/admin"
   	end
 
+    def get_system_order_number
+      session[:tmp_order_number] = params[:order_number]
+      session[:tmp_domain] = params[:domain]
+
+      session[:tmp_order_id] = Order.where(shop_domain: params[:domain], store_order_number: params[:order_number]).first.id
+
+      flash[:notice] = "Check info below."
+      flash[:type] = "success"
+      redirect_to "/admin"
+    end
+
     def upload_tracking_num
       Delayed::Job.enqueue UploadTrackingNumberJob.new(params[:tracking_number], params[:order_number])
 

@@ -35,7 +35,7 @@
 
 				        // If there are errors
 				        if (job.last_error != null) {
-				          $('.progress-status').addClass('text-danger').text(job.progress_stage);
+				          $('#progress-status').addClass('text-danger').text(job.progress_stage);
 				          $('.progress-bar').addClass('progress-bar-danger');
 				          $('.progress-bar').removeClass('active');
 				          clearInterval(poll_interval);
@@ -58,16 +58,29 @@
 				        $('#progress-status').text(stage);
 				      	},
 			      	error: function(){
-				        // Job is no loger in database which means it finished successfuly
-				        $('.progress-bar').removeClass('active');
-				        $('.progress-bar').css('width', '100%').empty().prepend("<p class='percentage-count'>100%</p>");
-				        $('#progress-status').text('Successfully published!');
 
-				        $('.loader').hide();
-				        $('.published-icon').show().css("display", "inline-block");
-				        $('.view-prod-btn').show();
+			      		progress = parseInt($(".percentage-count").text().slice(0, -1));
+			      		//console.log("progress: " + progress);
 
-				        clearInterval(poll_interval);
+			      		if (progress !== 100) {
+				          $('#progress-status').text("ERROR Publishing Design - Please Try Again");
+				          $('.progress-bar').addClass('progress-bar-danger');
+				          $('.progress-bar').removeClass('active');
+				          $('.loader').hide();
+				          clearInterval(poll_interval);
+				        } else {
+
+					        // Job is no loger in database which means it finished successfuly
+					        $('.progress-bar').removeClass('active');
+					        $('.progress-bar').css('width', '100%').empty().prepend("<p class='percentage-count'>100%</p>");
+					        $('#progress-status').text('Successfully published!');
+
+					        $('.loader').hide();
+					        $('.published-icon').show().css("display", "inline-block");
+					        $('.view-prod-btn').show();
+
+					        clearInterval(poll_interval);
+					    }
 			      	}
 			    });
 			},1000);

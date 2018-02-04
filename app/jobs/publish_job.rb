@@ -12,6 +12,7 @@ class PublishJob < ProgressJob::Base
 
   def perform
     begin
+
       #0. Start new Shopify API session with token
       session = ShopifyAPI::Session.new(@domain, @token)
       ShopifyAPI::Base.activate_session(session)
@@ -125,6 +126,7 @@ class PublishJob < ProgressJob::Base
 
       back_multiplier = @data[:back_name].present? ? 2 : 1
       progress_count = (70 / (@data[:genders].count * @data[:colors].count * back_multiplier)).round
+      for_later = @data[:genders].count * @data[:colors].count * back_multiplier
       #progress_count = (70 / (@data[:genders].count * @data[:colors].count/2)).round if @data[:back_name].present?
 
       front_x = (@data[:front_pos][0].to_i*1.96).round
@@ -145,6 +147,7 @@ class PublishJob < ProgressJob::Base
 
       #pre = @data[:genders].include? ==  2 ? "" : "f_"
       # pre_k = for when doing kids tees
+
 
       @data[:genders].each do |gender|
         pre = gender == "Male" ? "" : "f_"
@@ -248,8 +251,10 @@ class PublishJob < ProgressJob::Base
         end
       end
 
-      update_progress_max(100)
-      update_progress_max(step: 100)
+      #update_progress_max(100)
+      #update_progress(step: 100)
+      remaining = 70 - (for_later * progress_count)
+      update_progress(step: remaining)
       update_stage('Successfully published!')
 
       #DO THIS AFTER 100% ON FRONT-END
@@ -291,12 +296,15 @@ class PublishJob < ProgressJob::Base
       end
       
     rescue Exception => e
+
+      new_tee.destroy
+
       job_title = "publish_job.rb STORE: #{@domain}"
       log_data_1 = e.message
       log_data_2 = e.backtrace
 
       ErrorMailer.error_email(job_title, log_data_1, log_data_2).deliver_now
-    end 
+    end
     
 
   end

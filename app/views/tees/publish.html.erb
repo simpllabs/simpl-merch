@@ -31,13 +31,7 @@
 			      	success: function(job){
 				        var stage, progress;
 
-				        // If there are errors
-				        if (job.last_error != null) {
-				          $('#progress-status').addClass('text-danger').text(job.progress_stage);
-				          $('.progress-bar').addClass('progress-bar-danger');
-				          $('.progress-bar').removeClass('active');
-				          clearInterval(poll_interval);
-				        }
+				        //console.log("job.last_error: " + job.last_error + ", stage: " + job.progress_stage);
 
 				        // Upload stage
 				        if (job.progress_stage != null){
@@ -53,7 +47,18 @@
 				          $('.progress-bar').css('width', parseInt(progress) + '%').empty().prepend("<p class='percentage-count'>"+parseInt(progress)+"%</p>");
 				        }
 
+				        // If there are errors
+				        if (job.progress_stage == "ERROR") {
+				          $('#progress-status').addClass('text-danger').text("ERROR Publishing Design - Please Try Again");
+				          stage = "ERROR Publishing Design - Please Try Again";
+				          $('.progress-bar').addClass('progress-bar-danger');
+				          $('.progress-bar').removeClass('active');
+				          $('.loader').hide();
+				          clearInterval(poll_interval);
+				        }
+
 				        $('#progress-status').text(stage);
+
 				      	},
 			      	error: function(){
 

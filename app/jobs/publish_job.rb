@@ -10,6 +10,10 @@ class PublishJob < ProgressJob::Base
     @tee = tee
   end
 
+  #def before(job)
+  #  @job = job
+  #end
+
   def perform
     begin
 
@@ -298,6 +302,10 @@ class PublishJob < ProgressJob::Base
     rescue Exception => e
 
       new_tee.destroy
+
+      update_stage("ERROR")
+
+      sleep 5
 
       job_title = "publish_job.rb STORE: #{@domain}"
       log_data_1 = e.message

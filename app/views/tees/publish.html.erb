@@ -16,8 +16,6 @@
 			
 		</div>
 		<a href="view_tee" class="btn btn-primary view-prod-btn" style="display:none">View Product</a>
-
-
 		
 	</div>
 
@@ -62,13 +60,13 @@
 			      		progress = parseInt($(".percentage-count").text().slice(0, -1));
 			      		//console.log("progress: " + progress);
 
-			      		if (progress !== 100) {
-				          $('#progress-status').text("ERROR Publishing Design - Please Try Again");
-				          $('.progress-bar').addClass('progress-bar-danger');
-				          $('.progress-bar').removeClass('active');
-				          $('.loader').hide();
-				          clearInterval(poll_interval);
-				        } else {
+			      		//if (progress !== 100) {
+				        //  $('#progress-status').text("ERROR Publishing Design - Please Try Again");
+				        //  $('.progress-bar').addClass('progress-bar-danger');
+				        //  $('.progress-bar').removeClass('active');
+				        //  $('.loader').hide();
+				        //  clearInterval(poll_interval);
+				        //} else {
 
 					        // Job is no loger in database which means it finished successfuly
 					        $('.progress-bar').removeClass('active');
@@ -80,7 +78,7 @@
 					        $('.view-prod-btn').show();
 
 					        clearInterval(poll_interval);
-					    }
+					    //}
 			      	}
 			    });
 			},1000);

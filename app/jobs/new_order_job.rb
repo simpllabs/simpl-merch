@@ -59,9 +59,7 @@ class NewOrderJob < ProgressJob::Base
                     order.zip = order_params.shipping_address.zip
                     order.province = order_params.shipping_address.province
                     order.country = order_params.shipping_address.country_code
-                    if tee.present?
-                        order.front_design = order.light_or_dark == "dark" ? tee.tee_front_url.gsub('light', 'dark') : tee.tee_front_url if tee.tee_front_url.present?
-                    end
+                    order.front_design = order.light_or_dark == "dark" ? tee.tee_front_url.gsub('light', 'dark') : tee.tee_front_url
                     order.back_design = tee.tee_back_url
                     order.front_ref = tee.tee_front_ref
                     order.back_ref = tee.tee_back_ref
@@ -107,9 +105,7 @@ class NewOrderJob < ProgressJob::Base
                     order.zip = @params[:shipping_address][:zip]
                     order.province = @params[:shipping_address][:province]
                     order.country = @params[:shipping_address][:country_code]
-                    if tee.present?
-                        order.front_design = order.light_or_dark == "dark" ? tee.tee_front_url.gsub('light', 'dark') : tee.tee_front_url if tee.tee_front_url.present?
-                    end
+                    order.front_design = order.light_or_dark == "dark" ? tee.tee_front_url.gsub('light', 'dark') : tee.tee_front_url
                     order.back_design = tee.tee_back_url
                     order.front_ref = tee.tee_front_ref
                     order.back_ref = tee.tee_back_ref

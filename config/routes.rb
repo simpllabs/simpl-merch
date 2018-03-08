@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'packingslip/:storename', to: 'packingslip#message'
+
   get '/storage/:image', to: 'tees#return_stored_image'
 
   get '/check.txt', to: proc {[200, {}, ['it_works']]}

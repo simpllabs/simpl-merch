@@ -39,7 +39,7 @@ class UploadTrackingNumberJob < ProgressJob::Base
         ShopifyAPI::Fulfillment.create(shipment_hash)
         order.fulfillment_status = "Shipped"
         order.tracking_number = @tracking_number
-        order.save
+        order.save if @tracking_number.present?
         sleep(3)
       end
 

@@ -54,6 +54,7 @@ class ProcessOrdersJob < ProgressJob::Base
 
 				charge_amount = 0
 				design_fee = 0
+				store_order_numbers = []
 				Order.where(fulfillment_status: "Pending").each do |order|
 				  
 				  # Don't process order if its payment status is pending
@@ -70,17 +71,26 @@ class ProcessOrdersJob < ProgressJob::Base
 				    #end
 				    #tee.save
 
-				    #is it a male shirt?
-				    base_cost = 0
-				    if order.gender == "Male,Female"
-				    	base_cost = 5 if order.sku.include?("Male")
-				    	base_cost = 5.5 if order.sku.include?("Female")
+				    base_cost = 6
+
+				    #charge 2XL+ extra fees
+				    if order.sku.include?("Female")
+				    	base_cost = base_cost + 1.3 if order.product_name.include?("2XL /")
+				    	base_cost = base_cost + 2.0 if order.product_name.include?("3XL /")
 				    else
-				    	base_cost = order.gender == "male" || order.gender == "Male" ? 5 : 5.5
+				    	base_cost = base_cost + 1.66 if order.product_name.include?("2XL /")
+				    	base_cost = base_cost + 2.96 if order.product_name.include?("3XL /")
 				    end
 
+				    #if order.gender == "Male,Female"
+				    #	base_cost = 6 if order.sku.include?("Male")
+				    #	base_cost = 6 if order.sku.include?("Female")
+				    #else
+				    #	base_cost = order.gender == "male" || order.gender == "Male" ? 6 : 6
+				    #end
+
 				    if order.back_design.present? && order.front_design.present? 
-				    	base_cost = base_cost + 6
+				    	base_cost = base_cost + 1
 				    end
 				    
 				    #base_cost = order.multicolor == 'yes' ? base_cost + 1.5 : base_cost
@@ -91,27 +101,47 @@ class ProcessOrdersJob < ProgressJob::Base
 				    chose_china_post = shop.chose_china_post == "Yes"
 
 				    if is_US
-				    	base_cost = base_cost + 3
+				    	if store_order_numbers.include?(order.store_order_number)
+				    		base_cost = base_cost + 1.5
+				    	else
+				    		base_cost = base_cost + 3
+				    	end
 				    else
-				    	if chose_china_post
-					      	base_cost = base_cost + 7 #used to be 4.5, maybe bring back down when can do $6 total?
-					    else
-					    	base_cost = base_cost + 7
-					    end
+				    	if store_order_numbers.include?(order.store_order_number)
+				    		base_cost = base_cost + 6
+				    	else
+				    		base_cost = base_cost + 8
+				    	end
+				    	#if chose_china_post
+					    #  	base_cost = base_cost + 8 #used to be 4.5, maybe bring back down when can do $6 total?
+					    #else
+					    #	base_cost = base_cost + 8
+					    #end
 				    end
 
 				    if shop.non_plastic == "Yes"
-				    	base_cost = base_cost + 0.5
+				    	#base_cost = base_cost + 0.5
 				    end
 
 				    if shop.remove_tag == "Yes"
-				    	base_cost = base_cost + 0.05
+				    	#base_cost = base_cost + 0.05
 				    end
 
 				    if shop.shopify_domain == order.shop_domain
-				      charge_amount = charge_amount + (order.quantity * base_cost)
+				    	if store_order_numbers.include?(order.store_order_number)
+				      		charge_amount = charge_amount + (order.quantity * base_cost)
+				      	else
+				      		if order.quantity > 1
+				      			charge_amount = charge_amount + base_cost
+				      			charge_amount = charge_amount + ((order.quantity - 1) * (base_cost - (is_US ? 1.5 : 2)))
+				      		else
+				      			charge_amount = charge_amount + (order.quantity * base_cost)
+				      		end
+				      	end
 				    end
 				  end
+
+				  store_order_numbers.push(order.store_order_number)
 
 				end
 
